@@ -1,0 +1,221 @@
+@import 'tailwindcss';
+
+:root,
+body {
+  --primary-color: #000;
+
+  --primary-5: oklch(from var(--primary-color) 99% 0.015 h);
+  --primary-10: oklch(from var(--primary-color) 97% 0.025 h);
+
+  --primary-50: oklch(from var(--primary-color) 95% 0.04 h);
+  --primary-100: oklch(from var(--primary-color) 90% 0.06 h);
+  --primary-200: oklch(from var(--primary-color) 80% 0.1 h);
+  --primary-300: oklch(from var(--primary-color) 70% 0.14 h);
+  --primary-400: oklch(from var(--primary-color) 65% 0.16 h);
+
+  --primary-500: var(--primary-color);
+
+  --primary-600: oklch(from var(--primary-color) 55% 0.16 h);
+  --primary-700: oklch(from var(--primary-color) 45% 0.14 h);
+  --primary-800: oklch(from var(--primary-color) 35% 0.12 h);
+  --primary-900: oklch(from var(--primary-color) 25% 0.1 h);
+}
+
+.color-primary-500 {
+  color: var(--primary-500);
+}
+.bg-primary-500 {
+  background-color: var(--primary-500);
+}
+.bg-primary-600 {
+  background-color: var(--primary-600);
+}
+
+body {
+  background-color: #f5f5f5;
+  /* background-color: var(--primary-5); */
+}
+
+h1:not(.rich-text h1) {
+  @apply text-4xl font-bold text-gray-800;
+}
+h2:not(.rich-text h2) {
+  @apply text-3xl font-semibold text-gray-700;
+}
+h3:not(.rich-text h3) {
+  @apply text-2xl font-medium text-gray-600;
+}
+h4:not(.rich-text h4) {
+  @apply text-xl font-medium text-gray-600;
+}
+h5:not(.rich-text h5) {
+  @apply text-lg font-normal text-gray-500;
+}
+h6:not(.rich-text h6) {
+  @apply text-base font-normal text-gray-500;
+}
+
+.rich-text {
+  font-size: 13px;
+}
+
+.rich-text h1 {
+  font-size: 2em;
+}
+
+.rich-text h2 {
+  font-size: 1.5em;
+}
+
+.rich-text h3 {
+  font-size: 1.17em;
+}
+
+.rich-text h4 {
+  font-size: 1em;
+}
+
+.rich-text h5 {
+  font-size: 0.83em;
+}
+
+.rich-text h6 {
+  font-size: 0.67em;
+}
+
+.table-container {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.table-container table {
+  min-width: 700px;
+}
+
+.page-container {
+  width: 95%;
+  margin: 0 auto;
+}
+
+@media (max-width: 700px) {
+  .n-card > .n-card__content {
+    padding: 22px 15px;
+  }
+}
+
+.container {
+  width: 100%;
+  padding-right: var(--bs-gutter-x, 0.75rem);
+  padding-left: var(--bs-gutter-x, 0.75rem);
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (min-width: 576px) {
+  .container {
+    max-width: 540px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 720px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1140px;
+  }
+}
+
+@media (min-width: 1300px) {
+  .container {
+    max-width: 1250px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1320px;
+  }
+}
+
+.n-table th {
+  background-color: #fff;
+  border-top: 1px solid #e5e7eb;
+}
+
+hr {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.custom-modal .n-card-header {
+  background-color: var(--primary-10);
+}
+
+/* .custom-modal.n-card > .n-card-header .n-card-header__main {
+  color: #fff;
+}
+
+.custom-modal .n-base-close {
+  color: #fff;
+}
+
+.custom-modal .n-base-close:hover {
+  color: #fff;
+} */
+
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.store-page {
+  width: 95%;
+  margin: 0 auto;
+}
+
+.upload-button {
+  display: inline-block;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid var(--primary-50);
+}
+
+.upload-button:hover {
+  background-color: var(--primary-10);
+}
+
+.logo-text {
+  color: var(--primary-500);
+}
+
+@media print {
+  body {
+    background-color: transparent !important;
+  }
+}

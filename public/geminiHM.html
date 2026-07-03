@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>BTC Liquidation Delta: Price & Distance</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+      body {
+        font-family: sans-serif;
+        background: #0b0e11;
+        color: #eaecef;
+        margin: 0;
+        padding: 20px;
+      }
+      .card {
+        background: #161a1e;
+        padding: 20px;
+        border-radius: 8px;
+        border: 1px solid #2b3139;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 15px;
+      }
+      #price {
+        color: #f0b90b;
+        font-weight: bold;
+        font-size: 24px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="header">
+        <div>
+          <h1 style="margin: 0">Liquidation Delta Profile</h1>
+          <span>
+            <input id="coinName" type="text" value="" />
+          </span>
+          <span style="color: #848e9c"
+            >Hover to compare Long vs Short pressure at specific price targets</span
+          >
+        </div>
+        <div id="price">Connecting to Binance...</div>
+      </div>
+      <div id="chart" style="height: 600px"></div>
+    </div>
+
+    <script>
+      const coinEl = document.getElementById('coinName');
+
+      // console.log(coinEl);
+
+      coinEl.addEventListener('change', handleChange);
+      function handleChange(e) {
+        console.log(e.target.value);
+        localStorage.setItem('symbol', e.target.value);
+        // update();
+      }
+
+      const SYMBOL = localStorage.getItem('symbol') || 'BTCUSDT';
+      coinEl.value = SYMBOL;
+
+      const BASE_URL = 'https://fapi.binance.com';
+      const LEVERAGES = [100, 50, 25, 10];
+
+      async function update() {
+        try {
+          const [ticker, candles] = await Promise.all([
+            fetch(`${BASE_URL}/fapi/v1/ticker/price?symbol=${SYMBOL}`).then((r) => r.json()),
+            fetch(`${BASE_URL}/fapi/v1/klines?symbol=${SYMBOL}&interval=1h&limit=72`).then((r) =>
+              r.json()
+            )
+          ]);
+
+          const markPrice = parseFloat(ticker.price);
+          document.getElementById('price').innerText = `$${markPrice.toLocaleString()}`;
+
+          const dataMap = { longs: {}, shorts: {} };
+
+          candles.forEach((c) => {
+            const [time, open, high, low, close, volume] = c.map(Number);
+            const vwp = (high + low + close) / 3;
+            const weight = volume / 1000;
+
+            LEVERAGES.forEach((lev) => {
+              const lLiq = vwp * (1 - 1 / lev);
+              const sLiq = vwp * (1 + 1 / lev);
+
+              const lDist = Math.abs(Math.round(((lLiq - markPrice) / markPrice) * 1000) / 10);
+              const sDist = Math.abs(Math.round(((sLiq - markPrice) / markPrice) * 1000) / 10);
+
+              if (lLiq < markPrice)
+                dataMap.longs[lDist] = (dataMap.longs[lDist] || 0) + weight * lev;
+              if (sLiq > markPrice)
+                dataMap.shorts[sDist] = (dataMap.shorts[sDist] || 0) + weight * lev;
+            });
+          });
+
+          const distances = Array.from({ length: 151 }, (_, i) => i / 10); // 0% to 15% distance
+          let cumL = 0,
+            cumS = 0;
+
+          const xDist = [],
+            yL = [],
+            yS = [],
+            pL = [],
+            pS = [];
+
+          distances.forEach((d) => {
+            cumL += dataMap.longs[d] || 0;
+            cumS += dataMap.shorts[d] || 0;
+
+            xDist.push(d);
+            yL.push(Math.round(cumL));
+            yS.push(Math.round(cumS));
+
+            // Calculate actual price targets for the hover
+            pL.push(markPrice * (1 - d / 100));
+            pS.push(markPrice * (1 + d / 100));
+          });
+
+          renderChart(xDist, yL, yS, pL, pS, markPrice);
+        } catch (e) {
+          console.error('Update Error:', e);
+        }
+      }
+
+      function renderChart(x, yL, yS, pL, pS, markPrice) {
+        const traceLong = {
+          x: x,
+          y: yL,
+          customdata: pL,
+          name: 'Longs (Liquidated on Drop)',
+          mode: 'lines',
+          fill: 'tozeroy',
+          line: { color: '#0ecb81', width: 3 },
+          hovertemplate: 'Price: $%{customdata:,.0f}<br>Cumulative: %{y}<extra></extra>'
+        };
+
+        const traceShort = {
+          x: x,
+          y: yS,
+          customdata: pS,
+          name: 'Shorts (Liquidated on Pump)',
+          mode: 'lines',
+          fill: 'tozeroy',
+          line: { color: '#f6465d', width: 3 },
+          hovertemplate: 'Price: $%{customdata:,.0f}<br>Cumulative: %{y}<extra></extra>'
+        };
+
+        const layout = {
+          paper_bgcolor: '#161a1e',
+          plot_bgcolor: '#161a1e',
+          font: { color: '#848e9c' },
+          hovermode: 'x unified',
+          xaxis: {
+            title: 'Distance from Current Price (%)',
+            gridcolor: '#2b3139',
+            ticksuffix: '%',
+            side: 'bottom'
+          },
+          xaxis2: {
+            title: 'Estimated Target Price ($)',
+            overlaying: 'x',
+            side: 'top',
+            showgrid: false,
+            // Match the percentage range to the price range
+            range: [0, 15],
+            tickvals: [0, 5, 10, 15],
+            ticktext: [
+              `$${markPrice.toLocaleString()}`,
+              `$${(markPrice * 1.05).toLocaleString()}`,
+              `$${(markPrice * 1.1).toLocaleString()}`,
+              `$${(markPrice * 1.15).toLocaleString()}`
+            ]
+          },
+          yaxis: {
+            title: 'Relative Liquidation Intensity',
+            gridcolor: '#2b3139'
+          },
+          margin: { t: 80, b: 50, l: 60, r: 20 },
+          legend: { orientation: 'h', y: 1.1, x: 0.5, xanchor: 'center' }
+        };
+
+        Plotly.newPlot('chart', [traceLong, traceShort], layout);
+      }
+
+      update();
+      setInterval(update, 30000);
+    </script>
+
+    <iframe
+      data-v-263dfa19=""
+      src="https://www.tradingview-widget.com/embed-widget/advanced-chart/?locale=en#%7B%22autosize%22%3Atrue%2C%22symbol%22%3A%22BINANCE%3ABTCUSDT.P%22%2C%22timezone%22%3A%22Etc%2FUTC%22%2C%22theme%22%3A%22dark%22%2C%22style%22%3A%221%22%2C%22hide_top_toolbar%22%3Afalse%2C%22hide_legend%22%3Afalse%2C%22interval%22%3A%2215%22%2C%22hide_side_toolbar%22%3Atrue%2C%22allow_symbol_change%22%3Afalse%2C%22save_image%22%3Afalse%2C%22watchlist%22%3A%5B%5D%2C%22compareSymbols%22%3A%5B%5D%2C%22details%22%3Afalse%2C%22hotlist%22%3Afalse%2C%22calendar%22%3Afalse%2C%22studies%22%3A%5B%5D%2C%22show_popup_button%22%3Atrue%2C%22popup_width%22%3A%22350%22%2C%22popup_height%22%3A%22650%22%2C%22hide_volume%22%3Atrue%2C%22support_host%22%3A%22https%3A%2F%2Fwww.tradingview.com%22%2C%22height%22%3A%22100%25%22%2C%22width%22%3A%22100%25%22%2C%22utm_source%22%3A%22www.tradingview.com%22%2C%22utm_medium%22%3A%22widget_new%22%2C%22utm_campaign%22%3A%22advanced-chart%22%2C%22page-uri%22%3A%22www.tradingview.com%2Fwidget-wizard%2Fen%2Flight%2Fadvanced-chart%2F%22%7D"
+      width="100%"
+      height="927"
+      frameborder="0"
+      allowfullscreen=""
+    ></iframe>
+  </body>
+</html>

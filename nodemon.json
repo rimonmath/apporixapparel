@@ -1,0 +1,5 @@
+{
+  "watch": ["hdist/hono"],
+  "ext": "js",
+  "exec": "node ./hdist/hono/index.js"
+}

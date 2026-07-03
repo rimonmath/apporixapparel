@@ -1,0 +1,14 @@
+{
+  "extends": "@tsconfig/node22/tsconfig.json",
+  "include": ["hono/**/*.ts"],
+  "compilerOptions": {
+    "outDir": "hdist/hono", // compiled JS goes here
+    "rootDir": "hono", // source TS root
+    "module": "ESNext", // keep ES modules
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "strict": true,
+    "noEmit": false, // allow emitting JS
+    "types": ["node"]
+  }
+}
