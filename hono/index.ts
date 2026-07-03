@@ -20,7 +20,9 @@ import { initStores } from './middleware/storeInfo.js';
 import { renderSigninPage } from './seo/signin.js';
 import { renderSignupPage } from './seo/signup.js';
 
-const app = new Hono().use(cors()).use(storeInfoMiddleware).route('/api', apiRoutes);
+const app = new Hono()
+  .use(cors()) /*.use(storeInfoMiddleware)*/
+  .route('/api', apiRoutes);
 
 app.get('/', renderIndexPage);
 app.get('/r/:refCode', renderSignupPage);

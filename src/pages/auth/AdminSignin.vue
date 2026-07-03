@@ -71,7 +71,7 @@ const { openPopup } = useSsoSignin();
       <div class="text-center">
         <img src="/img/logo.png" class="inline-block max-h-[50px]" alt="" />
 
-        <h2 class="text-lg mt-4">User sign in</h2>
+        <h2 class="text-lg mt-4">Admin sign in</h2>
       </div>
       <AForm @successSubmit="handleSubmit" :formData="form" :schema="signinSchema">
         <template #default="{ errors }">
@@ -118,7 +118,7 @@ const { openPopup } = useSsoSignin();
       </p>
 
       <!-- <a href="#" class="back-home">← Back to Home</a> -->
-       <SmartLink to="/auth/admin-signin"> Admin Signin </SmartLink>
+       <SmartLink to="/admin-signin"> Admin Signin </SmartLink>
     </div>
 
     <div class="login-box" v-else>
