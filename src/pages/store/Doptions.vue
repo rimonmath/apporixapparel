@@ -26,13 +26,11 @@ import AFormInputNumber from '@/components/form/AFormInputNumber.vue';
 
 const message = useMessage();
 
-const { subDomain } = useStoreInfo();
-
 const router = useRouter();
 const route = useRoute();
 
-const createMachine = useCreate<SuccessResponse>(`/store/${subDomain.value}/doptions`, true);
-const readMachine = useRead<DeliveryOption[], true>(`/store/${subDomain.value}/doptions`, true);
+const createMachine = useCreate<SuccessResponse>(`/store/doptions`, true);
+const readMachine = useRead<DeliveryOption[], true>(`/store/doptions`, true);
 const updateMachine = useUpdate<SuccessResponse>(true);
 const deleteMachine = useDelete<SuccessResponse>(true);
 
@@ -83,7 +81,7 @@ const handleActionClick = (key: string, item: any) => {
 
 const deleteItem = async () => {
   // console.log(selectedItem.value);
-  await deleteMachine.start(`/store/${subDomain.value}/doptions/${selectedItem.value?.id}`);
+  await deleteMachine.start(`/store/doptions/${selectedItem.value?.id}`);
   if (deleteMachine.error.value) {
     message.error(beautifyError(deleteMachine.error.value));
   } else {
@@ -98,10 +96,7 @@ const updateItem = async () => {
     return;
   }
 
-  await updateMachine.start(
-    `/store/${subDomain.value}/doptions/${selectedItem.value?.id}`,
-    selectedItem.value
-  );
+  await updateMachine.start(`/store/doptions/${selectedItem.value?.id}`, selectedItem.value);
   if (updateMachine.error.value) {
     message.error(beautifyError(updateMachine.error.value));
   } else {

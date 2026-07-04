@@ -12,11 +12,9 @@ export default DashboardApp()
     async (c) => {
       const deliveryOptions = await db.query.DeliveryOptions.findMany({
         columns: {
-          storeId: false,
           createdAt: false,
           updatedAt: false
-        },
-        where: (deliveryOption, { eq }) => eq(deliveryOption.storeId, c.var.jwtPayload.storeId)
+        }
       });
       // console.log(products);
       return c.json(deliveryOptions);
@@ -28,8 +26,7 @@ export default DashboardApp()
     await db.insert(DeliveryOptions).values({
       ...body,
       charge: body.charge.toString(),
-      weightLimit: body.weightLimit.toString(),
-      storeId: c.var.jwtPayload.storeId
+      weightLimit: body.weightLimit.toString()
     });
 
     return c.json({ message: 'Delivery option added successfully!' });

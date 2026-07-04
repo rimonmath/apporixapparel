@@ -30,10 +30,8 @@ import AFormDatePicker from '@/components/form/AFormDatePicker.vue';
 
 const message = useMessage();
 
-const { subDomain } = useStoreInfo();
-
-const createMachine = useCreate<SuccessResponse>(`/store/${subDomain.value}/coupons`, true);
-const readMachine = useRead<Coupon[], true>(`/store/${subDomain.value}/coupons`, true);
+const createMachine = useCreate<SuccessResponse>(`/store/coupons`, true);
+const readMachine = useRead<Coupon[], true>(`/store/coupons`, true);
 const updateMachine = useUpdate<SuccessResponse>(true);
 const deleteMachine = useDelete<SuccessResponse>(true);
 
@@ -100,7 +98,7 @@ const handleActionClick = (key: string, item: any) => {
 
 const deleteItem = async () => {
   // console.log(selectedItem.value);
-  await deleteMachine.start(`/store/${subDomain.value}/coupons/${selectedItem.value?.id}`);
+  await deleteMachine.start(`/store/coupons/${selectedItem.value?.id}`);
   if (deleteMachine.error.value) {
     message.error(beautifyError(deleteMachine.error.value));
   } else {
@@ -115,10 +113,7 @@ const updateItem = async () => {
     return;
   }
 
-  await updateMachine.start(
-    `/store/${subDomain.value}/coupons/${selectedItem.value?.id}`,
-    selectedItem.value
-  );
+  await updateMachine.start(`/store/coupons/${selectedItem.value?.id}`, selectedItem.value);
   if (updateMachine.error.value) {
     message.error(beautifyError(updateMachine.error.value));
   } else {

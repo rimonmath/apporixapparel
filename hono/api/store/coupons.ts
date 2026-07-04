@@ -9,11 +9,9 @@ export default DashboardApp()
   .get('/', async (c) => {
     const coupons = await db.query.Coupons.findMany({
       columns: {
-        storeId: false,
         createdAt: false,
         updatedAt: false
-      },
-      where: (fields, { eq }) => eq(fields.storeId, c.var.jwtPayload.storeId)
+      }
     });
     // console.log(products);
     return c.json(coupons);
@@ -25,8 +23,7 @@ export default DashboardApp()
       ...body,
       discount: body.discount?.toString() || '0.00',
       minPurchase: body.minPurchase?.toString() || '0.00',
-      maxDiscount: body.maxDiscount?.toString() || '0.00',
-      storeId: c.var.jwtPayload.storeId
+      maxDiscount: body.maxDiscount?.toString() || '0.00'
     });
 
     return c.json({ message: 'Coupon added successfully!' });
