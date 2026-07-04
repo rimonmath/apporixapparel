@@ -76,38 +76,30 @@ const props = withDefaults(defineProps<Props>(), {
   productId: 0
 });
 
-const { subDomain } = useStoreInfo();
-
 const message = useMessage();
 
 const product = ref<Product | null>(null);
 
-const readMachine = useRead<Product, true>(
-  `/store/${subDomain.value}/products/${props.productId}`,
-  true
-);
-const readCategoriesMachine = useRead<Category[], true>(
-  `/store/${subDomain.value}/categories`,
-  true
-);
+const readMachine = useRead<Product, true>(`/store/products/${props.productId}`, true);
+const readCategoriesMachine = useRead<Category[], true>(`/store/categories`, true);
 const updateProductMachine = useUpdate<SuccessResponse>(true);
 
 const createImageMachine = useCreateFormData<SuccessResponse>(
-  `/store/${subDomain.value}/products/${props.productId}/add-photo`,
+  `/store/products/${props.productId}/add-photo`,
   true
 );
 const createVariantMachine = useCreate<SuccessResponse>(
-  `/store/${subDomain.value}/products/${props.productId}/add-variant`,
+  `/store/products/${props.productId}/add-variant`,
   true
 );
 
-const createMachine = useCreate<SuccessResponse>(`/store/${subDomain.value}/products`, true);
+const createMachine = useCreate<SuccessResponse>(`/store/products`, true);
 
 const deletePhotoMachine = useDelete<SuccessResponse>(true);
 
 const saveChanges = async () => {
   await updateProductMachine.start(
-    `/store/${subDomain.value}/products/${props.productId}`,
+    `/store/products/${props.productId}`,
     readMachine.response.value!
   );
   if (updateProductMachine.error.value) {
@@ -167,9 +159,7 @@ const handleFileChange = async (e: Event) => {
 
 const deleteProductPhoto = async (photo: ProductImage) => {
   // console.log(selectedItem.value);
-  await deletePhotoMachine.start(
-    `/store/${subDomain.value}/products/${props.productId}/delete-photo/${photo.id}`
-  );
+  await deletePhotoMachine.start(`/store/products/${props.productId}/delete-photo/${photo.id}`);
   if (deletePhotoMachine.error.value) {
     message.error(beautifyError(deletePhotoMachine.error.value));
   } else {
@@ -195,10 +185,7 @@ const existingVariantsMap = computed(() =>
   )
 );
 
-const readAttributesMachine = useRead<Attribute[], true>(
-  `/store/${subDomain.value}/attributes`,
-  true
-);
+const readAttributesMachine = useRead<Attribute[], true>(`/store/attributes`, true);
 
 const attributes = computed(() => {
   return readAttributesMachine.response.value
@@ -264,9 +251,7 @@ const deleteVariantMachine = useDelete<SuccessResponse>(true);
 
 const deleteVariant = async (item: any) => {
   // console.log(selectedItem.value);
-  await deleteVariantMachine.start(
-    `/store/${subDomain.value}/products/${props.productId}/delete-variant/${item.id}`
-  );
+  await deleteVariantMachine.start(`/store/products/${props.productId}/delete-variant/${item.id}`);
   if (deleteVariantMachine.error.value) {
     message.error(beautifyError(deleteVariantMachine.error.value));
   } else {
@@ -300,7 +285,7 @@ function addCustomValueForEditing() {
 
 async function updateVariant() {
   await updateVariantMachine.start(
-    `/store/${subDomain.value}/products/${props.productId}/edit-variant/${updateVariantFormData.value.id}`,
+    `/store/products/${props.productId}/edit-variant/${updateVariantFormData.value.id}`,
     updateVariantFormData.value
   );
   if (updateVariantMachine.error.value) {
@@ -382,7 +367,7 @@ const savePricingMachine = useUpdate<SuccessResponse>(true);
 async function savePricing() {
   console.log(pricingModel.value);
   await savePricingMachine.start(
-    `/store/${subDomain.value}/products/${props.productId}/save-pricing`,
+    `/store/products/${props.productId}/save-pricing`,
     pricingModel.value
   );
 
@@ -399,7 +384,7 @@ const deletePricingMachine = useDelete<SuccessResponse>(true);
 async function deletePricing(pricing: any) {
   // console.log(selectedItem.value);
   await deletePricingMachine.start(
-    `/store/${subDomain.value}/products/${props.productId}/delete-pricing/${pricing.variation}`
+    `/store/products/${props.productId}/delete-pricing/${pricing.variation}`
   );
   if (deletePricingMachine.error.value) {
     message.error(beautifyError(deletePricingMachine.error.value));
