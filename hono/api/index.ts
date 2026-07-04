@@ -12,7 +12,7 @@ import { ddosProtectMiddleware } from '../middleware/ddosProtect.js';
 
 export default new Hono()
   .use(ddosProtectMiddleware)
-  // .route('/public', publicRoutes)
+  .route('/public', publicRoutes)
   .route('/auth', authRoutes)
   // .route('/user', userRoutes)
   // .route('/admin', adminRoutes)

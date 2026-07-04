@@ -13,13 +13,10 @@ export default DashboardApp()
         columns: {
           createdAt: false,
           updatedAt: false,
-          isActive: false,
-          storeId: false,
-          serverId: false
+          isActive: false
         },
         orderBy: [orderBy],
-        where: (category, { and, eq }) =>
-          and(eq(category.isActive, true), eq(category.storeId, c.get('storeInfo')?.storeId || 0))
+        where: (category, { and, eq }) => and(eq(category.isActive, true))
       });
       return c.json(categories);
     }
@@ -28,9 +25,7 @@ export default DashboardApp()
     const products = await db.query.Products.findMany({
       columns: {
         createdAt: false,
-        updatedAt: false,
-        storeId: false,
-        serverId: false
+        updatedAt: false
       },
       with: {
         categories: {
@@ -50,16 +45,14 @@ export default DashboardApp()
         },
         pricings: {
           columns: {
-            buyPrice: false,
-            storeId: false,
-            serverId: false
+            buyPrice: false
           }
         }
       },
       where: (products, { inArray, eq, and }) =>
         and(
           eq(products.status, 'Published'),
-          eq(products.storeId, c.get('storeInfo')?.storeId || 0),
+
           inArray(
             products.id,
             db

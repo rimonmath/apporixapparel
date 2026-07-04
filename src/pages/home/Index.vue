@@ -8,29 +8,10 @@ import { computed } from 'vue';
 
 const route = useRoute();
 const isHome = computed(() => route.path === '/');
-
-const isKhudroShopDomain = computed(() => {
-  const origin = window.location.origin;
-
-  // console.log(origin);
-
-  return (
-    origin === 'https://khudroshop.com' ||
-    origin === 'http://localhost:5123' ||
-    origin === 'http://localhost:3123'
-  );
-});
 </script>
 
 <template>
-  <!-- <div v-if="isKhudroShopDomain" class="p-20 text-center">
-    <h1 class="my-4">Khudroshop.com</h1>
-    <SmartLink to="/dashboard"> Go To Dashboard</SmartLink>
-  </div> -->
-
-  <KhudroLayout v-if="isKhudroShopDomain"> </KhudroLayout>
-
-  <HomeLayout v-else :sidebar-minimised="!isHome">
+  <HomeLayout :sidebar-minimised="!isHome">
     <template #left> left </template>
 
     <template #top> navbar </template>

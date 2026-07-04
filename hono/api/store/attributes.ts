@@ -15,7 +15,6 @@ export default DashboardApp()
 
     async (c) => {
       const attributes = await db.query.Attributes.findMany({
-        where: (attribute, { eq }) => eq(attribute.storeId, c.var.jwtPayload.storeId),
         with: {
           attributeValues: true
         },
@@ -29,8 +28,7 @@ export default DashboardApp()
     const body = c.req.valid('json');
 
     await db.insert(Attributes).values({
-      ...body,
-      storeId: c.var.jwtPayload.storeId
+      ...body
     });
 
     return c.json({ message: 'Attribute added successfully!' });
@@ -43,12 +41,7 @@ export default DashboardApp()
       .set({
         ...body
       })
-      .where(
-        and(
-          eq(Attributes.id, Number(c.req.param('id'))),
-          eq(Attributes.storeId, c.var.jwtPayload.storeId)
-        )
-      );
+      .where(eq(Attributes.id, Number(c.req.param('id'))));
 
     return c.json({ message: 'Attribute updated successfully!' });
   })
@@ -57,7 +50,6 @@ export default DashboardApp()
 
     await db.insert(AttributeValues).values({
       attributeId: Number(c.req.param('id')),
-      storeId: c.var.jwtPayload.storeId,
       ...body
     });
 
@@ -67,24 +59,10 @@ export default DashboardApp()
 
   // })
   .delete('/:id', async (c) => {
-    await db
-      .delete(Attributes)
-      .where(
-        and(
-          eq(Attributes.id, Number(c.req.param('id'))),
-          eq(Attributes.storeId, c.var.jwtPayload.storeId)
-        )
-      );
+    await db.delete(Attributes).where(eq(Attributes.id, Number(c.req.param('id'))));
     return c.json({ message: 'Attribute deleted successfully!' });
   })
   .delete('/:id/values/:valueId', async (c) => {
-    await db
-      .delete(AttributeValues)
-      .where(
-        and(
-          eq(AttributeValues.id, Number(c.req.param('valueId'))),
-          eq(AttributeValues.storeId, c.var.jwtPayload.storeId)
-        )
-      );
+    await db.delete(AttributeValues).where(eq(AttributeValues.id, Number(c.req.param('valueId'))));
     return c.json({ message: 'Attribute value deleted successfully!' });
   });

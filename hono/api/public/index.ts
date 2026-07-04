@@ -11,14 +11,14 @@ import cicdApp from './cicd.js';
 import { getDdosReport } from '../../middleware/ddosProtect.js';
 
 export default new Hono()
-  .route('/products', productsApp)
-  .route('/packages', packagesApp)
-  .route('/categories', categoriesApp)
-  .route('/order', orderApp)
-  .route('/pages', pagesApp)
-  .route('/carousels', carouselsApp)
-  .route('/store', storeApp)
-  .route('/cicd', cicdApp)
-  .get('/ddosreport', async (c) => {
-    return c.json(getDdosReport());
-  });
+  // .route('/products', productsApp)
+  // .route('/packages', packagesApp)
+  .route('/categories', categoriesApp);
+// .route('/order', orderApp)
+// .route('/pages', pagesApp)
+// .route('/carousels', carouselsApp)
+// .route('/store', storeApp)
+// .route('/cicd', cicdApp)
+// .get('/ddosreport', async (c) => {
+//   return c.json(getDdosReport());
+// });

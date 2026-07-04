@@ -27,14 +27,13 @@ import AFormSelect from '@/components/form/AFormSelect.vue';
 import { useStoreInfo } from '@/composables/useStoreInfo';
 
 const message = useMessage();
-const { subDomain } = useStoreInfo();
 
 const router = useRouter();
 const route = useRoute();
 
-const createMachine = useCreate<SuccessResponse>(`/store/${subDomain.value}/attributes`, true);
+const createMachine = useCreate<SuccessResponse>(`/store/attributes`, true);
 const createValueMachine = useCreate<SuccessResponse>('', true);
-const readMachine = useRead<Attribute[], true>(`/store/${subDomain.value}/attributes`, true);
+const readMachine = useRead<Attribute[], true>(`/store/attributes`, true);
 const updateMachine = useUpdate<SuccessResponse>(true);
 const deleteMachine = useDelete<SuccessResponse>(true);
 const deleteValueMachine = useDelete<SuccessResponse>(true);
@@ -67,7 +66,7 @@ const addItem = async () => {
 const addValue = async () => {
   await createValueMachine.start(
     addValueFormData,
-    `/store/${subDomain.value}/attributes/${addValueFormData.attributeId}/values`
+    `/store/attributes/${addValueFormData.attributeId}/values`
   );
   if (createValueMachine.error.value) {
     message.error(beautifyError(createValueMachine.error.value));
@@ -100,10 +99,7 @@ const handleActionClick = (key: string, item: any) => {
 
 const saveChanges = async () => {
   // console.log(selectedItem.value);
-  await updateMachine.start(
-    `/store/${subDomain.value}/attributes/${selectedItem.value.id}`,
-    selectedItem.value
-  );
+  await updateMachine.start(`/store/attributes/${selectedItem.value.id}`, selectedItem.value);
   if (updateMachine.error.value) {
     message.error(beautifyError(createMachine.error.value));
   } else {
@@ -115,7 +111,7 @@ const saveChanges = async () => {
 
 const deleteItem = async () => {
   // console.log(selectedItem.value);
-  await deleteMachine.start(`/store/${subDomain.value}/attributes/${selectedItem.value.id}`);
+  await deleteMachine.start(`/store/attributes/${selectedItem.value.id}`);
   if (deleteMachine.error.value) {
     message.error(beautifyError(deleteMachine.error.value));
   } else {
@@ -127,9 +123,7 @@ const deleteItem = async () => {
 
 const deleteValue = async () => {
   // console.log(selectedItem.value);
-  await deleteValueMachine.start(
-    `/store/${subDomain.value}/attributes/0/values/${selectedItem.value.id}`
-  );
+  await deleteValueMachine.start(`/store/attributes/0/values/${selectedItem.value.id}`);
   if (deleteValueMachine.error.value) {
     message.error(beautifyError(deleteValueMachine.error.value));
   } else {

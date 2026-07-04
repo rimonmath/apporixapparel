@@ -58,11 +58,6 @@ function renderIcon(icon: Component) {
 
 const options = [
   {
-    label: 'User Profile',
-    key: 'profile',
-    icon: renderIcon(UserIcon)
-  },
-  {
     label: 'Edit Profile',
     key: 'editProfile',
     icon: renderIcon(EditIcon)
@@ -90,6 +85,18 @@ onMounted(async () => {
 
 const vw = innerWidth;
 const rightDrawer = shallowRef(false);
+
+function handleDropdownSelect(key: string) {
+  if (key === 'signout') {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    window.location.href = '/auth/admin-signin';
+  } else if (key === 'profile') {
+    router.push('/user/my-profile');
+  }
+}
+
+const origin = window.location.origin;
 </script>
 
 <template>
@@ -125,10 +132,32 @@ const rightDrawer = shallowRef(false);
           <div class="store__logo-text ml-2 text-white">Apporix Apparel</div>
         </div>
       </div>
+      <div>
+        <a :href="origin" target="_blank" rel="noopener noreferrer">View Website</a>
+      </div>
       <div class="hidden md:inline-block">
         <!-- <DomainSettings></DomainSettings> -->
+        <NDropdown
+          :options="options"
+          trigger="click"
+          @select="handleDropdownSelect"
+          :show-arrow="true"
+          class="ml-3"
+        >
+          <NButton quaternary>
+            <div class="flex items-center gap-x-2">
+              <NIcon>
+                <UserIcon></UserIcon>
+              </NIcon>
+              <div>
+                {{ getProileMacine.response.value?.name || `Admin` }}
+              </div>
+              <NIcon> <CaretDownOutline /> </NIcon>
+            </div>
+          </NButton>
+        </NDropdown>
       </div>
-      <div class="domain-settings-menu md:hidden">
+      <!-- <div class="domain-settings-menu md:hidden">
         <span class="text-2xl px-2" @click="rightDrawer = !rightDrawer">
           <NIcon>
             <EarthOutline></EarthOutline>
@@ -141,8 +170,8 @@ const rightDrawer = shallowRef(false);
             </div>
           </NDrawerContent>
         </NDrawer>
-      </div>
-      <div class="hidden md:inline-block"></div>
+      </div> -->
+      <!-- <div class="hidden md:inline-block"></div> -->
     </div>
     <div class="store__bottom">
       <div class="store__left" :class="{ 'store__left--expanded': sidebarExpanded }">

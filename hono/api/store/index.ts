@@ -16,7 +16,7 @@ export default DashboardApp()
   .use(storeAuthMiddleware)
   // .route('/info', infoApp)
   .route('/categories', categoriesApp)
-  // .route('/attributes', attributesApp)
+  .route('/attributes', attributesApp)
   .route('/products', productsApp);
 // .route('/doptions', dOptionsApp)
 // .route('/carousels', carouselsApp)
