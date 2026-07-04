@@ -1,5 +1,5 @@
 {
-  "name": "khudroshop",
+  "name": "apporixapparel",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -24,7 +24,7 @@
     "bundle:hono": "esbuild hdist/hono/index.js --bundle --minify --format=esm --platform=node --outfile=hono.min.js --external:fs --external:path --external:os --external:crypto --external:assert --external:dotenv --external:pg --external:postgres --external:drizzle-orm --external:drizzle-orm/* --external:hono --external:hono/* --external:argon2",
     "build": "run-p type-check \"build-only {@}\" -- && npm run prod:tsc && npm run bundle:hono",
     "prod": "node hono.min.js",
-    "deploy": "curl -X POST https://khudroshop.com/api/public/cicd -H \"Content-Type: application/json\" -d '{\"password\":\"rimonrimonrimon\"}'"
+    "deploy": "curl -X POST https://apporixapparel.com/api/public/cicd -H \"Content-Type: application/json\" -d '{\"password\":\"rimonrimonrimon\"}'"
   },
   "dependencies": {
     "@hono/node-server": "^1.13.8",

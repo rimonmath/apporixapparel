@@ -22,23 +22,20 @@ import {
 // import { setCookie } from "hono/cookie";
 
 export default new Hono().post('/admin-signin', sValidator('json', signinSchema), async (c) => {
-  await db.insert(Users).values({
-    email: 'admin@gmail.com',
-    password: await hashPassword('111111'),
-    permissions: [],
-    name: 'Apporix Admin',
-    gender: 'Male',
-    userType: 'Admin',
-    isEmailVerified: true,
-    isActive: true
-  });
+  // await db.insert(Users).values({
+  //   email: 'admin@gmail.com',
+  //   password: await hashPassword('111111'),
+  //   permissions: [],
+  //   name: 'Apporix Admin',
+  //   gender: 'Male',
+  //   userType: 'Admin',
+  //   isEmailVerified: true,
+  //   isActive: true
+  // });
 
   const payload = c.req.valid('json');
 
   const user = await db.query.Users.findFirst({
-    with: {
-      stores: true
-    },
     where: (user, { eq }) => eq(user.email, payload.email)
   });
 
@@ -82,7 +79,7 @@ export default new Hono().post('/admin-signin', sValidator('json', signinSchema)
     message: 'Signed in successfully!',
     accessToken,
     customerToken,
-    redirect: '/dashboard'
+    redirect: '/store/categories'
     // refreshToken
   });
 });

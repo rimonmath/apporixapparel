@@ -29,7 +29,7 @@ const props = withDefaults(defineProps<{ subDomain: string }>(), {});
 const { ordersCountMachine } = useStoreSidebar();
 
 onMounted(() => {
-  ordersCountMachine.customStart();
+  // ordersCountMachine.customStart();
 });
 
 const emit = defineEmits(['navItemClick']);
@@ -45,37 +45,37 @@ const navItems = computed(() => [
     type: 'item',
     title: 'Overview',
     icon: StatsChartOutline,
-    to: `/store/${props.subDomain}`
+    to: `/store`
   },
   {
     type: 'item',
     title: 'Categories',
     icon: GitMergeOutline,
-    to: `/store/${props.subDomain}/categories`
+    to: `/store/categories`
   },
   {
     type: 'item',
     title: 'Products',
     icon: LayersOutline,
-    to: `/store/${props.subDomain}/products`,
+    to: `/store/products`,
     children: [
       {
         type: 'item',
         title: 'All Products',
         icon: EllipseOutline,
-        to: `/store/${props.subDomain}/products`
+        to: `/store/products`
       },
       {
         type: 'item',
         title: 'Product Attributes',
         icon: EllipseOutline,
-        to: `/store/${props.subDomain}/attributes`
+        to: `/store/attributes`
       },
       {
         type: 'item',
         title: 'Out of Stock',
         icon: EllipseOutline,
-        to: `/store/${props.subDomain}/categories2`
+        to: `/store/categories2`
       }
     ]
   },
@@ -83,69 +83,69 @@ const navItems = computed(() => [
     type: 'item',
     title: 'Delivery Options',
     icon: BicycleOutline,
-    to: `/store/${props.subDomain}/doptions`
+    to: `/store/doptions`
   },
   {
     type: 'item',
     title: 'Coupons',
     icon: CashOutline,
-    to: `/store/${props.subDomain}/coupons`
+    to: `/store/coupons`
   },
   {
     type: 'item',
     title: 'Orders',
     icon: LayersOutline,
-    to: `/store/${props.subDomain}/all-orders`,
+    to: `/store/all-orders`,
     children: [
       {
         type: 'item',
         title: `All Orders (${ordersCountMachine.response?.value?.All || 0})`,
         icon: EllipseOutline,
-        to: `/store/${props.subDomain}/all-orders`
+        to: `/store/all-orders`
       },
       {
         type: 'item',
         title: `Placed Orders (${ordersCountMachine.response?.value?.Placed || 0})`,
         icon: EllipseOutline,
-        to: `/store/${props.subDomain}/placed-orders`
+        to: `/store/placed-orders`
       },
       {
         type: 'item',
         title: `Confirmed Orders (${ordersCountMachine.response?.value?.Confirmed || 0})`,
         icon: EllipseOutline,
-        to: `/store/${props.subDomain}/confirmed-orders `
+        to: `/store/confirmed-orders `
       },
 
       {
         type: 'item',
         title: `Processing Orders (${ordersCountMachine.response?.value?.Processing || 0})`,
         icon: EllipseOutline,
-        to: `/store/${props.subDomain}/processing-orders`
+        to: `/store/processing-orders`
       },
       {
         type: 'item',
         title: `Packed Orders (${ordersCountMachine.response?.value?.Packed || 0})`,
         icon: EllipseOutline,
-        to: `/store/${props.subDomain}/packed-orders`
+        to: `/store/packed-orders`
       },
 
       {
         type: 'item',
         title: `Shipped Orders (${ordersCountMachine.response?.value?.Shipped || 0})`,
         icon: EllipseOutline,
-        to: `/store/${props.subDomain}/shipped-orders`
+        to: `/store/shipped-orders`
       },
       {
         type: 'item',
         title: `Out For Delivery (${ordersCountMachine.response?.value?.['Out For Delivery'] || 0})`,
         icon: EllipseOutline,
-        to: `/store/${props.subDomain}/out-for-delivery-orders`
+        to: `/store/out-for-delivery-orders`
       },
       {
         type: 'item',
         title: `Delivered Orders (${ordersCountMachine.response?.value?.Delivered || 0})`,
         icon: EllipseOutline,
-        to: `/store/${props.subDomain}/delivered-orders`
+        to: `/store/delivered-orders`
       }
     ]
   },
@@ -154,38 +154,38 @@ const navItems = computed(() => [
     type: 'item',
     title: 'Carousels',
     icon: ImagesOutline,
-    to: `/store/${props.subDomain}/carousels`
+    to: `/store/carousels`
   },
 
   {
     type: 'item',
     title: 'Pages',
     icon: CalendarClearOutline,
-    to: `/store/${props.subDomain}/pages`
+    to: `/store/pages`
   },
   {
     type: 'item',
     title: 'Customers',
     icon: PeopleOutline,
-    to: `/store/${props.subDomain}/customers`
+    to: `/store/customers`
   },
   {
     type: 'item',
     title: 'Settings',
     icon: SettingsOutline,
-    to: `/store/${props.subDomain}/store-settings`,
+    to: `/store/store-settings`,
     children: [
       {
         type: 'item',
         title: `Store Info`,
         icon: EllipseOutline,
-        to: `/store/${props.subDomain}/store-settings`
+        to: `/store/store-settings`
       },
       {
         type: 'item',
         title: `Appearence`,
         icon: EllipseOutline,
-        to: `/store/${props.subDomain}/appearence`
+        to: `/store/appearence`
       }
     ]
   }
@@ -193,7 +193,7 @@ const navItems = computed(() => [
   //   type: 'item',
   //   title: 'Analytics',
   //   icon: BarChartOutline,
-  //   to: `/store/${props.subDomain}/analytics`
+  //   to: `/store/analytics`
   // }
 ]);
 </script>

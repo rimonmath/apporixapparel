@@ -22,7 +22,7 @@ import StoreSidebar from '@/components/segments/StoreSidebar.vue';
 import { useHost } from '@/composables/useHost';
 import DomainSettings from '@/components/segments/DomainSettings.vue';
 
-const { isKhudroshopHost } = useHost();
+// const { isKhudroshopHost } = useHost();
 
 const router = useRouter();
 
@@ -31,7 +31,7 @@ const router = useRouter();
 // console.log(path);
 // let storeInfoMachine;
 
-const { storeInfoMachine, subDomain } = useStoreInfo();
+// const { storeInfoMachine, subDomain } = useStoreInfo();
 
 const authChecked = shallowRef(false);
 const authorized = shallowRef(false);
@@ -78,50 +78,22 @@ const sidebarExpanded = shallowRef(false);
 
 const unAuthorized = shallowRef(false);
 
-watch(
-  () => storeInfoMachine.error.value,
-  (newValue) => {
-    // console.log(storeInfoMachine.error.value);
-    if (newValue) {
-      unAuthorized.value = true;
-      router.push('/');
-    }
-  }
-);
-
 onMounted(async () => {
   if (!checkAuth()) {
     return;
   }
 
-  // console.log(storeInfoMachine.customStart);
-
-  // console.log(Date.now());
-
-  await storeInfoMachine.customStart();
-
   authorized.value = true;
 
-  getProileMacine.start();
-  document.body.style.setProperty(
-    '--primary-color',
-    storeInfoMachine.response.value?.brandColor || '#000000'
-  );
+  // getProileMacine.start();
 });
-
-watch(
-  () => storeInfoMachine.response.value?.brandColor,
-  (newValue) => {
-    document.body.style.setProperty('--primary-color', newValue || '#000000');
-  }
-);
 
 const vw = innerWidth;
 const rightDrawer = shallowRef(false);
 </script>
 
 <template>
-  <div v-if="isKhudroshopHost && unAuthorized" class="p-20 text-center">
+  <div v-if="unAuthorized" class="p-20 text-center">
     <div class="container">
       <NAlert :title="`Unauthorized!`" type="error">
         <p class="my-5">
@@ -140,15 +112,7 @@ const rightDrawer = shallowRef(false);
     </div>
   </div>
 
-  <div class="p-20" v-else-if="isKhudroshopHost && storeInfoMachine.loading.value && !authorized">
-    ...
-  </div>
-
-  <div
-    class="store"
-    v-else-if="isKhudroshopHost"
-    :style="{ '--brand-color': storeInfoMachine.response.value?.brandColor }"
-  >
+  <div class="store" v-else :style="{ '--brand-color': `#00ff00` }">
     <div class="store__top">
       <div class="flex items-center p-4 store__brand flex-1 md:flex-none">
         <div class="store__nav-icon mr-2 px-2" @click="sidebarExpanded = !sidebarExpanded">
@@ -158,19 +122,11 @@ const rightDrawer = shallowRef(false);
         </div>
 
         <div class="flex items-center gap-2">
-          <SmartLink to="/dashboard" class="text-2xl">
-            <NIcon>
-              <ArrowBackOutline></ArrowBackOutline>
-            </NIcon>
-          </SmartLink>
-
-          <div class="store__logo-text ml-2 text-white">
-            {{ storeInfoMachine.response.value?.name }}
-          </div>
+          <div class="store__logo-text ml-2 text-white">Apporix Apparel</div>
         </div>
       </div>
       <div class="hidden md:inline-block">
-        <DomainSettings></DomainSettings>
+        <!-- <DomainSettings></DomainSettings> -->
       </div>
       <div class="domain-settings-menu md:hidden">
         <span class="text-2xl px-2" @click="rightDrawer = !rightDrawer">
@@ -190,7 +146,7 @@ const rightDrawer = shallowRef(false);
     </div>
     <div class="store__bottom">
       <div class="store__left" :class="{ 'store__left--expanded': sidebarExpanded }">
-        <StoreSidebar @navItemClick="sidebarExpanded = false" :subDomain="subDomain" />
+        <StoreSidebar @navItemClick="sidebarExpanded = false" :subDomain="`subDomain`" />
       </div>
       <div class="store__middle">
         <slot name="default"> </slot>
@@ -198,7 +154,7 @@ const rightDrawer = shallowRef(false);
       <!-- <div class="store__right"></div> -->
     </div>
   </div>
-  <div v-else></div>
+  <!-- <div v-else></div> -->
 </template>
 
 <style>

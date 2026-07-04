@@ -16,12 +16,8 @@ import AFormInputNumber from '@/components/form/AFormInputNumber.vue';
 
 const message = useMessage();
 
-const { subDomain } = useStoreInfo();
-
-console.log(subDomain.value);
-
-const createMachine = useCreate<SuccessResponse>('/store/' + subDomain.value + '/categories', true);
-const readMachine = useRead<Category[], true>('/store/' + subDomain.value + '/categories', true);
+const createMachine = useCreate<SuccessResponse>('/store/categories', true);
+const readMachine = useRead<Category[], true>('/store/categories', true);
 const updateMachine = useUpdate<SuccessResponse>(true);
 const deleteMachine = useDelete<SuccessResponse>(true);
 

@@ -15,17 +15,14 @@ type SidebarData = {
   Returned: number;
 };
 
-const { subDomain } = useStoreInfo();
+// const { subDomain } = useStoreInfo();
 
-const ordersCountMachine = useRead<SidebarData, true>(
-  `/store/${subDomain.value}/orders/count`,
-  true
-);
+const ordersCountMachine = useRead<SidebarData, true>(`/store/orders/count`, true);
 
 ordersCountMachine.customStart = function () {
-  const path = window.location.pathname.split('/');
-  subDomain.value = path[2];
-  return ordersCountMachine.start(`/store/${subDomain.value}/orders/count`);
+  // const path = window.location.pathname.split('/');
+  // subDomain.value = path[2];
+  return ordersCountMachine.start(`/store/orders/count`);
 };
 
 export function useStoreSidebar() {

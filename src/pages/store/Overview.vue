@@ -77,83 +77,15 @@ const statusIcons = {
 };
 
 onMounted(() => {
-  storeInfoMachine.customStart();
-  getPackagesMacine.start();
-  RecentOrdersMachine.start();
+  // storeInfoMachine.customStart();
+  // getPackagesMacine.start();
+  // RecentOrdersMachine.start();
 });
 </script>
 
 <template>
   <div class="overview pb-10">
-    <!-- <h2 class="mt-4">
-      Welcome to
-      <span class="text-purple-600">
-        {{ storeInfoMachine.response.value?.name || 'Your Store' }}
-      </span>
-    </h2> -->
-
-    <div class="flex justify-between items-center flex-wrap mt-4">
-      <p>
-        This store is currently subscribed to the
-        <strong>{{ storeInfoMachine.response.value?.package?.name }} Packages</strong> that is valid
-        till
-        <strong>{{ storeInfoMachine.response.value?.packageExpiry }} </strong>
-      </p>
-
-      <div
-        @click="showChangePackage = !showChangePackage"
-        class="cursor-pointer hover:underline flex items-center gap-2"
-      >
-        <span> Change Package </span>
-        <NIcon>
-          <ChevronForwardOutline
-            :style="{
-              transform: showChangePackage ? 'rotate(90deg)' : 'rotate(0deg)',
-              transition: 'transform 0.3s ease'
-            }"
-          ></ChevronForwardOutline>
-        </NIcon>
-      </div>
-    </div>
-
-    <NCollapseTransition :show="showChangePackage">
-      <h4 class="mt-4">Available Packages</h4>
-      <!-- {{ getPackagesMacine.response.value[0] }} -->
-
-      <div class="p-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6 gap-8">
-        <PricingCard
-          v-for="packageDetails in getPackagesMacine.response.value"
-          :key="packageDetails.id"
-          :packageDetails="packageDetails"
-          :isActive="packageDetails.id === storeInfoMachine.response.value?.packageId"
-          @getStarted="
-            (value) => {
-              selectedPackage = value;
-              getStartedDialog = true;
-            }
-          "
-        />
-      </div>
-
-      <div class="mt-5 mx-5">
-        <NAlert title="Dedicated Plan" type="info">
-          <p class="my-5">
-            If you want to setup a completely dedicated store in your own hosting with custom
-            features and integrations, please contact us at
-            <a
-              target="_blank"
-              :href="`https://wa.me/+8801723702957`"
-              class="text-blue-600 hover:underline"
-              >+8801723702957</a
-            >
-          </p>
-        </NAlert>
-      </div>
-    </NCollapseTransition>
-
-    <hr class="my-5" />
-
-    <h4>Usage Statistics</h4>
+    <h4 class="mt-4">Statistics</h4>
     <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8 mt-5">
       <StatCard
         title="Monthly Orders"

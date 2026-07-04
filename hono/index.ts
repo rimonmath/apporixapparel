@@ -15,14 +15,11 @@ import { renderCategoryPage } from './seo/categories.js';
 import { renderPagePage } from './seo/pages.js';
 import { renderUserProductPage } from './seo/userproducts.js';
 import { renderSearchPage } from './seo/search.js';
-import { storeInfoMiddleware } from './middleware/storeInfo.js';
-import { initStores } from './middleware/storeInfo.js';
+// import { initStores } from './middleware/storeInfo.js';
 import { renderSigninPage } from './seo/signin.js';
 import { renderSignupPage } from './seo/signup.js';
 
-const app = new Hono()
-  .use(cors()) /*.use(storeInfoMiddleware)*/
-  .route('/api', apiRoutes);
+const app = new Hono().use(cors()).route('/api', apiRoutes);
 
 app.get('/', renderIndexPage);
 app.get('/r/:refCode', renderSignupPage);
@@ -88,6 +85,6 @@ serve({
   port: 3123
 });
 
-initStores();
+// initStores();
 
 console.log('Hono app is running on http://localhost:3123');

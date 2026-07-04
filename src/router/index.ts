@@ -91,7 +91,7 @@ const router = createRouter({
       component: () => import('../pages/sso/Index.vue')
     },
     {
-      path: '/store/:storesubdomain',
+      path: '/store',
       name: 'store-parent',
       component: () => import('../pages/store/Index.vue'),
       children: [

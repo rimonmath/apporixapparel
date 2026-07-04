@@ -27,7 +27,7 @@ const resetPasswordForm = shallowReactive({
   email: ''
 });
 
-const signinMachine = useCreate<SigninResponse>('/auth/signin');
+const signinMachine = useCreate<SigninResponse>('/auth/admin-signin');
 
 async function handleSubmit() {
   //router.push('/dashboard')
@@ -118,7 +118,7 @@ const { openPopup } = useSsoSignin();
       </p>
 
       <!-- <a href="#" class="back-home">← Back to Home</a> -->
-       <SmartLink to="/admin-signin"> Admin Signin </SmartLink>
+      <SmartLink to="/auth/signin"> User Signin </SmartLink>
     </div>
 
     <div class="login-box" v-else>
