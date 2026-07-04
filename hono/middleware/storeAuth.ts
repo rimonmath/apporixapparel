@@ -33,20 +33,12 @@ export const storeAuthMiddleware = createMiddleware<{
     throw new HTTPException(401, { message: 'Unauthorised' });
   }
 
-  if (decoded.userType !== 'User') {
+  if (decoded.userType !== 'Admin') {
     throw new HTTPException(403, { message: 'Forbidden' });
   }
 
-  const subDomain = c.req.param('subDomain') || '';
-
-  if (!decoded.ownedStores?.[subDomain]) {
-    return c.json({ message: 'Unauthorized' }, 401);
-  }
-
   c.set('jwtPayload', {
-    ...decoded,
-    storeId: decoded.ownedStores[subDomain],
-    storeSubDomain: subDomain
+    ...decoded
   });
   await next();
 });

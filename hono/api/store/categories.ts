@@ -5,14 +5,7 @@ import { sValidator } from '@hono/standard-validator';
 import { and, asc, desc, eq, sql } from 'drizzle-orm';
 import { DashboardApp, generateFilterConditions, hashPassword } from '../../utils/functions.js';
 import z from 'zod';
-import {
-  addCategorySchema,
-  addUserSchema,
-  changePasswordSchema,
-  editCategorySchema,
-  editUserSchema,
-  paginationSchema
-} from '../../utils/zodSchemas.js';
+import { addCategorySchema, editCategorySchema } from '../../utils/zodSchemas.js';
 
 export default DashboardApp()
   .get(
@@ -22,15 +15,12 @@ export default DashboardApp()
       const orderBy = desc(Categories['order']);
       const categories = await db.query.Categories.findMany({
         columns: {
-          storeId: false,
           createdAt: false,
           updatedAt: false,
-          serverId: false,
           isActive: false
         },
         orderBy: [orderBy],
-        where: (category, { eq, and }) =>
-          and(eq(category.isActive, true), eq(category.storeId, c.var.jwtPayload.storeId))
+        where: (category, { eq }) => eq(category.isActive, true)
       });
       // console.log(users);
       return c.json(categories);
@@ -40,7 +30,6 @@ export default DashboardApp()
     const body = c.req.valid('json');
 
     await db.insert(Categories).values({
-      storeId: c.var.jwtPayload.storeId,
       ...body
     });
 
@@ -54,12 +43,7 @@ export default DashboardApp()
       .set({
         ...body
       })
-      .where(
-        and(
-          eq(Categories.id, Number(c.req.param('id'))),
-          eq(Categories.storeId, c.var.jwtPayload.storeId)
-        )
-      );
+      .where(eq(Categories.id, Number(c.req.param('id'))));
 
     return c.json({ message: 'Category updated successfully!' });
   })
@@ -67,13 +51,6 @@ export default DashboardApp()
 
   // })
   .delete('/:id', async (c) => {
-    await db
-      .delete(Categories)
-      .where(
-        and(
-          eq(Categories.id, Number(c.req.param('id'))),
-          eq(Categories.storeId, c.var.jwtPayload.storeId)
-        )
-      );
+    await db.delete(Categories).where(eq(Categories.id, Number(c.req.param('id'))));
     return c.json({ message: 'Category deleted successfully!' });
   });

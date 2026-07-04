@@ -106,25 +106,18 @@ export const StoreSettings = pgTable('stores', {
   ...commonFields
 });
 
-// export const Categories = pgTable(
-//   'categories',
-//   {
-//     id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
-//     storeId: integer('store_id')
-//       .references(() => Stores.id)
-//       .notNull(),
-//     parentId: integer('parent_id').default(0),
-//     name: varchar('name', { length: 256 }).notNull(),
-//     thumbnail: varchar('thumbnail', { length: 100 }),
-//     metaTitle: varchar('meta_title', { length: 255 }).default(''),
-//     metaDescription: text('meta_description').default(''),
-//     order: integer('order').default(0),
-//     isTop: boolean('is_top').default(false).notNull(),
-//     isActive: boolean('is_active').default(true).notNull(),
-//     ...commonFields
-//   },
-//   (t) => [index('categories_store_idx').on(t.storeId)]
-// );
+export const Categories = pgTable('categories', {
+  id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
+  parentId: integer('parent_id').default(0),
+  name: varchar('name', { length: 256 }).notNull(),
+  thumbnail: varchar('thumbnail', { length: 100 }),
+  metaTitle: varchar('meta_title', { length: 255 }).default(''),
+  metaDescription: text('meta_description').default(''),
+  order: integer('order').default(0),
+  isTop: boolean('is_top').default(false).notNull(),
+  isActive: boolean('is_active').default(true).notNull(),
+  ...commonFields
+});
 
 // export const Attributes = pgTable(
 //   'attributes',

@@ -14,13 +14,13 @@ import { storeAuthMiddleware } from '../../middleware/storeAuth.js';
 
 export default DashboardApp()
   .use(storeAuthMiddleware)
-  .route('/info', infoApp)
-  .route('/categories', categoriesApp)
-  .route('/attributes', attributesApp)
-  .route('/products', productsApp)
-  .route('/doptions', dOptionsApp)
-  .route('/carousels', carouselsApp)
-  .route('/coupons', couponsApp)
-  .route('/orders', ordersApp)
-  .route('/pages', pagesApp)
-  .route('/settings', settingsApp);
+  // .route('/info', infoApp)
+  .route('/categories', categoriesApp);
+// .route('/attributes', attributesApp)
+// .route('/products', productsApp)
+// .route('/doptions', dOptionsApp)
+// .route('/carousels', carouselsApp)
+// .route('/coupons', couponsApp)
+// .route('/orders', ordersApp)
+// .route('/pages', pagesApp)
+// .route('/settings', settingsApp);
