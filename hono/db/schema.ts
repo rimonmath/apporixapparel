@@ -196,22 +196,22 @@ export const ProductPricings = pgTable('product_pricings', {
   ...commonFields
 });
 
-// export const UserAddresses = pgTable('user_addresses', {
-//   id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
-//   userId: integer('user_id')
-//     .references(() => Users.id)
-//     .notNull(),
-//   name: varchar('name', { length: 150 }).notNull(),
-//   phone: varchar('phone', { length: 50 }).notNull(),
-//   addressLine1: varchar('address_line_1', { length: 255 }).notNull(),
-//   addressLine2: varchar('address_line_2', { length: 255 }),
-//   city: varchar('city', { length: 100 }).notNull(),
-//   postalCode: varchar('postal_code', { length: 50 }),
-//   country: varchar('country', { length: 100 }).default('Bangladesh').notNull(),
-//   latitude: decimal('latitude', { precision: 10, scale: 7 }).default(`0.0`),
-//   longitude: decimal('longitude', { precision: 10, scale: 7 }).default(`0.0`),
-//   ...commonFields
-// });
+export const UserAddresses = pgTable('user_addresses', {
+  id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
+  userId: integer('user_id')
+    .references(() => Users.id)
+    .notNull(),
+  name: varchar('name', { length: 150 }).notNull(),
+  phone: varchar('phone', { length: 50 }).notNull(),
+  addressLine1: varchar('address_line_1', { length: 255 }).notNull(),
+  addressLine2: varchar('address_line_2', { length: 255 }),
+  city: varchar('city', { length: 100 }).notNull(),
+  postalCode: varchar('postal_code', { length: 50 }),
+  country: varchar('country', { length: 100 }).default('Bangladesh').notNull(),
+  latitude: decimal('latitude', { precision: 10, scale: 7 }).default(`0.0`),
+  longitude: decimal('longitude', { precision: 10, scale: 7 }).default(`0.0`),
+  ...commonFields
+});
 
 // export const StoreOrderCounters = pgTable('store_order_counters', {
 //   storeId: integer('store_id')
@@ -220,169 +220,139 @@ export const ProductPricings = pgTable('product_pricings', {
 //   lastNumber: integer('last_number').notNull().default(0)
 // });
 
-// export const Coupons = pgTable(
-//   'coupons',
-//   {
-//     id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
-//     storeId: integer('store_id')
-//       .references(() => Stores.id)
-//       .notNull(),
-//     code: varchar('code', { length: 50 }).notNull(),
-//     type: couponTypeEnum('type').notNull(),
-//     discount: decimal('discount', { precision: 10, scale: 2 }).notNull(),
-//     minPurchase: decimal('min_purchase', { precision: 10, scale: 2 }),
-//     maxDiscount: decimal('max_discount', { precision: 10, scale: 2 }),
-//     startDate: date('start_date').notNull(),
-//     endDate: date('end_date').notNull(),
-//     usageLimit: integer('usage_limit'),
-//     usagePerUser: integer('usage_per_user'),
-//     isActive: boolean('is_active').default(true).notNull(),
-//     ...commonFields
-//   },
-//   (t) => [
-//     unique('coupon_code_unique').on(t.storeId, t.code),
-//     index('coupon_store_idx').on(t.storeId)
-//   ]
-// );
+export const Coupons = pgTable(
+  'coupons',
+  {
+    id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
+    code: varchar('code', { length: 50 }).notNull(),
+    type: couponTypeEnum('type').notNull(),
+    discount: decimal('discount', { precision: 10, scale: 2 }).notNull(),
+    minPurchase: decimal('min_purchase', { precision: 10, scale: 2 }),
+    maxDiscount: decimal('max_discount', { precision: 10, scale: 2 }),
+    startDate: date('start_date').notNull(),
+    endDate: date('end_date').notNull(),
+    usageLimit: integer('usage_limit'),
+    usagePerUser: integer('usage_per_user'),
+    isActive: boolean('is_active').default(true).notNull(),
+    ...commonFields
+  },
+  (t) => [unique('coupon_code_unique').on(t.code)]
+);
 
-// export const DeliveryOptions = pgTable('delivery_options', {
-//   id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
-//   storeId: integer('store_id')
-//     .references(() => Stores.id)
-//     .notNull(),
-//   name: varchar('name', { length: 50 }).notNull(),
-//   charge: decimal('charge', { precision: 10, scale: 2 }).notNull(),
-//   weightLimit: decimal('weight_limit', { precision: 10, scale: 2 }).notNull(),
-//   ...commonFields
-// });
+export const DeliveryOptions = pgTable('delivery_options', {
+  id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
+  name: varchar('name', { length: 50 }).notNull(),
+  charge: decimal('charge', { precision: 10, scale: 2 }).notNull(),
+  weightLimit: decimal('weight_limit', { precision: 10, scale: 2 }).notNull(),
+  ...commonFields
+});
 
-// export const Orders = pgTable(
-//   'orders',
-//   {
-//     id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
-//     storeId: integer('store_id')
-//       .references(() => Stores.id)
-//       .notNull(),
-//     orderNumber: varchar('order_number', { length: 50 }).notNull(),
-//     userId: integer('user_id')
-//       .references(() => Users.id)
-//       .notNull(),
-//     shippingAddressId: integer('shipping_address_id')
-//       .references(() => UserAddresses.id)
-//       .notNull(),
-//     billingAddressId: integer('billing_address_id')
-//       .references(() => UserAddresses.id)
-//       .notNull(),
-//     paymentMethod: varchar('payment_method', { length: 50 }).notNull(), // COD, Bkash, Nagad. ///
-//     transactionId: varchar('transaction_id', { length: 150 }),
-//     paymentMeta: jsonb('payment_meta').default('{}'),
-//     customerNote: varchar('customer_note', { length: 255 }).default(''),
-//     adminNote: varchar('admin_note', { length: 255 }).default(''),
-//     subtotal: decimal('subtotal', { precision: 12, scale: 2 }).notNull(),
-//     couponId: integer('coupon_id').references(() => Coupons.id),
-//     couponDiscount: decimal('coupon_discount', { precision: 12, scale: 2 }).default('0'),
-//     taxCharge: decimal('tax_charge', { precision: 12, scale: 2 }).default('0'),
-//     shippingCharge: decimal('shipping_charge', { precision: 12, scale: 2 }).default('0'),
-//     deliveryOption: varchar('delivery_option', { length: 50 }).notNull(), // Inside Dhaka, Outside Dhaka, Pick Up. ///
-//     deliveryCharge: decimal('delivery_charge', { precision: 12, scale: 2 }).default('0'),
-//     total: decimal('total', { precision: 12, scale: 2 }).notNull(),
-//     paymentStatus: paymentStatusEnum('payment_status').default('Pending').notNull(),
-//     orderStatus: orderStatusEnum('order_status').default('Placed').notNull(),
-//     ...commonFields
-//   },
-//   (t) => [
-//     unique('store_order_number_unique').on(t.storeId, t.orderNumber),
-//     index('order_coupon_idx').on(t.couponId)
-//   ]
-// );
+export const Orders = pgTable(
+  'orders',
+  {
+    id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
+    orderNumber: varchar('order_number', { length: 50 }).notNull(),
+    userId: integer('user_id')
+      .references(() => Users.id)
+      .notNull(),
+    shippingAddressId: integer('shipping_address_id')
+      .references(() => UserAddresses.id)
+      .notNull(),
+    billingAddressId: integer('billing_address_id')
+      .references(() => UserAddresses.id)
+      .notNull(),
+    paymentMethod: varchar('payment_method', { length: 50 }).notNull(), // COD, Bkash, Nagad. ///
+    transactionId: varchar('transaction_id', { length: 150 }),
+    paymentMeta: jsonb('payment_meta').default('{}'),
+    customerNote: varchar('customer_note', { length: 255 }).default(''),
+    adminNote: varchar('admin_note', { length: 255 }).default(''),
+    subtotal: decimal('subtotal', { precision: 12, scale: 2 }).notNull(),
+    couponId: integer('coupon_id').references(() => Coupons.id),
+    couponDiscount: decimal('coupon_discount', { precision: 12, scale: 2 }).default('0'),
+    taxCharge: decimal('tax_charge', { precision: 12, scale: 2 }).default('0'),
+    shippingCharge: decimal('shipping_charge', { precision: 12, scale: 2 }).default('0'),
+    deliveryOption: varchar('delivery_option', { length: 50 }).notNull(), // Inside Dhaka, Outside Dhaka, Pick Up. ///
+    deliveryCharge: decimal('delivery_charge', { precision: 12, scale: 2 }).default('0'),
+    total: decimal('total', { precision: 12, scale: 2 }).notNull(),
+    paymentStatus: paymentStatusEnum('payment_status').default('Pending').notNull(),
+    orderStatus: orderStatusEnum('order_status').default('Placed').notNull(),
+    ...commonFields
+  },
+  (t) => [unique('order_number_unique').on(t.orderNumber)]
+);
 
-// export const CouponUsages = pgTable(
-//   'coupon_usages',
-//   {
-//     id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
-//     storeId: integer('store_id')
-//       .references(() => Stores.id)
-//       .notNull(),
-//     couponId: integer('coupon_id')
-//       .references(() => Coupons.id)
-//       .notNull(),
-//     customerId: integer('customer_id')
-//       .references(() => Users.id)
-//       .notNull(),
-//     orderId: integer('order_id')
-//       .references(() => Orders.id)
-//       .notNull(),
-//     usedAt: timestamp('used_at').defaultNow().notNull(),
-//     ...commonFields
-//   },
-//   (t) => [unique('coupon_usage_unique').on(t.storeId, t.couponId, t.customerId, t.orderId)]
-// );
+export const CouponUsages = pgTable(
+  'coupon_usages',
+  {
+    id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
+    couponId: integer('coupon_id')
+      .references(() => Coupons.id)
+      .notNull(),
+    customerId: integer('customer_id')
+      .references(() => Users.id)
+      .notNull(),
+    orderId: integer('order_id')
+      .references(() => Orders.id)
+      .notNull(),
+    usedAt: timestamp('used_at').defaultNow().notNull(),
+    ...commonFields
+  },
+  (t) => [unique('coupon_usage_unique').on(t.couponId, t.customerId, t.orderId)]
+);
 
-// export const OrderItems = pgTable(
-//   'order_items',
-//   {
-//     id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
-//     storeId: integer('store_id')
-//       .references(() => Stores.id)
-//       .notNull(),
-//     orderId: integer('order_id')
-//       .references(() => Orders.id)
-//       .notNull(),
-//     productId: integer('product_id')
-//       .references(() => Products.id)
-//       .notNull(),
-//     variation: varchar('variation', { length: 255 }).notNull(),
-//     image: varchar('image', { length: 255 }),
-//     price: decimal('price', { precision: 12, scale: 2 }).notNull(),
-//     quantity: integer('quantity').notNull(),
-//     ...commonFields
-//   },
-//   (t) => [index('order_items_order_idx').on(t.orderId)]
-// );
+export const OrderItems = pgTable(
+  'order_items',
+  {
+    id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
+    orderId: integer('order_id')
+      .references(() => Orders.id)
+      .notNull(),
+    productId: integer('product_id')
+      .references(() => Products.id)
+      .notNull(),
+    variation: varchar('variation', { length: 255 }).notNull(),
+    image: varchar('image', { length: 255 }),
+    price: decimal('price', { precision: 12, scale: 2 }).notNull(),
+    quantity: integer('quantity').notNull(),
+    ...commonFields
+  },
+  (t) => [index('order_items_order_idx').on(t.orderId)]
+);
 
-// export const OrderStatusHistory = pgTable(
-//   'order_status_history',
-//   {
-//     id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
-//     storeId: integer('store_id')
-//       .references(() => Stores.id)
-//       .notNull(),
-//     orderId: integer('order_id')
-//       .references(() => Orders.id)
-//       .notNull(),
-//     status: orderStatusEnum('status').notNull(),
-//     note: varchar('note', { length: 255 }).default(''),
-//     updatedBy: integer('updated_by').references(() => Users.id),
-//     ...commonFields
-//   },
-//   (t) => [index('order_status_history_order_idx').on(t.orderId)]
-// );
+export const OrderStatusHistory = pgTable(
+  'order_status_history',
+  {
+    id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
+    orderId: integer('order_id')
+      .references(() => Orders.id)
+      .notNull(),
+    status: orderStatusEnum('status').notNull(),
+    note: varchar('note', { length: 255 }).default(''),
+    updatedBy: integer('updated_by').references(() => Users.id),
+    ...commonFields
+  },
+  (t) => [index('order_status_history_order_idx').on(t.orderId)]
+);
 
-// export const Carousels = pgTable('carousels', {
-//   id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
-//   storeId: integer('store_id')
-//     .references(() => Stores.id)
-//     .notNull(),
-//   url: varchar('url', { length: 100 }).default(''),
-//   description: varchar('description', { length: 255 }).default(''),
-//   linkText: varchar('link_text', { length: 100 }).default(''),
-//   linkUrl: varchar('link_url', { length: 255 }).default(''),
-//   isActive: boolean('is_active').default(true).notNull(),
-//   ...commonFields
-// });
+export const Carousels = pgTable('carousels', {
+  id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
+  url: varchar('url', { length: 100 }).default(''),
+  description: varchar('description', { length: 255 }).default(''),
+  linkText: varchar('link_text', { length: 100 }).default(''),
+  linkUrl: varchar('link_url', { length: 255 }).default(''),
+  isActive: boolean('is_active').default(true).notNull(),
+  ...commonFields
+});
 
-// export const Pages = pgTable('pages', {
-//   id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
-//   storeId: integer('store_id')
-//     .references(() => Stores.id)
-//     .notNull(),
-//   name: varchar('name', { length: 256 }).notNull(),
-//   title: varchar('title', { length: 256 }).notNull(),
-//   description: text('description').default(''),
-//   image: varchar('image', { length: 256 }).notNull().default(''),
-//   isPublished: boolean('is_published').notNull().default(true),
-//   ...commonFields
-// });
+export const Pages = pgTable('pages', {
+  id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
+  name: varchar('name', { length: 256 }).notNull(),
+  title: varchar('title', { length: 256 }).notNull(),
+  description: text('description').default(''),
+  image: varchar('image', { length: 256 }).notNull().default(''),
+  isPublished: boolean('is_published').notNull().default(true),
+  ...commonFields
+});
 
 // export const Dues = pgTable('dues', {
 //   id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
@@ -472,15 +442,9 @@ export const ProductPricings = pgTable('product_pricings', {
 
 // //==============================================================*/
 
-// export const usersRelations = relations(Users, ({ many }) => ({
-//   stores: many(Stores, {
-//     relationName: 'userStores'
-//   }),
-//   referredStores: many(Stores, {
-//     relationName: 'referredStores'
-//   }),
-//   addresses: many(UserAddresses)
-// }));
+export const usersRelations = relations(Users, ({ many }) => ({
+  addresses: many(UserAddresses)
+}));
 
 // export const storesRelations = relations(Stores, ({ one, many }) => ({
 //   user: one(Users, {
@@ -562,79 +526,64 @@ export const productPricingsRelations = relations(ProductPricings, ({ one }) => 
   })
 }));
 
-// export const categoriesRelations = relations(Categories, ({ one }) => ({
-//   store: one(Stores, {
-//     fields: [Categories.storeId],
-//     references: [Stores.id]
-//   })
-// }));
+export const categoriesRelations = relations(Categories, ({ one }) => ({}));
 
-// export const ordersRelations = relations(Orders, ({ one, many }) => ({
-//   orderItems: many(OrderItems),
-//   user: one(Users, {
-//     fields: [Orders.userId],
-//     references: [Users.id]
-//   }),
-//   coupon: one(Coupons, {
-//     fields: [Orders.couponId],
-//     references: [Coupons.id]
-//   }),
-//   shippingAddress: one(UserAddresses, {
-//     fields: [Orders.shippingAddressId],
-//     references: [UserAddresses.id]
-//   }),
-//   orderStatusHistory: many(OrderStatusHistory)
-// }));
+export const ordersRelations = relations(Orders, ({ one, many }) => ({
+  orderItems: many(OrderItems),
+  user: one(Users, {
+    fields: [Orders.userId],
+    references: [Users.id]
+  }),
+  coupon: one(Coupons, {
+    fields: [Orders.couponId],
+    references: [Coupons.id]
+  }),
+  shippingAddress: one(UserAddresses, {
+    fields: [Orders.shippingAddressId],
+    references: [UserAddresses.id]
+  }),
+  orderStatusHistory: many(OrderStatusHistory)
+}));
 
-// export const orderStatusHistoryRelations = relations(OrderStatusHistory, ({ one }) => ({
-//   order: one(Orders, {
-//     fields: [OrderStatusHistory.orderId],
-//     references: [Orders.id]
-//   })
-// }));
+export const orderStatusHistoryRelations = relations(OrderStatusHistory, ({ one }) => ({
+  order: one(Orders, {
+    fields: [OrderStatusHistory.orderId],
+    references: [Orders.id]
+  })
+}));
 
-// export const couponsRelations = relations(Coupons, ({ many }) => ({
-//   order: many(Orders)
-// }));
+export const couponsRelations = relations(Coupons, ({ many }) => ({
+  order: many(Orders)
+}));
 
-// export const couponUsagesRelations = relations(CouponUsages, ({ one }) => ({
-//   coupon: one(Coupons, {
-//     fields: [CouponUsages.couponId],
-//     references: [Coupons.id]
-//   })
-// }));
+export const couponUsagesRelations = relations(CouponUsages, ({ one }) => ({
+  coupon: one(Coupons, {
+    fields: [CouponUsages.couponId],
+    references: [Coupons.id]
+  })
+}));
 
-// export const orderItemsRelations = relations(OrderItems, ({ one }) => ({
-//   order: one(Orders, {
-//     fields: [OrderItems.orderId],
-//     references: [Orders.id]
-//   }),
-//   product: one(Products, {
-//     fields: [OrderItems.productId],
-//     references: [Products.id]
-//   })
-// }));
+export const orderItemsRelations = relations(OrderItems, ({ one }) => ({
+  order: one(Orders, {
+    fields: [OrderItems.orderId],
+    references: [Orders.id]
+  }),
+  product: one(Products, {
+    fields: [OrderItems.productId],
+    references: [Products.id]
+  })
+}));
 
-// export const carouselsRelations = relations(Carousels, ({ one }) => ({
-//   store: one(Stores, {
-//     fields: [Carousels.storeId],
-//     references: [Stores.id]
-//   })
-// }));
+export const carouselsRelations = relations(Carousels, ({ one }) => ({}));
 
-// export const pagesRelations = relations(Pages, ({ one }) => ({
-//   store: one(Stores, {
-//     fields: [Pages.storeId],
-//     references: [Stores.id]
-//   })
-// }));
+export const pagesRelations = relations(Pages, ({ one }) => ({}));
 
-// export const userAddressesRelations = relations(UserAddresses, ({ one }) => ({
-//   user: one(Users, {
-//     fields: [UserAddresses.userId],
-//     references: [Users.id]
-//   })
-// }));
+export const userAddressesRelations = relations(UserAddresses, ({ one }) => ({
+  user: one(Users, {
+    fields: [UserAddresses.userId],
+    references: [Users.id]
+  })
+}));
 
 // export const dealerStatementsRelations = relations(DealerStatements, ({ one }) => ({
 //   user: one(Users, {
