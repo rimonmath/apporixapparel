@@ -71,10 +71,7 @@ const handleActionClick = (key: string, item: any) => {
 
 const saveChanges = async () => {
   // console.log(selectedItem.value);
-  await updateMachine.start(
-    '/store/' + subDomain.value + '/categories/' + selectedItem.value.id,
-    selectedItem.value
-  );
+  await updateMachine.start('/store/categories/' + selectedItem.value.id, selectedItem.value);
   if (updateMachine.error.value) {
     message.error(beautifyError(updateMachine.error.value));
   } else {
@@ -86,7 +83,7 @@ const saveChanges = async () => {
 
 const deleteItem = async () => {
   // console.log(selectedItem.value);
-  await deleteMachine.start('/store/' + subDomain.value + '/categories/' + selectedItem.value.id);
+  await deleteMachine.start('/store/categories/' + selectedItem.value.id);
   if (deleteMachine.error.value) {
     message.error(beautifyError(deleteMachine.error.value));
   } else {

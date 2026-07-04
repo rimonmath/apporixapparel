@@ -28,13 +28,11 @@ import { useStoreInfo } from '@/composables/useStoreInfo';
 
 const message = useMessage();
 
-const { subDomain } = useStoreInfo();
-
 const router = useRouter();
 const route = useRoute();
 
-const createMachine = useCreate<SuccessResponse>(`/store/${subDomain.value}/products`, true);
-const readMachine = useRead<Product[], true>(`/store/${subDomain.value}/products`, true, {
+const createMachine = useCreate<SuccessResponse>(`/store/products`, true);
+const readMachine = useRead<Product[], true>(`/store/products`, true, {
   route,
   router,
   extra: ''
@@ -80,7 +78,7 @@ const handleActionClick = (key: string, item: any) => {
 
 const deleteItem = async () => {
   // console.log(selectedItem.value);
-  await deleteMachine.start(`/store/${subDomain.value}/products/${selectedItem.value.id}`);
+  await deleteMachine.start(`/store/products/${selectedItem.value.id}`);
   if (deleteMachine.error.value) {
     message.error(beautifyError(deleteMachine.error.value));
   } else {
