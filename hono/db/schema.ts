@@ -119,129 +119,82 @@ export const Categories = pgTable('categories', {
   ...commonFields
 });
 
-// export const Attributes = pgTable(
-//   'attributes',
-//   {
-//     id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
-//     storeId: integer('store_id')
-//       .references(() => Stores.id)
-//       .notNull(),
-//     name: varchar('name', { length: 100 }).notNull(),
-//     ...commonFields
-//   },
-//   (t) => [index('attributes_store_idx').on(t.storeId)]
-// );
+export const Attributes = pgTable('attributes', {
+  id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
 
-// export const AttributeValues = pgTable(
-//   'attribute_values',
-//   {
-//     id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
-//     storeId: integer('store_id')
-//       .references(() => Stores.id)
-//       .notNull(),
-//     attributeId: integer('attribute_id')
-//       .references(() => Attributes.id)
-//       .notNull(),
-//     value: varchar('value', { length: 100 }).notNull(),
-//     ...commonFields
-//   },
-//   (t) => [index('attribute_values_store_idx').on(t.storeId)]
-// );
+  name: varchar('name', { length: 100 }).notNull(),
+  ...commonFields
+});
 
-// export const Products = pgTable(
-//   'products',
-//   {
-//     id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
-//     storeId: integer('store_id')
-//       .references(() => Stores.id)
-//       .notNull(),
-//     title: varchar('title', { length: 255 }).notNull(),
-//     description: text('description').default(''),
-//     vendor: varchar('vendor', { length: 100 }).default(''),
-//     tags: text('tags').array().default([]),
-//     metaTitle: varchar('meta_title', { length: 255 }).default(''),
-//     metaDescription: text('meta_description').default(''),
-//     currency: varchar('currency', { length: 3 }).default('BDT'), // currency code
-//     taxRate: numeric('tax_rate', { precision: 5, scale: 2 }).default('0.00'), // % tax
-//     status: productStatusEnum('status').default('Draft').notNull(),
-//     isFeatured: boolean('is_featured').default(false),
-//     isOnSale: boolean('is_on_sale').default(false),
-//     ...commonFields
-//   },
-//   (t) => [index('products_store_idx').on(t.storeId)]
-// );
+export const AttributeValues = pgTable('attribute_values', {
+  id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
+  attributeId: integer('attribute_id')
+    .references(() => Attributes.id)
+    .notNull(),
+  value: varchar('value', { length: 100 }).notNull(),
+  ...commonFields
+});
 
-// export const ProductImages = pgTable(
-//   'product_images',
-//   {
-//     id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
-//     storeId: integer('store_id')
-//       .references(() => Stores.id)
-//       .notNull(),
-//     productId: integer('product_id')
-//       .references(() => Products.id)
-//       .notNull(),
-//     url: varchar('url', { length: 255 }).notNull(),
-//     ...commonFields
-//   },
-//   (t) => [index('product_images_store_idx').on(t.storeId)]
-// );
+export const Products = pgTable('products', {
+  id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
 
-// export const ProductCategories = pgTable(
-//   'product_categories',
-//   {
-//     storeId: integer('store_id')
-//       .references(() => Stores.id)
-//       .notNull(),
-//     productId: integer('product_id')
-//       .references(() => Products.id)
-//       .notNull(),
-//     categoryId: integer('category_id')
-//       .references(() => Categories.id)
-//       .notNull(),
-//     ...commonFields
-//   },
-//   (t) => [primaryKey({ columns: [t.productId, t.categoryId] })]
-// );
+  title: varchar('title', { length: 255 }).notNull(),
+  description: text('description').default(''),
+  vendor: varchar('vendor', { length: 100 }).default(''),
+  tags: text('tags').array().default([]),
+  metaTitle: varchar('meta_title', { length: 255 }).default(''),
+  metaDescription: text('meta_description').default(''),
+  currency: varchar('currency', { length: 3 }).default('BDT'), // currency code
+  taxRate: numeric('tax_rate', { precision: 5, scale: 2 }).default('0.00'), // % tax
+  status: productStatusEnum('status').default('Draft').notNull(),
+  isFeatured: boolean('is_featured').default(false),
+  isOnSale: boolean('is_on_sale').default(false),
+  ...commonFields
+});
 
-// export const ProductVariants = pgTable(
-//   'product_variants',
-//   {
-//     id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
-//     storeId: integer('store_id')
-//       .references(() => Stores.id)
-//       .notNull(),
-//     productId: integer('product_id')
-//       .references(() => Products.id)
-//       .notNull(),
-//     name: varchar('name', { length: 100 }).notNull(),
-//     values: text('values').array().default([]),
-//     ...commonFields
-//   },
-//   (t) => [index('product_variants_store_idx').on(t.storeId)]
-// );
+export const ProductImages = pgTable('product_images', {
+  id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
+  productId: integer('product_id')
+    .references(() => Products.id)
+    .notNull(),
+  url: varchar('url', { length: 255 }).notNull(),
+  ...commonFields
+});
 
-// export const ProductPricings = pgTable(
-//   'product_pricings',
-//   {
-//     storeId: integer('store_id')
-//       .references(() => Stores.id)
-//       .notNull(),
-//     productId: integer('product_id')
-//       .references(() => Products.id)
-//       .notNull(),
-//     variation: varchar('variation', { length: 255 }).notNull(),
-//     image: varchar('image', { length: 255 }),
-//     buyPrice: numeric('buy_price', { precision: 10, scale: 2 }).default('0.00'),
-//     regularPrice: numeric('regular_price', { precision: 10, scale: 2 }).default('0.00'),
-//     salePrice: numeric('sale_price', { precision: 10, scale: 2 }).default('0.00'),
-//     shippingRate: numeric('shipping_rate', { precision: 10, scale: 2 }).default('0.00'),
-//     weight: numeric('weight', { precision: 10, scale: 2 }).default('0.00'),
-//     quantity: integer('quantity').default(0),
-//     ...commonFields
-//   },
-//   (t) => [primaryKey({ columns: [t.productId, t.variation] })]
-// );
+export const ProductCategories = pgTable('product_categories', {
+  productId: integer('product_id')
+    .references(() => Products.id)
+    .notNull(),
+  categoryId: integer('category_id')
+    .references(() => Categories.id)
+    .notNull(),
+  ...commonFields
+});
+
+export const ProductVariants = pgTable('product_variants', {
+  id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
+  productId: integer('product_id')
+    .references(() => Products.id)
+    .notNull(),
+  name: varchar('name', { length: 100 }).notNull(),
+  values: text('values').array().default([]),
+  ...commonFields
+});
+
+export const ProductPricings = pgTable('product_pricings', {
+  productId: integer('product_id')
+    .references(() => Products.id)
+    .notNull(),
+  variation: varchar('variation', { length: 255 }).notNull(),
+  image: varchar('image', { length: 255 }),
+  buyPrice: numeric('buy_price', { precision: 10, scale: 2 }).default('0.00'),
+  regularPrice: numeric('regular_price', { precision: 10, scale: 2 }).default('0.00'),
+  salePrice: numeric('sale_price', { precision: 10, scale: 2 }).default('0.00'),
+  shippingRate: numeric('shipping_rate', { precision: 10, scale: 2 }).default('0.00'),
+  weight: numeric('weight', { precision: 10, scale: 2 }).default('0.00'),
+  quantity: integer('quantity').default(0),
+  ...commonFields
+});
 
 // export const UserAddresses = pgTable('user_addresses', {
 //   id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
@@ -558,64 +511,56 @@ export const Categories = pgTable('categories', {
 //   stores: many(Stores)
 // }));
 
-// export const attributeRelations = relations(Attributes, ({ many, one }) => ({
-//   attributeValues: many(AttributeValues),
-//   store: one(Stores, {
-//     fields: [Attributes.storeId],
-//     references: [Stores.id]
-//   })
-// }));
+export const attributeRelations = relations(Attributes, ({ many }) => ({
+  attributeValues: many(AttributeValues)
+}));
 
-// export const attributeValueRelations = relations(AttributeValues, ({ one }) => ({
-//   attribute: one(Attributes, {
-//     fields: [AttributeValues.attributeId],
-//     references: [Attributes.id]
-//   })
-// }));
+export const attributeValueRelations = relations(AttributeValues, ({ one }) => ({
+  attribute: one(Attributes, {
+    fields: [AttributeValues.attributeId],
+    references: [Attributes.id]
+  })
+}));
 
-// export const productRelations = relations(Products, ({ one, many }) => ({
-//   categories: many(ProductCategories),
-//   images: many(ProductImages),
-//   variants: many(ProductVariants),
-//   pricings: many(ProductPricings),
-//   store: one(Stores, {
-//     fields: [Products.storeId],
-//     references: [Stores.id]
-//   }),
-//   orderItems: many(OrderItems)
-// }));
+export const productRelations = relations(Products, ({ one, many }) => ({
+  categories: many(ProductCategories),
+  images: many(ProductImages),
+  variants: many(ProductVariants),
+  pricings: many(ProductPricings)
+  // orderItems: many(OrderItems)
+}));
 
-// export const productImagesRelations = relations(ProductImages, ({ one }) => ({
-//   product: one(Products, {
-//     fields: [ProductImages.productId],
-//     references: [Products.id]
-//   })
-// }));
+export const productImagesRelations = relations(ProductImages, ({ one }) => ({
+  product: one(Products, {
+    fields: [ProductImages.productId],
+    references: [Products.id]
+  })
+}));
 
-// export const productVariantsRelations = relations(ProductVariants, ({ one }) => ({
-//   product: one(Products, {
-//     fields: [ProductVariants.productId],
-//     references: [Products.id]
-//   })
-// }));
+export const productVariantsRelations = relations(ProductVariants, ({ one }) => ({
+  product: one(Products, {
+    fields: [ProductVariants.productId],
+    references: [Products.id]
+  })
+}));
 
-// export const productCategoriesRelations = relations(ProductCategories, ({ one }) => ({
-//   product: one(Products, {
-//     fields: [ProductCategories.productId],
-//     references: [Products.id]
-//   }),
-//   category: one(Categories, {
-//     fields: [ProductCategories.categoryId],
-//     references: [Categories.id]
-//   })
-// }));
+export const productCategoriesRelations = relations(ProductCategories, ({ one }) => ({
+  product: one(Products, {
+    fields: [ProductCategories.productId],
+    references: [Products.id]
+  }),
+  category: one(Categories, {
+    fields: [ProductCategories.categoryId],
+    references: [Categories.id]
+  })
+}));
 
-// export const productPricingsRelations = relations(ProductPricings, ({ one }) => ({
-//   product: one(Products, {
-//     fields: [ProductPricings.productId],
-//     references: [Products.id]
-//   })
-// }));
+export const productPricingsRelations = relations(ProductPricings, ({ one }) => ({
+  product: one(Products, {
+    fields: [ProductPricings.productId],
+    references: [Products.id]
+  })
+}));
 
 // export const categoriesRelations = relations(Categories, ({ one }) => ({
 //   store: one(Stores, {
