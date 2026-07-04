@@ -16,7 +16,6 @@ export default DashboardApp()
       const orderBy = asc(Carousels['id']);
 
       const carousels = await db.query.Carousels.findMany({
-        where: (fields, { eq }) => eq(fields.storeId, c.var.jwtPayload.storeId),
         orderBy: [orderBy]
       });
       return c.json(carousels);
@@ -43,8 +42,7 @@ export default DashboardApp()
       const url = uploaded.path.substring(7, uploaded.path.length);
 
       await db.insert(Carousels).values({
-        url,
-        storeId: c.var.jwtPayload.storeId
+        url
       });
 
       return c.json({
@@ -61,12 +59,7 @@ export default DashboardApp()
       .set({
         ...body
       })
-      .where(
-        and(
-          eq(Carousels.id, Number(c.req.param('id'))),
-          eq(Carousels.storeId, c.var.jwtPayload.storeId)
-        )
-      );
+      .where(eq(Carousels.id, Number(c.req.param('id'))));
 
     return c.json({ message: 'Carousel updated successfully!' });
   })
@@ -79,17 +72,14 @@ export default DashboardApp()
     }
 
     const currentCarousel = await db.query.Carousels.findFirst({
-      where: (fields, { eq, and }) =>
-        and(eq(fields.id, id), eq(fields.storeId, c.var.jwtPayload.storeId))
+      where: (fields, { eq }) => eq(fields.id, id)
     });
 
     if (!currentCarousel) {
       throw new Error('Carousel not found!');
     }
 
-    await db
-      .delete(Carousels)
-      .where(and(eq(Carousels.id, id), eq(Carousels.storeId, c.var.jwtPayload.storeId)));
+    await db.delete(Carousels).where(eq(Carousels.id, id));
 
     await fs.unlink('uploads/' + currentCarousel.url!);
 

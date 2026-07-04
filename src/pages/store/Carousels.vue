@@ -34,10 +34,8 @@ const message = useMessage();
 const router = useRouter();
 const route = useRoute();
 
-const { subDomain } = useStoreInfo();
-
-const createMachine = useCreate<SuccessResponse>(`/store/${subDomain.value}/carousels`, true);
-const readMachine = useRead<Carousel[], true>(`/store/${subDomain.value}/carousels`, true);
+const createMachine = useCreate<SuccessResponse>(`/store/carousels`, true);
+const readMachine = useRead<Carousel[], true>(`/store/carousels`, true);
 const updateMachine = useUpdate<SuccessResponse>(true);
 const deleteMachine = useDelete<SuccessResponse>(true);
 
@@ -83,10 +81,7 @@ const handleActionClick = (key: string, item: any) => {
 
 const saveChanges = async () => {
   // console.log(selectedItem.value);
-  await updateMachine.start(
-    `/store/${subDomain.value}/carousels/${selectedItem.value.id}`,
-    selectedItem.value
-  );
+  await updateMachine.start(`/store/carousels/${selectedItem.value.id}`, selectedItem.value);
   if (updateMachine.error.value) {
     message.error(beautifyError(createMachine.error.value));
   } else {
@@ -98,7 +93,7 @@ const saveChanges = async () => {
 
 const deleteItem = async () => {
   // console.log(selectedItem.value);
-  await deleteMachine.start(`/store/${subDomain.value}/carousels/${selectedItem.value.id}`);
+  await deleteMachine.start(`/store/carousels/${selectedItem.value.id}`);
   if (deleteMachine.error.value) {
     message.error(beautifyError(deleteMachine.error.value));
   } else {
@@ -112,10 +107,7 @@ function readMachineStart() {
   readMachine.start();
 }
 
-const createImageMachine = useCreateFormData<SuccessResponse>(
-  `/store/${subDomain.value}/carousels`,
-  true
-);
+const createImageMachine = useCreateFormData<SuccessResponse>(`/store/carousels`, true);
 
 const handleFileChange = async (e: Event) => {
   const file = (e.target as HTMLInputElement)?.files?.[0];
