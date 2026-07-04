@@ -39,7 +39,7 @@ export default DashboardApp()
     async (c) => {
       const { page, pageSize, sortDirection, sortBy, ...filters } = c.req.valid('query');
 
-      const staticConditions: any = [eq(Products.storeId, c.var.jwtPayload.storeId)];
+      const staticConditions: any = [];
 
       filters.title_like = filters.s;
       // filters.email_like = filters.s;
@@ -98,11 +98,7 @@ export default DashboardApp()
           variants: true,
           pricings: true
         },
-        where: (product, { and, eq }) =>
-          and(
-            eq(product.id, Number(c.req.param('id'))),
-            eq(product.storeId, c.var.jwtPayload.storeId)
-          )
+        where: (product, { eq }) => eq(product.id, Number(c.req.param('id')))
       });
 
       // console.log(products);
@@ -128,7 +124,6 @@ export default DashboardApp()
 
       await db.insert(ProductImages).values({
         productId: Number(c.req.param('id')),
-        storeId: c.var.jwtPayload.storeId,
         url
       });
 
@@ -142,7 +137,7 @@ export default DashboardApp()
 
     const createdVariant = await db
       .insert(ProductVariants)
-      .values({ ...body, productId: Number(c.req.param('id')), storeId: c.var.jwtPayload.storeId })
+      .values({ ...body, productId: Number(c.req.param('id')) })
       .returning();
 
     return c.json({ message: 'Product variant added successfully!', result: createdVariant });
@@ -153,12 +148,7 @@ export default DashboardApp()
     await db
       .update(ProductVariants)
       .set({ ...body })
-      .where(
-        and(
-          eq(ProductVariants.id, Number(c.req.param('variantId'))),
-          eq(ProductVariants.storeId, c.var.jwtPayload.storeId)
-        )
-      );
+      .where(eq(ProductVariants.id, Number(c.req.param('variantId'))));
 
     return c.json({ message: 'Product variant updated successfully!' });
   })
@@ -167,11 +157,7 @@ export default DashboardApp()
 
     async (c) => {
       const photoInfo = await db.query.ProductImages.findFirst({
-        where: (productImage, { and, eq }) =>
-          and(
-            eq(productImage.id, Number(c.req.param('photoId'))),
-            eq(productImage.storeId, c.var.jwtPayload.storeId)
-          )
+        where: (productImage, { and, eq }) => eq(productImage.id, Number(c.req.param('photoId')))
       });
 
       if (!photoInfo) {
@@ -200,12 +186,7 @@ export default DashboardApp()
     async (c) => {
       await db
         .delete(ProductVariants)
-        .where(
-          and(
-            eq(ProductVariants.id, Number(c.req.param('variantId'))),
-            eq(ProductVariants.storeId, c.var.jwtPayload.storeId)
-          )
-        );
+        .where(eq(ProductVariants.id, Number(c.req.param('variantId'))));
 
       return c.json({ message: 'Product variant deleted successfully!' });
     }
@@ -219,8 +200,7 @@ export default DashboardApp()
         .where(
           and(
             eq(ProductPricings.productId, Number(c.req.param('id'))),
-            eq(ProductPricings.variation, c.req.param('variation')),
-            eq(ProductPricings.storeId, c.var.jwtPayload.storeId)
+            eq(ProductPricings.variation, c.req.param('variation'))
           )
         );
 
@@ -233,8 +213,7 @@ export default DashboardApp()
     const createdProducts = await db
       .insert(Products)
       .values({
-        title: body.title,
-        storeId: c.var.jwtPayload.storeId
+        title: body.title
       })
       .returning();
 
@@ -249,12 +228,11 @@ export default DashboardApp()
       await tx
         .update(Products)
         .set({ ...body })
-        .where(and(eq(Products.id, id), eq(Products.storeId, c.var.jwtPayload.storeId)));
+        .where(eq(Products.id, id));
 
       // 2. Current category relations
       const currentCategories = await tx.query.ProductCategories.findMany({
-        where: (pc, { and, eq }) =>
-          and(eq(pc.productId, id), eq(pc.storeId, c.var.jwtPayload.storeId))
+        where: (pc, { and, eq }) => eq(pc.productId, id)
       });
 
       const currentIds = new Set(currentCategories.map((cc) => cc.categoryId));
@@ -271,8 +249,7 @@ export default DashboardApp()
           .where(
             and(
               eq(ProductCategories.productId, id),
-              inArray(ProductCategories.categoryId, deleteIds),
-              eq(ProductCategories.storeId, c.var.jwtPayload.storeId)
+              inArray(ProductCategories.categoryId, deleteIds)
             )
           );
       }
@@ -282,8 +259,7 @@ export default DashboardApp()
         await tx.insert(ProductCategories).values(
           insertIds.map((cid) => ({
             productId: id,
-            categoryId: cid,
-            storeId: c.var.jwtPayload.storeId
+            categoryId: cid
           }))
         );
       }
@@ -302,7 +278,7 @@ export default DashboardApp()
     Object.keys(body).forEach((key) => {
       if (body[key].new) {
         delete body[key].new; // remove "new" flag before saving
-        insertItems.push({ ...body[key], storeId: c.var.jwtPayload.storeId });
+        insertItems.push({ ...body[key] });
       } else {
         updateItems.push(body[key]);
       }
@@ -322,8 +298,7 @@ export default DashboardApp()
           .where(
             and(
               eq(ProductPricings.variation, item.variation),
-              eq(ProductPricings.productId, item.productId),
-              eq(ProductPricings.storeId, c.var.jwtPayload.storeId)
+              eq(ProductPricings.productId, item.productId)
             )
           );
       }
@@ -333,14 +308,7 @@ export default DashboardApp()
   })
 
   .delete('/:id', async (c) => {
-    await db
-      .delete(Products)
-      .where(
-        and(
-          eq(Products.id, Number(c.req.param('id'))),
-          eq(Products.storeId, c.var.jwtPayload.storeId)
-        )
-      );
+    await db.delete(Products).where(eq(Products.id, Number(c.req.param('id'))));
 
     return c.json({ message: 'Product deleted successfully!' });
   });
