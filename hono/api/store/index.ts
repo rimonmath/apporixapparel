@@ -20,7 +20,7 @@ export default DashboardApp()
   .route('/products', productsApp)
   .route('/doptions', dOptionsApp)
   .route('/carousels', carouselsApp)
-  .route('/coupons', couponsApp);
-// .route('/orders', ordersApp)
-// .route('/pages', pagesApp)
+  .route('/coupons', couponsApp)
+  // .route('/orders', ordersApp)
+  .route('/pages', pagesApp);
 // .route('/settings', settingsApp);

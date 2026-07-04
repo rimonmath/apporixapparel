@@ -19,8 +19,7 @@ export default DashboardApp()
           isPublished: false,
           description: false
         },
-        where: (fields, { eq, and }) =>
-          and(eq(fields.isPublished, true), eq(fields.storeId, c.get('storeInfo')?.storeId || 0)),
+        where: (fields, { eq, and }) => eq(fields.isPublished, true),
         orderBy: (attributes, { asc }) => [asc(attributes.id)]
       });
       // console.log(users);
@@ -35,11 +34,7 @@ export default DashboardApp()
         isPublished: false
       },
       where: (fields, { eq, and }) =>
-        and(
-          eq(fields.isPublished, true),
-          eq(fields.id, Number(c.req.param('id'))),
-          eq(fields.storeId, c.get('storeInfo')?.storeId || 0)
-        )
+        and(eq(fields.isPublished, true), eq(fields.id, Number(c.req.param('id'))))
     });
     // console.log(users);
     return c.json(pages);

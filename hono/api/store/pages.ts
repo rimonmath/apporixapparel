@@ -13,8 +13,7 @@ export default DashboardApp()
 
     async (c) => {
       const pages = await db.query.Pages.findMany({
-        where: (page, { and, eq }) =>
-          and(eq(page.isPublished, true), eq(page.storeId, c.var.jwtPayload.storeId)),
+        // where: (page, { eq }) => eq(page.isPublished, true),
         orderBy: (attributes, { asc }) => [asc(attributes.id)]
       });
       // console.log(users);
@@ -25,8 +24,7 @@ export default DashboardApp()
     const body = c.req.valid('json');
 
     await db.insert(Pages).values({
-      ...body,
-      storeId: c.var.jwtPayload.storeId
+      ...body
     });
 
     return c.json({ message: 'Page added successfully!' });
@@ -37,12 +35,9 @@ export default DashboardApp()
     await db
       .update(Pages)
       .set({
-        ...body,
-        storeId: c.var.jwtPayload.storeId
+        ...body
       })
-      .where(
-        and(eq(Pages.id, Number(c.req.param('id'))), eq(Pages.storeId, c.var.jwtPayload.storeId))
-      );
+      .where(eq(Pages.id, Number(c.req.param('id'))));
 
     return c.json({ message: 'Page updated successfully!' });
   })
@@ -50,10 +45,6 @@ export default DashboardApp()
 
   // })
   .delete('/:id', async (c) => {
-    await db
-      .delete(Pages)
-      .where(
-        and(eq(Pages.id, Number(c.req.param('id'))), eq(Pages.storeId, c.var.jwtPayload.storeId))
-      );
+    await db.delete(Pages).where(eq(Pages.id, Number(c.req.param('id'))));
     return c.json({ message: 'Page deleted successfully!' });
   });

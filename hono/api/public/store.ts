@@ -11,14 +11,13 @@ export default DashboardApp().get(
   '/details',
 
   async (c) => {
-    const storeDetails = await db.query.Stores.findFirst({
+    const storeDetails = await db.query.StoreSettings.findFirst({
       columns: {
         name: true,
         brandColor: true,
         logoUrl: true,
         showNextToLogo: true,
         faviconUrl: true,
-        status: true,
         metaTitle: true,
         metaDescription: true,
         metaKeywords: true,
@@ -30,7 +29,7 @@ export default DashboardApp().get(
         whatsapp: true,
         youtube: true
       },
-      where: (fields, { eq }) => eq(fields.id, c.get('storeInfo')?.storeId || 0)
+      where: (fields, { eq }) => eq(fields.id, 1)
     });
     // console.log(users);
     return c.json(storeDetails);

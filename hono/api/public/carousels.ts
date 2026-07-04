@@ -15,8 +15,7 @@ export default DashboardApp().get(
         isActive: false,
         updatedAt: false
       },
-      where: (fields, { and, eq }) =>
-        and(eq(fields.isActive, true), eq(fields.storeId, c.get('storeInfo')?.storeId || 0)),
+      where: (fields, { eq }) => eq(fields.isActive, true),
       orderBy: [orderBy]
     });
     return c.json(carousels);

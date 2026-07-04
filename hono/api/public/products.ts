@@ -44,8 +44,6 @@ export default DashboardApp()
         columns: {
           createdAt: false,
           updatedAt: false,
-          serverId: false,
-          storeId: false,
           isOnSale: false
         },
         with: {
@@ -60,9 +58,7 @@ export default DashboardApp()
           // },
           pricings: {
             columns: {
-              buyPrice: false,
-              storeId: false,
-              serverId: false
+              buyPrice: false
             }
           },
           images: {
@@ -73,11 +69,7 @@ export default DashboardApp()
           }
         },
         where: (product, { and, eq }) =>
-          and(
-            eq(product.isOnSale, true),
-            eq(product.status, 'Published'),
-            eq(product.storeId, c.get('storeInfo')?.storeId || 0)
-          ),
+          and(eq(product.isOnSale, true), eq(product.status, 'Published')),
 
         limit: 8
       });
@@ -93,8 +85,6 @@ export default DashboardApp()
         columns: {
           createdAt: false,
           updatedAt: false,
-          serverId: false,
-          storeId: false,
           isOnSale: false
         },
         with: {
@@ -109,9 +99,7 @@ export default DashboardApp()
           // },
           pricings: {
             columns: {
-              buyPrice: false,
-              storeId: false,
-              serverId: false
+              buyPrice: false
             }
           },
           images: {
@@ -121,11 +109,7 @@ export default DashboardApp()
             limit: 1
           }
         },
-        where: (product, { and, eq }) =>
-          and(
-            eq(product.status, 'Published'),
-            eq(product.storeId, c.get('storeInfo')?.storeId || 0)
-          ),
+        where: (product, { and, eq }) => eq(product.status, 'Published'),
 
         orderBy: (product, { desc }) => desc(product.id),
 
@@ -143,8 +127,6 @@ export default DashboardApp()
         columns: {
           createdAt: false,
           updatedAt: false,
-          serverId: false,
-          storeId: false,
           isOnSale: false
         },
         with: {
@@ -163,18 +145,12 @@ export default DashboardApp()
           pricings: {
             columns: {
               buyPrice: false,
-              storeId: false,
-              serverId: false,
               createdAt: false,
               updatedAt: false
             }
           }
         },
-        where: (product, { eq, and }) =>
-          and(
-            eq(product.id, Number(c.req.param('id'))),
-            eq(product.storeId, c.get('storeInfo')?.storeId || 0)
-          )
+        where: (product, { eq, and }) => eq(product.id, Number(c.req.param('id')))
       });
 
       // console.log(products);
@@ -192,9 +168,7 @@ export default DashboardApp()
     const products = await db.query.Products.findMany({
       columns: {
         createdAt: false,
-        updatedAt: false,
-        storeId: false,
-        serverId: false
+        updatedAt: false
       },
       with: {
         categories: {
@@ -214,18 +188,12 @@ export default DashboardApp()
         },
         pricings: {
           columns: {
-            buyPrice: false,
-            storeId: false,
-            serverId: false
+            buyPrice: false
           }
         }
       },
       where: (fields, { eq, and, ilike }) =>
-        and(
-          eq(fields.status, 'Published'),
-          ilike(fields.title, `%${c.req.param('keyword')}%`),
-          eq(fields.storeId, c.get('storeInfo')?.storeId || 0)
-        ),
+        and(eq(fields.status, 'Published'), ilike(fields.title, `%${c.req.param('keyword')}%`)),
       limit: 100
     });
     // console.log(products);

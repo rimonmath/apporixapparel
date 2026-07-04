@@ -33,13 +33,11 @@ import { addEditPageSchema } from '@/utils/schemas';
 
 const message = useMessage();
 
-const { subDomain } = useStoreInfo();
-
 const router = useRouter();
 const route = useRoute();
 
-const createMachine = useCreate<SuccessResponse>(`/store/${subDomain.value}/pages`, true);
-const readMachine = useRead<Page[], true>(`/store/${subDomain.value}/pages`, true);
+const createMachine = useCreate<SuccessResponse>(`/store/pages`, true);
+const readMachine = useRead<Page[], true>(`/store/pages`, true);
 const updateMachine = useUpdate<SuccessResponse>(true);
 const deleteMachine = useDelete<SuccessResponse>(true);
 
@@ -84,10 +82,7 @@ const handleActionClick = (key: string, item: any) => {
 
 const saveChanges = async () => {
   // console.log(selectedItem.value);
-  await updateMachine.start(
-    `/store/${subDomain.value}/pages/${selectedItem.value.id}`,
-    selectedItem.value
-  );
+  await updateMachine.start(`/store/pages/${selectedItem.value.id}`, selectedItem.value);
   if (updateMachine.error.value) {
     message.error(beautifyError(updateMachine.error.value));
   } else {
@@ -99,7 +94,7 @@ const saveChanges = async () => {
 
 const deleteItem = async () => {
   // console.log(selectedItem.value);
-  await deleteMachine.start(`/store/${subDomain.value}/pages/${selectedItem.value.id}`);
+  await deleteMachine.start(`/store/pages/${selectedItem.value.id}`);
   if (deleteMachine.error.value) {
     message.error(beautifyError(deleteMachine.error.value));
   } else {
