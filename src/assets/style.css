@@ -219,3 +219,9 @@ hr {
     background-color: transparent !important;
   }
 }
+
+:root,
+body {
+  --primary-color: #1b4b25 !important;
+  --brand-color: #1b4b25 !important;
+}
