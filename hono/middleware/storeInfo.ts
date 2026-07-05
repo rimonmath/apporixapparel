@@ -94,22 +94,20 @@ export const addStoreInfo = (subDomain: string, storeInfo: StoreInfo) => {
 };
 
 export const initStores = async () => {
-  const stores = await db.query.Stores.findMany({
+  const stores = await db.query.StoreSettings.findMany({
     // where: (fields, { eq }) => eq(fields.status, 'Published')
   });
 
   stores.forEach((store) => {
     const storeInfo = {
-      ...store,
-      storeId: store.id,
-      serverId: store.serverId
+      ...store
     };
 
-    addStoreInfo(store.subDomain + '.khudroshop.com', storeInfo);
+    // addStoreInfo(store.subDomain + '.khudroshop.com', storeInfo);
 
     // TODO: remove this line in production
-    addStoreInfo(store.subDomain + '.localhost:3123', storeInfo);
-    addStoreInfo(store.subDomain + '.localhost:5123', storeInfo);
+    // addStoreInfo(store.subDomain + '.localhost:3123', storeInfo);
+    // addStoreInfo(store.subDomain + '.localhost:5123', storeInfo);
   });
 };
 

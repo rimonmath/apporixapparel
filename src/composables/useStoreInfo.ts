@@ -12,20 +12,10 @@ import type { Store } from '@/utils/types';
 //   Archived: number;
 // };
 
-const storeInfoMachine = useRead<Store>(``, true);
-const subDomain = shallowRef('');
-
-storeInfoMachine.customStart = function () {
-  const path = window.location.pathname.split('/');
-  subDomain.value = path[2];
-  // console.log(path);
-  // console.log(`/store/${subDomain.value}/info`);
-  return storeInfoMachine.start(`/store/${subDomain.value}/info`);
-};
+const storeInfoMachine = useRead<Store>(`/store/info`, true);
 
 export function useStoreInfo() {
   return {
-    storeInfoMachine,
-    subDomain
+    storeInfoMachine
   };
 }

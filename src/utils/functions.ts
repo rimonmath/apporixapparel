@@ -61,7 +61,8 @@ export const replaceSpaces = (s: string | undefined) => {
   if (!s) {
     return '';
   }
-  return s.replace(/\s+/g, '-');
+
+  return s.replace(/[\s\\/]+/g, '-');
 };
 
 export const replaceDashes = (s: string | undefined) => {

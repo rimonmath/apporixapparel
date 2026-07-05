@@ -34,14 +34,14 @@ import { useCreateFormData } from '@/composables/useCreateFormData';
 
 const message = useMessage();
 
-const { storeInfoMachine, subDomain } = useStoreInfo();
+const { storeInfoMachine } = useStoreInfo();
 
 const updateStoreInfoMachine = useUpdate<SuccessResponse>(true);
 
 const saveStoreInfo = async () => {
-  console.log(updateStoreInfoMachine.error.value);
+  // console.log(updateStoreInfoMachine.error.value);
 
-  await updateStoreInfoMachine.start(`/store/${subDomain.value}/settings/store-info`, {
+  await updateStoreInfoMachine.start(`/store/settings/store-info`, {
     name: storeInfoMachine.response.value?.name,
     metaTitle: storeInfoMachine.response.value?.metaTitle,
     metaDescription: storeInfoMachine.response.value?.metaDescription,
@@ -57,7 +57,7 @@ const saveStoreInfo = async () => {
 };
 
 const updateLogoMachine = useCreateFormData<SuccessResponse>(
-  `/store/${subDomain.value}/settings/update-logo`,
+  `/store/settings/update-logo`,
   true,
   'PUT'
 );
@@ -72,12 +72,12 @@ const handleLogoChange = async (e: Event) => {
     message.error(beautifyError(updateLogoMachine.error.value));
   } else {
     message.success(updateLogoMachine.response.value?.message!);
-    storeInfoMachine.customStart();
+    storeInfoMachine.start();
   }
 };
 
 const updateFaviconMachine = useCreateFormData<SuccessResponse>(
-  `/store/${subDomain.value}/settings/update-favicon`,
+  `/store/settings/update-favicon`,
   true,
   'PUT'
 );
@@ -92,9 +92,13 @@ const handleFaviconChange = async (e: Event) => {
     message.error(beautifyError(updateFaviconMachine.error.value));
   } else {
     message.success(updateFaviconMachine.response.value?.message!);
-    storeInfoMachine.customStart();
+    storeInfoMachine.start();
   }
 };
+
+onMounted(() => {
+  storeInfoMachine.start();
+});
 </script>
 
 <template>

@@ -7,6 +7,8 @@ import { DashboardApp, generateFilterConditions, hashPassword } from '../../util
 import z from 'zod';
 import { addPageSchema } from '../../utils/zodSchemas.js';
 
+const STORE_SETTING_ID = 2;
+
 export default DashboardApp().get(
   '/details',
 
@@ -29,7 +31,7 @@ export default DashboardApp().get(
         whatsapp: true,
         youtube: true
       },
-      where: (fields, { eq }) => eq(fields.id, 1)
+      where: (fields, { eq }) => eq(fields.id, STORE_SETTING_ID)
     });
     // console.log(users);
     return c.json(storeDetails);

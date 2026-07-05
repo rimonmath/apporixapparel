@@ -36,6 +36,7 @@ const accessToken = localStorage.getItem('accessToken');
 const userType = localStorage.getItem('userType');
 
 onMounted(() => {
+  console.log('mounted');
   categoriesMachine.start();
   pagesMachine.start();
   storeDetailsMachine.start();

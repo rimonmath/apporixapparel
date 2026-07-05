@@ -1,5 +1,5 @@
 <template>
   <div class="py-10">
-    <h4 class="text-center">Every Khudrosop user is your customer</h4>
+    <h4 class="text-center">All customers list</h4>
   </div>
 </template>

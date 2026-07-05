@@ -23,13 +23,13 @@ import { useRoute, useRouter } from 'vue-router';
 // const subDomain = path[2];
 // console.log(path);
 
-const { storeInfoMachine, subDomain } = useStoreInfo();
+const { storeInfoMachine } = useStoreInfo();
 
 const route = useRoute();
 const router = useRouter();
 
 const getPackagesMacine = useRead<Package[]>('/public/packages');
-const RecentOrdersMachine = useRead<Order[], true>(`/store/${subDomain.value}/orders`, true, {
+const RecentOrdersMachine = useRead<Order[], true>(`/store/orders`, true, {
   route,
   router,
   extra: ''
@@ -77,7 +77,7 @@ const statusIcons = {
 };
 
 onMounted(() => {
-  // storeInfoMachine.customStart();
+  // storeInfoMachine.start();
   // getPackagesMacine.start();
   // RecentOrdersMachine.start();
 });

@@ -1,5 +1,5 @@
 import { db } from '../../db/index.js';
-import { Pages, Stores, Users } from '../../db/schema.js';
+import { Pages, StoreSettings, Users } from '../../db/schema.js';
 import { sValidator } from '@hono/standard-validator';
 // import { addUserSchema, editUserSchema } from '@utils/zodSchemas.js';
 import { and, asc, desc, eq, sql } from 'drizzle-orm';
@@ -11,19 +11,21 @@ import { uploadAndProcess } from '../../middleware/uploadAndProcess.js';
 import path from 'node:path';
 import fs from 'node:fs';
 
+const STORE_SETTINGS_ID = 2;
+
 export default DashboardApp()
   .put('/appearance', sValidator('json', saveAppearanceSchema), async (c) => {
     const body = c.req.valid('json');
 
     const [store] = await db
-      .update(Stores)
+      .update(StoreSettings)
       .set({
         ...body
       })
-      .where(eq(Stores.id, c.var.jwtPayload.storeId))
+      .where(eq(StoreSettings.id, STORE_SETTINGS_ID))
       .returning();
 
-    addStoreInfo(store.subDomain + '.khudroshop.com', { ...store, storeId: store.id });
+    // addStoreInfo(store.subDomain + '.khudroshop.com', { ...store, storeId: store.id });
 
     return c.json({ message: 'Appearance updated successfully!' });
   })
@@ -31,14 +33,14 @@ export default DashboardApp()
     const body = c.req.valid('json');
 
     const [store] = await db
-      .update(Stores)
+      .update(StoreSettings)
       .set({
         ...body
       })
-      .where(eq(Stores.id, c.var.jwtPayload.storeId))
+      .where(eq(StoreSettings.id, STORE_SETTINGS_ID))
       .returning();
 
-    addStoreInfo(store.subDomain + '.khudroshop.com', { ...store, storeId: store.id });
+    // addStoreInfo(store.subDomain + '.khudroshop.com', { ...store, storeId: store.id });
 
     return c.json({ message: 'Store Info updated successfully!' });
   })
@@ -47,7 +49,7 @@ export default DashboardApp()
     uploadAndProcess({
       fieldName: 'web-logo',
       maxSize: 8_000_000,
-      allowedExtensions: ['jpg', 'jpeg', 'png', 'webp'],
+      allowedExtensions: ['jpg', 'jpeg', 'png', 'webp', 'svg'],
       resize: { height: 50 },
       convertToJpeg: false
     }),
@@ -76,14 +78,14 @@ export default DashboardApp()
       }
 
       const [store] = await db
-        .update(Stores)
+        .update(StoreSettings)
         .set({
           logoUrl: url
         })
-        .where(eq(Stores.id, c.var.jwtPayload.storeId))
+        .where(eq(StoreSettings.id, STORE_SETTINGS_ID))
         .returning();
 
-      addStoreInfo(store.subDomain + '.khudroshop.com', { ...store, storeId: store.id });
+      // addStoreInfo(store.subDomain + '.khudroshop.com', { ...store, storeId: store.id });
 
       return c.json({
         message: 'Logo updated successfully!'
@@ -124,14 +126,14 @@ export default DashboardApp()
       }
 
       const [store] = await db
-        .update(Stores)
+        .update(StoreSettings)
         .set({
           faviconUrl: url
         })
-        .where(eq(Stores.id, c.var.jwtPayload.storeId))
+        .where(eq(StoreSettings.id, STORE_SETTINGS_ID))
         .returning();
 
-      addStoreInfo(store.subDomain + '.khudroshop.com', { ...store, storeId: store.id });
+      // addStoreInfo(store.subDomain + '.khudroshop.com', { ...store, storeId: store.id });
 
       return c.json({
         message: 'Favicon updated successfully!'

@@ -16,48 +16,52 @@ export default DashboardApp().get(
   '/',
 
   async function handler(c) {
-    const subDomain = c.req.param('subDomain') || '';
+    const storeInfo = await db.query.StoreSettings.findFirst({
+      where: (fields, { eq }) => eq(fields.id, 2),
 
-    const storeInfo = await db.query.Stores.findFirst({
-      where: (fields, { eq }) => eq(fields.subDomain, subDomain),
-
-      with: {
-        package: true
-      },
-
-      extras: (fields) => ({
-        // Total categories
+      extras: () => ({
         categoryCount: sql<number>`
-        (SELECT COUNT(*) FROM ${Categories} c WHERE c.store_id = ${fields.id})
-      `.as('category_count'),
+    (
+      SELECT COUNT(*)
+      FROM ${Categories}
+    )
+  `.as('category_count'),
 
-        // Total products
         productCount: sql<number>`
-        (SELECT COUNT(*) FROM ${Products} p WHERE p.store_id = ${fields.id})
-      `.as('product_count'),
+    (
+      SELECT COUNT(*)
+      FROM ${Products}
+    )
+  `.as('product_count'),
 
-        // Total orders
         totalOrdersCount: sql<number>`
-        (SELECT COUNT(*) FROM ${Orders} o WHERE o.store_id = ${fields.id})
-      `.as('total_orders_count'),
+    (
+      SELECT COUNT(*)
+      FROM ${Orders}
+    )
+  `.as('total_orders_count'),
 
-        // This month's orders
         thisMonthOrdersCount: sql<number>`
-        (SELECT COUNT(*) FROM ${Orders} o 
-         WHERE o.store_id = ${fields.id}
-           AND DATE_TRUNC('month', o.created_at) = DATE_TRUNC('month', NOW())
-        )
-      `.as('this_month_orders_count'),
+    (
+      SELECT COUNT(*)
+      FROM ${Orders} o
+      WHERE DATE_TRUNC('month', o.created_at) =
+            DATE_TRUNC('month', NOW())
+    )
+  `.as('this_month_orders_count'),
 
-        // Total product images
         totalProductImagesCount: sql<number>`
-        (SELECT COUNT(*) 
-         FROM ${ProductImages} pi 
-         JOIN ${Products} p ON pi.product_id = p.id
-         WHERE p.store_id = ${fields.id})
-      `.as('total_product_images_count')
+    (
+      SELECT COUNT(*)
+      FROM ${ProductImages} pi
+      JOIN ${Products} p
+        ON pi.product_id = p.id
+    )
+  `.as('total_product_images_count')
       })
     });
+
+    console.log(storeInfo);
 
     return c.json(storeInfo);
   }
