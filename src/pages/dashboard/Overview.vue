@@ -59,8 +59,8 @@ onMounted(() => {
 });
 
 const getSroreUrl = (subDomain: string) =>
-  import.meta.env.VITE_API_DOMAIN === 'http://localhost:3123'
-    ? `http://${subDomain}.localhost:5123`
+  import.meta.env.VITE_API_DOMAIN === 'http://localhost:3124'
+    ? `http://${subDomain}.localhost:5124`
     : `https://${subDomain}.khudroshop.com`;
 </script>
 

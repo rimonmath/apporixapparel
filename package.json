@@ -9,8 +9,8 @@
   "scripts": {
     "type-check": "vue-tsc --build",
     "format": "prettier --write src/",
-    "dev:vue": "vite --port 5123",
-    "dev:hono": "kill-port 3123 && nodemon",
+    "dev:vue": "vite --port 5124",
+    "dev:hono": "kill-port 3124 && nodemon",
     "dev:tsc": "tsc --project tsconfig.node.json --watch",
     "prod:tsc": "tsc --project tsconfig.node.json",
     "dev-old": "concurrently \"npm run dev:vue\" \"npm run dev:tsc\" \"npm run dev:hono\"",

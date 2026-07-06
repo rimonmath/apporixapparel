@@ -32,7 +32,7 @@ const storesMap: Record<string, StoreInfo> = {
     timezone: '',
     status: ''
   },
-  'localhost:5123': {
+  'localhost:5124': {
     storeId: 0,
     serverId: 0,
     packageExpiry: '',
@@ -58,7 +58,7 @@ const storesMap: Record<string, StoreInfo> = {
     timezone: '',
     status: ''
   },
-  'localhost:3123': {
+  'localhost:3124': {
     storeId: 0,
     serverId: 0,
     packageExpiry: '',
@@ -106,8 +106,8 @@ export const initStores = async () => {
     // addStoreInfo(store.subDomain + '.khudroshop.com', storeInfo);
 
     // TODO: remove this line in production
-    // addStoreInfo(store.subDomain + '.localhost:3123', storeInfo);
-    // addStoreInfo(store.subDomain + '.localhost:5123', storeInfo);
+    // addStoreInfo(store.subDomain + '.localhost:3124, storeInfo);
+    // addStoreInfo(store.subDomain + '.localhost:5124', storeInfo);
   });
 };
 

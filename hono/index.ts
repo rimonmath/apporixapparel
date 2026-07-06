@@ -82,9 +82,9 @@ export const client = hc('');
 // export default app
 serve({
   fetch: app.fetch,
-  port: 3123
+  port: 3124
 });
 
 // initStores();
 
-console.log('Hono app is running on http://localhost:3123');
+console.log('Hono app is running on http://localhost:3124');
