@@ -150,7 +150,7 @@ onMounted(() => {
         <div class="flex items-center gap-2">
           <span class="text-gray-500 text-[11px]">
             Powered by
-            <a href="https://khudroshop.com" target="_blank" class="text-white">Khudroshop</a>
+            <a href="https://apporixworld.com" target="_blank" class="text-white">Apporixworld</a>
           </span>
         </div>
       </div>

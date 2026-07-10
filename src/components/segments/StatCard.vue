@@ -30,9 +30,6 @@ const hue = computed(() => {
 
       <h2 class="mt-2 text-xl font-bold text-gray-900">
         {{ used }}
-        <span class="text-[15px] text-gray-500">
-          / {{ quota === Infinity ? 'Unlimited' : quota }}</span
-        >
       </h2>
 
       <div class="text-right">
