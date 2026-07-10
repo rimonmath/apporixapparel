@@ -67,7 +67,7 @@ const { openPopup } = useSsoSignin();
 
 <template>
   <div class="login-container">
-    <div class="login-box" v-if="isKhudroshopHost">
+    <div class="login-box">
       <div class="text-center">
         <img src="/img/logo.png" class="inline-block max-h-[50px]" alt="" />
 
@@ -119,53 +119,6 @@ const { openPopup } = useSsoSignin();
 
       <!-- <a href="#" class="back-home">← Back to Home</a> -->
       <SmartLink to="/auth/signin"> User Signin </SmartLink>
-    </div>
-
-    <div class="login-box" v-else>
-      <div class="text-center">
-        <img src="/img/logo.png" class="inline-block max-h-[50px]" alt="" />
-
-        <p class="my-5 text-lg">
-          This is a khudroshop store. You can sign in with any Khudroshop account
-        </p>
-      </div>
-
-      <NButton
-        type="default"
-        attr-type="submit"
-        class="login-btn"
-        :loading="signinMachine.loading.value"
-        block
-        @click="openPopup"
-      >
-        <div class="flex items-center gap-2">
-          <img src="/img/logo.png" class="max-h-5" alt="" />
-          <span> Sign in with khudroshop</span>
-        </div>
-      </NButton>
-
-      <p class="my-3">
-        By clicking on "Sign in with khudroshop" you agree to Khudroshop
-        <a
-          class="text-blue-500 hover:text-blue-600 cursor-pointer hover:underline"
-          href="https://khudroshop.com/terms.html"
-          target="_blank"
-        >
-          Terms of Service
-        </a>
-        and
-        <a
-          class="text-blue-500 hover:text-blue-600 cursor-pointer hover:underline"
-          href="https://khudroshop.com/privacy.html"
-          target="_blank"
-        >
-          Privacy Policy
-        </a>
-      </p>
-
-      <p class="mt-2 text-center">
-        <SmartLink to="/" class="back-home">← Back to Home</SmartLink>
-      </p>
     </div>
   </div>
 </template>
