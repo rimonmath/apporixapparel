@@ -245,7 +245,10 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="min-h-[90vh]">
+  <div v-if="true" class="m-20">
+    <p>Checkout is not available for now. Please visit back later.</p>
+  </div>
+  <div class="min-h-[90vh]" v-else>
     <div class="container py-6">
       <div v-if="totalCartPrice == 0" class="text-center">
         <p>Cart is empty. Please add some items to your cart.</p>
@@ -265,12 +268,12 @@ onMounted(async () => {
             </p>
           </div>
 
-          <NButton type="default" attr-type="submit" class="login-btn" block @click="openPopup">
+          <!-- <NButton type="default" attr-type="submit" class="login-btn" block @click="openPopup">
             <div class="flex items-center gap-2">
               <img src="/img/logo.png" class="max-h-5" alt="" />
               <span> Sign in with khudroshop</span>
             </div>
-          </NButton>
+          </NButton> -->
 
           <p class="my-3">
             By clicking on "Sign in with khudroshop" you agree to Khudroshop
