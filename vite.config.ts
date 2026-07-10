@@ -17,5 +17,8 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
       $: fileURLToPath(new URL('./hono', import.meta.url))
     }
+  },
+  server: {
+    host: '0.0.0.0'
   }
 });
