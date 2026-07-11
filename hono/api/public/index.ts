@@ -12,7 +12,7 @@ import { getDdosReport } from '../../middleware/ddosProtect.js';
 export default new Hono()
   .route('/products', productsApp)
   .route('/categories', categoriesApp)
-  // .route('/order', orderApp)
+  .route('/order', orderApp)
   .route('/pages', pagesApp)
   .route('/carousels', carouselsApp)
   .route('/store', storeApp);

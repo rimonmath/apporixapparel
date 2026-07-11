@@ -247,39 +247,34 @@ export const DeliveryOptions = pgTable('delivery_options', {
   ...commonFields
 });
 
-export const Orders = pgTable(
-  'orders',
-  {
-    id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
-    orderNumber: varchar('order_number', { length: 50 }).notNull(),
-    userId: integer('user_id')
-      .references(() => Users.id)
-      .notNull(),
-    shippingAddressId: integer('shipping_address_id')
-      .references(() => UserAddresses.id)
-      .notNull(),
-    billingAddressId: integer('billing_address_id')
-      .references(() => UserAddresses.id)
-      .notNull(),
-    paymentMethod: varchar('payment_method', { length: 50 }).notNull(), // COD, Bkash, Nagad. ///
-    transactionId: varchar('transaction_id', { length: 150 }),
-    paymentMeta: jsonb('payment_meta').default('{}'),
-    customerNote: varchar('customer_note', { length: 255 }).default(''),
-    adminNote: varchar('admin_note', { length: 255 }).default(''),
-    subtotal: decimal('subtotal', { precision: 12, scale: 2 }).notNull(),
-    couponId: integer('coupon_id').references(() => Coupons.id),
-    couponDiscount: decimal('coupon_discount', { precision: 12, scale: 2 }).default('0'),
-    taxCharge: decimal('tax_charge', { precision: 12, scale: 2 }).default('0'),
-    shippingCharge: decimal('shipping_charge', { precision: 12, scale: 2 }).default('0'),
-    deliveryOption: varchar('delivery_option', { length: 50 }).notNull(), // Inside Dhaka, Outside Dhaka, Pick Up. ///
-    deliveryCharge: decimal('delivery_charge', { precision: 12, scale: 2 }).default('0'),
-    total: decimal('total', { precision: 12, scale: 2 }).notNull(),
-    paymentStatus: paymentStatusEnum('payment_status').default('Pending').notNull(),
-    orderStatus: orderStatusEnum('order_status').default('Placed').notNull(),
-    ...commonFields
-  },
-  (t) => [unique('order_number_unique').on(t.orderNumber)]
-);
+export const Orders = pgTable('orders', {
+  id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
+  userId: integer('user_id')
+    .references(() => Users.id)
+    .notNull(),
+  shippingAddressId: integer('shipping_address_id')
+    .references(() => UserAddresses.id)
+    .notNull(),
+  billingAddressId: integer('billing_address_id')
+    .references(() => UserAddresses.id)
+    .notNull(),
+  paymentMethod: varchar('payment_method', { length: 50 }).notNull(), // COD, Bkash, Nagad. ///
+  transactionId: varchar('transaction_id', { length: 150 }),
+  paymentMeta: jsonb('payment_meta').default('{}'),
+  customerNote: varchar('customer_note', { length: 255 }).default(''),
+  adminNote: varchar('admin_note', { length: 255 }).default(''),
+  subtotal: decimal('subtotal', { precision: 12, scale: 2 }).notNull(),
+  couponId: integer('coupon_id').references(() => Coupons.id),
+  couponDiscount: decimal('coupon_discount', { precision: 12, scale: 2 }).default('0'),
+  taxCharge: decimal('tax_charge', { precision: 12, scale: 2 }).default('0'),
+  shippingCharge: decimal('shipping_charge', { precision: 12, scale: 2 }).default('0'),
+  deliveryOption: varchar('delivery_option', { length: 50 }).notNull(), // Inside Dhaka, Outside Dhaka, Pick Up. ///
+  deliveryCharge: decimal('delivery_charge', { precision: 12, scale: 2 }).default('0'),
+  total: decimal('total', { precision: 12, scale: 2 }).notNull(),
+  paymentStatus: paymentStatusEnum('payment_status').default('Pending').notNull(),
+  orderStatus: orderStatusEnum('order_status').default('Placed').notNull(),
+  ...commonFields
+});
 
 export const CouponUsages = pgTable(
   'coupon_usages',

@@ -16,6 +16,6 @@ export default new Hono()
   .route('/auth', authRoutes)
   // .route('/user', userRoutes)
   // .route('/admin', adminRoutes)
-  // .route('/customer', customerRoutes)
+  .route('/customer', customerRoutes)
   .route('/store/', storeRoutes);
 // .route('/guest', guestRoutes);

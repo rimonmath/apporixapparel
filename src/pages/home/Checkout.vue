@@ -245,10 +245,10 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div v-if="true" class="m-20">
+  <!-- <div v-if="true" class="m-20">
     <p>Checkout is not available for now. Please visit back later.</p>
-  </div>
-  <div class="min-h-[90vh]" v-else>
+  </div> -->
+  <div class="min-h-[90vh]">
     <div class="container py-6">
       <div v-if="totalCartPrice == 0" class="text-center">
         <p>Cart is empty. Please add some items to your cart.</p>

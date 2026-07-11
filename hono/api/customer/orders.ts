@@ -1,5 +1,5 @@
 import { db } from '../../db/index.js';
-import { OrderItems, Orders, OrderStatusHistory, StoreOrderCounters } from '../../db/schema.js';
+import { OrderItems, Orders, OrderStatusHistory } from '../../db/schema.js';
 import { sValidator } from '@hono/standard-validator';
 // import { addUserSchema, editUserSchema } from '@utils/zodSchemas.js';
 import { and, asc, desc, eq, sql } from 'drizzle-orm';
@@ -27,11 +27,7 @@ export default DashboardApp()
     async (c) => {
       const { page, pageSize, sortDirection, sortBy, ...filters } = c.req.valid('query');
 
-      const staticConditions: any = [
-        eq(Orders.userId, c.get('jwtPayload').userId),
-        eq(Orders.storeId, c.get('storeInfo')?.storeId || 0)
-        // eq(Products.schoolId, c.var.jwtPayload.schoolId)
-      ];
+      const staticConditions: any = [eq(Orders.userId, c.get('jwtPayload').userId)];
 
       const filterConditions = generateFilterConditions(filters, Orders);
       const where = and(...staticConditions, ...filterConditions);
@@ -51,8 +47,7 @@ export default DashboardApp()
             columns: {
               createdAt: false,
               updatedAt: false,
-              id: false,
-              storeId: false
+              id: false
             },
             with: {
               product: {
@@ -85,7 +80,6 @@ export default DashboardApp()
     const order = await db.query.Orders.findFirst({
       columns: {
         adminNote: false,
-        storeId: false,
         userId: false
       },
       with: {
@@ -93,8 +87,7 @@ export default DashboardApp()
           columns: {
             createdAt: false,
             updatedAt: false,
-            id: false,
-            storeId: false
+            id: false
           },
           with: {
             product: {
@@ -144,11 +137,7 @@ export default DashboardApp()
         }
       },
       where: (fields, { eq, and }) =>
-        and(
-          eq(fields.id, Number(c.req.param('id'))),
-          eq(fields.userId, c.var.jwtPayload.userId),
-          eq(fields.storeId, c.get('storeInfo')?.storeId || 0)
-        )
+        and(eq(fields.id, Number(c.req.param('id'))), eq(fields.userId, c.var.jwtPayload.userId))
     });
     // console.log(products);
     return c.json(order);
@@ -168,11 +157,7 @@ export default DashboardApp()
         pricings: true
       },
       where: (fields, { and, eq, inArray }) =>
-        and(
-          inArray(fields.id, productIds),
-          eq(fields.storeId, c.get('storeInfo')?.storeId || 0),
-          eq(fields.status, 'Published')
-        )
+        and(inArray(fields.id, productIds), eq(fields.status, 'Published'))
     });
 
     const productsMap = products.reduce(
@@ -207,11 +192,7 @@ export default DashboardApp()
 
       const coupon = await db.query.Coupons.findFirst({
         where: (fields, { eq, and }) =>
-          and(
-            eq(fields.id, Number(body.couponId)),
-            eq(fields.isActive, true),
-            eq(fields.storeId, c.get('storeInfo')?.storeId || 0)
-          )
+          and(eq(fields.id, Number(body.couponId)), eq(fields.isActive, true))
       });
 
       if (!coupon) {
@@ -236,11 +217,7 @@ export default DashboardApp()
 
     // Validate Delivery Charge
     const deliveryOption = await db.query.DeliveryOptions.findFirst({
-      where: (fields, { eq, and }) =>
-        and(
-          eq(fields.name, body.deliveryOption),
-          eq(fields.storeId, c.get('storeInfo')?.storeId || 0)
-        )
+      where: (fields, { eq, and }) => and(eq(fields.name, body.deliveryOption))
     });
 
     if (!deliveryOption || Number(deliveryOption.charge) + 0.01 < Number(body.deliveryCharge)) {
@@ -250,30 +227,12 @@ export default DashboardApp()
     await db.transaction(async (tx) => {
       let orderNumber = 1;
 
-      const next = await tx
-        .update(StoreOrderCounters)
-        .set({ lastNumber: sql`${StoreOrderCounters.lastNumber} + 1` })
-        .where(eq(StoreOrderCounters.storeId, c.get('storeInfo')?.storeId || 0))
-        .returning({ num: StoreOrderCounters.lastNumber });
-
-      console.log(next);
-
-      if (!next[0]) {
-        await tx.insert(StoreOrderCounters).values({
-          storeId: c.get('storeInfo')?.storeId || 0,
-          lastNumber: 1
-        });
-      } else {
-        orderNumber = next[0].num;
-      }
-
       // Insert Order
 
       const insertedOrder = await tx
         .insert(Orders)
         .values({
           ...body,
-          storeId: c.get('storeInfo')?.storeId || 0,
           userId: c.get('jwtPayload').userId,
           orderStatus: 'Placed',
           paymentStatus: 'Pending',
@@ -291,7 +250,6 @@ export default DashboardApp()
       const orderItems = body.cartItems.map((item) => ({
         ...item,
         orderId: insertedOrder[0].id,
-        storeId: c.get('storeInfo')?.storeId || 0,
         productId: item.productId,
         variation: item.variation,
         price: String(item.pricePerUnit),
@@ -303,7 +261,6 @@ export default DashboardApp()
       // Order status history
       await tx.insert(OrderStatusHistory).values({
         orderId: insertedOrder[0].id,
-        storeId: c.get('storeInfo')?.storeId || 0,
         status: 'Placed',
         updatedBy: c.get('jwtPayload').userId
       });
@@ -323,15 +280,12 @@ export default DashboardApp()
     const coupon = await db.query.Coupons.findFirst({
       columns: {
         createdAt: false,
-        updatedAt: false,
-        storeId: false,
-        serverId: false
+        updatedAt: false
       },
       where: (fields, { eq, and, gte, lte }) =>
         and(
           eq(fields.code, code),
           eq(fields.isActive, true),
-          eq(fields.storeId, c.get('storeInfo')?.storeId || 0),
           lte(fields.startDate, new Date().toISOString().split('T')[0]),
           gte(fields.endDate, new Date().toISOString().split('T')[0])
         )
