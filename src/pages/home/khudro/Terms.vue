@@ -10,9 +10,9 @@
       <!-- Intro -->
       <div class="space-y-6 text-gray-700 leading-relaxed">
         <p>
-          Welcome to <strong>Khudroshop</strong>. These Terms & Conditions govern your access to and
-          use of our website, services, and applications. By accessing or using Khudroshop, you
-          agree to be bound by these terms.
+          Welcome to <strong>ApporixApparel</strong>. These Terms & Conditions govern your access to
+          and use of our website, services, and applications. By accessing or using ApporixApparel,
+          you agree to be bound by these terms.
         </p>
 
         <p>
@@ -25,8 +25,8 @@
       <div class="mt-12">
         <h2 class="text-2xl font-semibold text-gray-900 mb-4">Eligibility</h2>
         <p class="text-gray-700">
-          You must be at least 18 years old to use Khudroshop. By using our platform, you confirm
-          that you are legally capable of entering into a binding agreement.
+          You must be at least 18 years old to use ApporixApparel. By using our platform, you
+          confirm that you are legally capable of entering into a binding agreement.
         </p>
       </div>
 
@@ -44,8 +44,8 @@
       <div class="mt-12">
         <h2 class="text-2xl font-semibold text-gray-900 mb-4">Services Provided</h2>
         <p class="text-gray-700 mb-4">
-          Khudroshop is a subscription-based multi-tenant e-commerce store builder. We provide tools
-          to create, manage, and operate online stores.
+          ApporixApparel is a subscription-based multi-tenant e-commerce store builder. We provide
+          tools to create, manage, and operate online stores.
         </p>
         <ul class="list-disc list-inside space-y-2 text-gray-700">
           <li>Store creation with subdomain or custom domain</li>
@@ -88,7 +88,7 @@
         <h2 class="text-2xl font-semibold text-gray-900 mb-4">User Content</h2>
         <p class="text-gray-700">
           You are solely responsible for all content uploaded to your store, including product
-          information, images, and customer data. Khudroshop does not claim ownership of your
+          information, images, and customer data. ApporixApparel does not claim ownership of your
           content.
         </p>
       </div>
@@ -117,7 +117,7 @@
       <div class="mt-12">
         <h2 class="text-2xl font-semibold text-gray-900 mb-4">Limitation of Liability</h2>
         <p class="text-gray-700">
-          Khudroshop shall not be liable for any indirect, incidental, or consequential damages
+          ApporixApparel shall not be liable for any indirect, incidental, or consequential damages
           arising from the use of our services.
         </p>
       </div>
@@ -137,7 +137,7 @@
         <p class="text-gray-700">
           If you have any questions regarding these Terms & Conditions, please contact us at:
         </p>
-        <p class="mt-2 font-medium text-gray-900">📧 khudroshop@gmail.com</p>
+        <p class="mt-2 font-medium text-gray-900">📧 apporixapparel@gmail.com</p>
       </div>
     </div>
   </section>

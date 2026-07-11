@@ -24,7 +24,7 @@ export const userAuthMiddleware = createMiddleware<{
   let decoded: JWTUser;
 
   try {
-    decoded = (await verify(token, process.env.VITE_JWTSECRET)) as JWTUser;
+    decoded = (await verify(token, process.env.VITE_JWTSECRET_CUSTOMER!)) as JWTUser;
   } catch (err) {
     // console.log(err);
     if (err instanceof JwtTokenExpired) {

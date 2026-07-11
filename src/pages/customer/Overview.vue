@@ -21,11 +21,11 @@ onMounted(() => {});
 
 <template>
   <div class="overview pb-10">
-    <h2 class="mt-4">
-      Welcome back
+    <h2 class="mt-4">Welcome back</h2>
 
+    <p class="mt-4">
       {{ getProileMacine.response.value?.name }}
-    </h2>
+    </p>
 
     <!-- <hr class="my-5" /> -->
 

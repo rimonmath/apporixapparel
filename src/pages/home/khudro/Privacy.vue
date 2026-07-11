@@ -10,14 +10,14 @@
       <!-- Intro -->
       <div class="space-y-6 text-gray-700 leading-relaxed">
         <p>
-          At <strong>Khudroshop</strong>, your privacy is very important to us. This Privacy Policy
-          document explains how we collect, use, and protect your information when you use our
-          website, services, and applications.
+          At <strong>ApporixApparel</strong>, your privacy is very important to us. This Privacy
+          Policy document explains how we collect, use, and protect your information when you use
+          our website, services, and applications.
         </p>
 
         <p>
-          By using Khudroshop, you agree to the collection and use of information in accordance with
-          this policy.
+          By using ApporixApparel, you agree to the collection and use of information in accordance
+          with this policy.
         </p>
       </div>
 
@@ -49,9 +49,9 @@
       <div class="mt-12">
         <h2 class="text-2xl font-semibold text-gray-900 mb-4">Cookies and Tracking Technologies</h2>
         <p class="text-gray-700">
-          Khudroshop may use cookies and similar tracking technologies to enhance user experience,
-          analyze usage, and improve our services. You can choose to disable cookies through your
-          browser settings.
+          ApporixApparel may use cookies and similar tracking technologies to enhance user
+          experience, analyze usage, and improve our services. You can choose to disable cookies
+          through your browser settings.
         </p>
       </div>
 
@@ -65,7 +65,7 @@
         <ul class="list-disc list-inside space-y-2 text-gray-700">
           <li>Required by law or legal process</li>
           <li>Necessary to provide our services</li>
-          <li>Protecting the rights, property, or safety of Khudroshop and users</li>
+          <li>Protecting the rights, property, or safety of ApporixApparel and users</li>
         </ul>
       </div>
 
@@ -83,8 +83,8 @@
       <div class="mt-12">
         <h2 class="text-2xl font-semibold text-gray-900 mb-4">Third-Party Services</h2>
         <p class="text-gray-700">
-          Khudroshop may contain links to third-party websites or services. We are not responsible
-          for the privacy practices or content of those third-party platforms.
+          ApporixApparel may contain links to third-party websites or services. We are not
+          responsible for the privacy practices or content of those third-party platforms.
         </p>
       </div>
 
@@ -103,7 +103,7 @@
         <p class="text-gray-700">
           If you have any questions or concerns about this Privacy Policy, please contact us at:
         </p>
-        <p class="mt-2 font-medium text-gray-900">📧 khudroshop@gmail.com</p>
+        <p class="mt-2 font-medium text-gray-900">📧 apporixApparel@gmail.com</p>
       </div>
     </div>
   </section>

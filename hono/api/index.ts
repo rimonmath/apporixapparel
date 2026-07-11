@@ -14,7 +14,7 @@ export default new Hono()
   .use(ddosProtectMiddleware)
   .route('/public', publicRoutes)
   .route('/auth', authRoutes)
-  // .route('/user', userRoutes)
+  .route('/user', userRoutes)
   // .route('/admin', adminRoutes)
   .route('/customer', customerRoutes)
   .route('/store/', storeRoutes);

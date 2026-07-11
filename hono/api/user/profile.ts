@@ -16,16 +16,14 @@ export default DashboardApp()
         updatedAt: false,
         emailVerificationCode: false,
         userType: false,
-        isActive: false,
-        serverId: false
+        isActive: false
       },
       with: {
         addresses: {
           columns: {
             createdAt: false,
             updatedAt: false,
-            userId: false,
-            serverId: false
+            userId: false
           }
         }
       },

@@ -13,9 +13,7 @@ import storesApp from './stores.js';
 import appsApp from './apps/index.js';
 import referralApp from './referral.js';
 
-export default DashboardApp()
-  .use(userAuthMiddleware)
-  .route('/profile', profileApp)
-  .route('/stores', storesApp)
-  .route('/apps', appsApp)
-  .route('/referral', referralApp);
+export default DashboardApp().use(userAuthMiddleware).route('/profile', profileApp);
+// .route('/stores', storesApp)
+// .route('/apps', appsApp);
+// .route('/referral', referralApp);
