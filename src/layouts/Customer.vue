@@ -34,14 +34,16 @@ const authorized = shallowRef(false);
 const { getProileMacine } = useDashboardHeader();
 
 const checkAuth = () => {
-  const accessToken = localStorage.getItem('accessToken');
-  if (!accessToken) {
+  const customerToken = localStorage.getItem('customerToken');
+  console.log('customerToken: ', customerToken);
+  if (!customerToken || customerToken === 'undefined') {
+    console.log('.... loging out...');
     window.location.href = '/auth/signin';
     return;
   }
 
   authChecked.value = true;
-  return accessToken;
+  return customerToken;
 };
 
 function renderIcon(icon: Component) {
@@ -72,8 +74,8 @@ const options = [
 
 function handleDropdownSelect(key: string) {
   if (key === 'signout') {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('customerToken');
+    // localStorage.removeItem('refreshToken');
     window.location.href = '/auth/signin';
   }
 }

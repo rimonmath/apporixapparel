@@ -39,10 +39,12 @@ const { getProileMacine } = useDashboardHeader();
 
 const checkAuth = () => {
   const accessToken = localStorage.getItem('accessToken');
-  if (!accessToken) {
+  if (!accessToken || accessToken === 'undefined') {
     window.location.href = '/auth/signin';
     return;
   }
+
+  unAuthorized.value = false;
 
   authChecked.value = true;
   return accessToken;
@@ -71,7 +73,7 @@ const options = [
 
 const sidebarExpanded = shallowRef(false);
 
-const unAuthorized = shallowRef(false);
+const unAuthorized = shallowRef(true);
 
 onMounted(async () => {
   if (!checkAuth()) {

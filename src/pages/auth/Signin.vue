@@ -116,9 +116,6 @@ const { openPopup } = useSsoSignin();
       <p class="mt-2 text-center">
         <SmartLink to="/" class="back-home">← Back to Home</SmartLink>
       </p>
-
-      <!-- <a href="#" class="back-home">← Back to Home</a> -->
-       <SmartLink to="/auth/admin-signin"> Admin Signin </SmartLink>
     </div>
 
     <div class="login-box" v-else>
