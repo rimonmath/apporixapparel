@@ -18,12 +18,21 @@ export function useCreate<
     };
 
     if (withCredentials) {
-      const token = localStorage.getItem('accessToken');
-      if (token) headers['Authorization'] = `Bearer ${token}`;
+      const accessToken = localStorage.getItem('accessToken');
+      const customerToken = localStorage.getItem('customerToken');
+
+      const computedURL = API_BASE_URL + (customUrl || url);
+
+      console.log(computedURL);
+
+      const token = computedURL.indexOf('/api/store') > -1 ? accessToken : customerToken;
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+
       const lastUserAgent = localStorage.getItem('lastUserAgent');
       if (lastUserAgent) headers['Last-User-Agent'] = lastUserAgent;
     }
-
     try {
       document.body.classList.add('lazy-loading');
       loading.value = true;

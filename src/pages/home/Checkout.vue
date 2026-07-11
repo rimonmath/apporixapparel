@@ -234,11 +234,11 @@ const getAddresses = async () => {
   }
 };
 
-const accessToken = localStorage.getItem('accessToken');
+const customerToken = localStorage.getItem('customerToken');
 
 onMounted(async () => {
   await deliveryOptionsMachine.start();
-  if (accessToken) {
+  if (customerToken) {
     await getAddresses();
   }
 });
@@ -259,7 +259,7 @@ onMounted(async () => {
       </div>
 
       <div v-else class="grid grid-cols-1 md:grid-cols-[3fr_1fr] gap-6">
-        <div class="bg-white p-6 rounded-xl shadow-sm" v-if="!accessToken">
+        <div class="bg-white p-6 rounded-xl shadow-sm" v-if="!customerToken">
           <div class="text-center">
             <h2>Sign in to place an order</h2>
 
@@ -464,7 +464,7 @@ onMounted(async () => {
 
           <div
             class="bg-white p-6 rounded-xl shadow-sm mt-4"
-            v-if="selectedDeliveryOption && accessToken"
+            v-if="selectedDeliveryOption && customerToken"
           >
             <div class="mb-1">
               <strong>Payment Method</strong>

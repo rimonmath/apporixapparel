@@ -4,12 +4,7 @@ import { sValidator } from '@hono/standard-validator';
 // import { addUserSchema, editUserSchema } from '@utils/zodSchemas.js';
 import { and, asc, desc, eq, sql } from 'drizzle-orm';
 import { DashboardApp, generateFilterConditions } from '../../utils/functions.js';
-import {
-  addEditAddressSchema,
-  addStoreSchema,
-  paginationSchema,
-  placeOrderSchema
-} from '../../utils/zodSchemas.js';
+import { paginationSchema, placeOrderSchema } from '../../utils/zodSchemas.js';
 import { Product } from '../../utils/types.js';
 import z from 'zod';
 
@@ -236,7 +231,6 @@ export default DashboardApp()
           userId: c.get('jwtPayload').userId,
           orderStatus: 'Placed',
           paymentStatus: 'Pending',
-          orderNumber: String(orderNumber),
           subtotal: String(body.subtotal),
           couponId: body.couponId ? Number(body.couponId) : null,
           couponDiscount: String(body.couponDiscount || 0),
