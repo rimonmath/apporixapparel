@@ -21,6 +21,6 @@ export default DashboardApp()
   .route('/doptions', dOptionsApp)
   .route('/carousels', carouselsApp)
   .route('/coupons', couponsApp)
-  // .route('/orders', ordersApp)
+  .route('/orders', ordersApp)
   .route('/pages', pagesApp)
   .route('/settings', settingsApp);

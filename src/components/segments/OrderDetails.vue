@@ -38,8 +38,6 @@ const props = withDefaults(defineProps<Props>(), {
   editMode: false
 });
 
-const { subDomain } = useStoreInfo();
-
 const message = useMessage();
 
 const allSteps = [
@@ -80,7 +78,7 @@ const nextStepForm = shallowReactive({
 });
 
 const detailsURL = props.editMode
-  ? `/store/${subDomain.value}/orders/${props.orderId}`
+  ? `/store/orders/${props.orderId}`
   : `/customer/orders/${props.orderId}`;
 
 const readMachine = useRead<Order, true>(detailsURL, true);
@@ -98,7 +96,7 @@ const remainingSteps = computed(() => {
 const showNextStep = shallowRef(false);
 
 const addNextStepMachine = useCreate<SuccessResponse>(
-  '/store/' + subDomain.value + '/orders/' + props.orderId + '/add-next-step',
+  '/store/orders/' + props.orderId + '/add-next-step',
   true
 );
 
@@ -127,7 +125,7 @@ onMounted(() => {
 
       <div class="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-7 mt-5">
         <div>
-          <h4>Order Items (#{{ readMachine.response.value?.orderNumber }})</h4>
+          <h4>Order Items (#{{ readMachine.response.value?.id }})</h4>
 
           <div class="table-container mt-2">
             <NTable>

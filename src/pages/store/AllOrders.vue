@@ -56,7 +56,6 @@ const router = useRouter();
 const route = useRoute();
 
 const { ordersCountMachine } = useStoreSidebar();
-const { subDomain } = useStoreInfo();
 
 interface Props {
   orderStatus?: string;
@@ -81,7 +80,7 @@ const extra = computed(() => {
 });
 
 // const createMachine = useCreate<SuccessResponse>('/admin/products', true);
-const ordersMachine = useRead<Order[], true>(`/store/${subDomain.value}/orders`, true, {
+const ordersMachine = useRead<Order[], true>(`/store/orders`, true, {
   route,
   router,
   extra
@@ -213,7 +212,7 @@ watch(detailsDialog, (newValue, oldValue) => {
         </thead>
         <tbody>
           <tr v-for="item in ordersMachine.response.value" :key="item.id">
-            <td>{{ item.orderNumber }}</td>
+            <td>{{ item.id }}</td>
             <td>{{ formatDateWithTime(item.createdAt) }}</td>
             <td>{{ item.user.name }}</td>
             <td>

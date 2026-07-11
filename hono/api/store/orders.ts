@@ -31,7 +31,7 @@ export default DashboardApp()
       const { page, pageSize, sortDirection, sortBy, ...filters } = c.req.valid('query');
 
       const staticConditions: any = [
-        eq(Orders.storeId, c.var.jwtPayload.storeId)
+        // eq(Orders.storeId, c.var.jwtPayload.storeId)
         // eq(Products.schoolId, c.var.jwtPayload.schoolId)
       ];
 
@@ -59,8 +59,7 @@ export default DashboardApp()
             columns: {
               createdAt: false,
               updatedAt: false,
-              id: false,
-              storeId: false
+              id: false
             },
             with: {
               product: {
@@ -95,7 +94,6 @@ export default DashboardApp()
       sql`
         SELECT order_status, COUNT(*) AS count
         FROM orders
-        WHERE store_id = ${c.var.jwtPayload.storeId}
         GROUP BY order_status
       `
     );
@@ -117,7 +115,6 @@ export default DashboardApp()
     const order = await db.query.Orders.findFirst({
       columns: {
         adminNote: false,
-        storeId: false,
         userId: false
       },
       with: {
@@ -125,8 +122,7 @@ export default DashboardApp()
           columns: {
             createdAt: false,
             updatedAt: false,
-            id: false,
-            storeId: false
+            id: false
           },
           with: {
             product: {
@@ -175,8 +171,7 @@ export default DashboardApp()
           }
         }
       },
-      where: (fields, { eq, and }) =>
-        and(eq(fields.id, Number(c.req.param('id'))), eq(fields.storeId, c.var.jwtPayload.storeId))
+      where: (fields, { eq, and }) => eq(fields.id, Number(c.req.param('id')))
     });
     // console.log(products);
     return c.json(order);
@@ -188,7 +183,6 @@ export default DashboardApp()
       await tx.insert(OrderStatusHistory).values({
         ...body,
         orderId: Number(c.req.param('id')),
-        storeId: c.var.jwtPayload.storeId,
         updatedBy: c.var.jwtPayload.userId
       });
 
@@ -197,12 +191,7 @@ export default DashboardApp()
         .set({
           orderStatus: body.status
         })
-        .where(
-          and(
-            eq(Orders.id, Number(c.req.param('id'))),
-            eq(Orders.storeId, c.var.jwtPayload.storeId)
-          )
-        );
+        .where(eq(Orders.id, Number(c.req.param('id'))));
     });
 
     return c.json({ message: 'Order updated successfully!' });
