@@ -30,9 +30,9 @@ import HomeNav from './HomeNav.vue';
 import HomeLinks from './HomeLinks.vue';
 const { categoriesMachine, categories, pagesMachine, storeDetailsMachine } = useHomeHeader();
 
-const { isKhudroshopHost } = useHost();
+// const { isKhudroshopHost } = useHost();
 
-const accessToken = localStorage.getItem('accessToken');
+const customerToken = localStorage.getItem('customerToken');
 const userType = localStorage.getItem('userType');
 
 onMounted(() => {
@@ -115,7 +115,7 @@ const vw = innerWidth;
         <div class="flex itemc-center gap-2">
           <HomeLinks class="hidden md:flex" />
           <div class="hidden md:flex items-center gap-2">
-            <SmartLink v-if="accessToken" to="/customer">
+            <SmartLink v-if="customerToken" to="/customer">
               <div class="flex items-center gap-2">
                 <NIcon>
                   <AppsOutline />
@@ -124,7 +124,7 @@ const vw = innerWidth;
               </div>
             </SmartLink>
 
-            <!-- <SmartLink v-if="!accessToken" to="/auth/signin">
+            <!-- <SmartLink v-if="!customerToken" to="/auth/signin">
               <div class="flex items-center gap-1">
                 <NIcon>
                   <LogInOutline />
@@ -132,7 +132,7 @@ const vw = innerWidth;
                 <span>Signin</span>
               </div>
             </SmartLink>
-            <SmartLink v-if="!accessToken && isKhudroshopHost" to="/auth/signup">Signup</SmartLink> -->
+            <SmartLink v-if="!customerToken && isKhudroshopHost" to="/auth/signup">Signup</SmartLink> -->
           </div>
         </div>
 
@@ -149,7 +149,7 @@ const vw = innerWidth;
             <div v-if="vw < 600" class="text-white">
               <HomeNav class="hn__nav--sm" @needToHide="rightDrawer = false" />
 
-              <SmartLink v-if="accessToken" to="/customer">
+              <SmartLink v-if="customerToken" to="/customer">
                 <div class="flex items-center gap-2 mt-2">
                   <!-- <NIcon>
                     <AppsOutline />
@@ -158,7 +158,7 @@ const vw = innerWidth;
                 </div>
               </SmartLink>
 
-              <SmartLink v-if="!accessToken" to="/auth/signin">
+              <SmartLink v-if="!customerToken" to="/auth/signin">
                 <div class="flex items-center gap-1">
                   <NIcon>
                     <LogInOutline />
@@ -166,9 +166,7 @@ const vw = innerWidth;
                   <span>Signin</span>
                 </div>
               </SmartLink>
-              <SmartLink v-if="!accessToken && isKhudroshopHost" to="/auth/signup">
-                Signup
-              </SmartLink>
+              <SmartLink v-if="!customerToken" to="/auth/signup"> Signup </SmartLink>
             </div>
           </NDrawerContent>
         </NDrawer>

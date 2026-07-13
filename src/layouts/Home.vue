@@ -7,7 +7,7 @@ import { useCart } from '@/composables/useCart';
 import { useHomeHeader } from '@/composables/useHomeHeader';
 import { CartOutline, ChevronForward, CloseOutline } from '@vicons/ionicons5';
 import { NButton, NDrawer, NDrawerContent, NIcon } from 'naive-ui';
-import { shallowRef } from 'vue';
+import { onMounted, shallowRef } from 'vue';
 import { RouterView } from 'vue-router';
 
 // const props = defineProps({
@@ -20,6 +20,16 @@ import { RouterView } from 'vue-router';
 const { totalCartItems, totalCartPrice, direction, cartOpened, addingToCart } = useCart();
 
 const { storeDetailsMachine } = useHomeHeader();
+
+onMounted(async () => {
+  await storeDetailsMachine.start();
+  if (storeDetailsMachine.response.value) {
+    document.body.style.setProperty(
+      '--primary-color',
+      storeDetailsMachine.response.value.brandColor || '#000000'
+    );
+  }
+});
 
 const vw = innerWidth;
 </script>

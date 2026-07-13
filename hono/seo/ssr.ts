@@ -105,8 +105,8 @@ export const renderSSRPage = async (params: {
       `<title>${escapeHtml(updatedTitle)}</title>
         <style>
         :root, body {
-          --primary-color: ${updatedBrandColor || '#000'} !important;
-          --brand-color: ${updatedBrandColor || '#000'} !important;
+          --primary-color: ${updatedBrandColor || '#db6300'} !important;
+          --brand-color: ${updatedBrandColor || '#db6300'} !important;
          
         } 
         </style>

@@ -31,7 +31,7 @@ const router = useRouter();
 // console.log(path);
 // let storeInfoMachine;
 
-// const { storeInfoMachine, subDomain } = useStoreInfo();
+const { storeInfoMachine } = useStoreInfo();
 
 const authChecked = shallowRef(false);
 const authorized = shallowRef(false);
@@ -81,6 +81,15 @@ onMounted(async () => {
   }
 
   authorized.value = true;
+
+  await storeInfoMachine.start();
+
+  if (storeInfoMachine.response.value) {
+    document.body.style.setProperty(
+      '--primary-color',
+      storeInfoMachine.response.value.brandColor || '#000000'
+    );
+  }
 
   // getProileMacine.start();
 });

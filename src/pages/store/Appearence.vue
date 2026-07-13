@@ -7,7 +7,7 @@ import { CartOutline } from '@vicons/ionicons5';
 import { NCard, NIcon, useMessage } from 'naive-ui';
 import { shallowRef, watch } from 'vue';
 
-const { storeInfoMachine, subDomain } = useStoreInfo();
+const { storeInfoMachine } = useStoreInfo();
 const primaryColor = shallowRef(storeInfoMachine.response.value?.brandColor || '#000000');
 const layout = shallowRef(storeInfoMachine.response.value?.layout || 'layout1');
 const SaveAppearenceMachine = useUpdate<SuccessResponse>(true);
@@ -15,7 +15,7 @@ const SaveAppearenceMachine = useUpdate<SuccessResponse>(true);
 const message = useMessage();
 
 const saveChanged = async () => {
-  await SaveAppearenceMachine.start(`/store/${subDomain.value}/settings/appearance`, {
+  await SaveAppearenceMachine.start(`/store/settings/appearance`, {
     brandColor: primaryColor.value,
     layout: layout.value
   });
@@ -30,6 +30,16 @@ const saveChanged = async () => {
 watch(primaryColor, () => {
   document.body.style.setProperty('--primary-color', primaryColor.value);
 });
+
+watch(
+  storeInfoMachine.response,
+  () => {
+    if (storeInfoMachine.response.value) {
+      primaryColor.value = storeInfoMachine.response.value.brandColor || '#000000';
+    }
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
