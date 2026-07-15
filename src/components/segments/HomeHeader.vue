@@ -124,7 +124,7 @@ const vw = innerWidth;
               </div>
             </SmartLink>
 
-            <!-- <SmartLink v-if="!customerToken" to="/auth/signin">
+            <SmartLink v-if="!customerToken" to="/auth/signin">
               <div class="flex items-center gap-1">
                 <NIcon>
                   <LogInOutline />
@@ -132,7 +132,7 @@ const vw = innerWidth;
                 <span>Signin</span>
               </div>
             </SmartLink>
-            <SmartLink v-if="!customerToken && isKhudroshopHost" to="/auth/signup">Signup</SmartLink> -->
+            <!-- <SmartLink v-if="!customerToken" to="/auth/signup">Signup</SmartLink> -->
           </div>
         </div>
 

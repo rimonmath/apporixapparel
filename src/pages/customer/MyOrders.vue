@@ -114,7 +114,7 @@ onMounted(() => {
         </thead>
         <tbody>
           <tr v-for="item in ordersMachine.response.value" :key="item.id">
-            <td>#{{ item.orderNumber }}</td>
+            <td># {{ item.id }}</td>
             <td>{{ formatDateWithTime(item.createdAt) }}</td>
             <td>
               <!-- {{ item.orderItems.map((item) => item.product.title).join(', ') }} -->

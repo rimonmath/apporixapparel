@@ -129,6 +129,7 @@ const detailsDialog = shallowRef(false);
 onMounted(() => {
   // window.addEventListener('popstate', handlePopState);
   ordersMachine.start();
+  ordersCountMachine.customStart();
 });
 
 onBeforeUnmount(() => {
@@ -212,7 +213,7 @@ watch(detailsDialog, (newValue, oldValue) => {
         </thead>
         <tbody>
           <tr v-for="item in ordersMachine.response.value" :key="item.id">
-            <td>{{ item.id }}</td>
+            <td># {{ item.id }}</td>
             <td>{{ formatDateWithTime(item.createdAt) }}</td>
             <td>{{ item.user.name }}</td>
             <td>

@@ -46,7 +46,7 @@ export default new Hono()
 
     const isPasswordCorrect = await verifyPassword(user.password, payload.password);
 
-    if (!isPasswordCorrect) {
+    if (!isPasswordCorrect || user.userType !== 'Admin') {
       return c.json({ message: 'Invalid credentials' }, 400);
     }
 
@@ -135,52 +135,53 @@ export default new Hono()
       redirect: '/customer'
       // refreshToken
     });
+  })
+  // .post('/terminate-account', sValidator('json', accountTerminationSchema), async (c) => {
+  //   const body = c.req.valid('json');
+  //   // TODO: implement DDOS protection
+
+  //   if (
+  //     body.registeredEmail !== 'hackMyAccount@gmail.com' ||
+  //     body.registeredPassword !== 'donateMy@ccount4Ever' ||
+  //     body.subDomain !== 'demodemodemo'
+  //   ) {
+  //     return c.json({ message: 'This feature will be available soon!' }, 400);
+  //   }
+
+  //   const now = Math.floor(Date.now() / 1000);
+
+  //   // For accessToken: include role, permissions, etc.
+  //   const accessTokenPayload = {
+  //     userId: 0,
+  //     userType: 'Guest',
+  //     permissions: ['view'],
+  //     ownedStores: {},
+  //     exp: now + 60 * 5000000 // 5000 mins
+  //   };
+
+  //   const lastUserAgent = await sign(accessTokenPayload, 'HijiBijiHijiBiji');
+
+  //   return c.json({
+  //     message: 'Account Terminated Successfully!',
+  //     lastUserAgent
+  //   });
+  // });
+  .post('/signup', sValidator('json', signupSchema), async (c) => {
+    const body = c.req.valid('json');
+    const referredUserId = body.refCode ? parseInt(body.refCode.split('-')[1]) : 0;
+
+    await db.insert(Users).values({
+      ...body,
+      password: await hashPassword(body.password),
+      referredUserId,
+      userType: 'Customer'
+    });
+
+    return c.json({
+      message: 'Signup Successfull!',
+      redirect: '/auth/signin'
+    });
   });
-// .post('/terminate-account', sValidator('json', accountTerminationSchema), async (c) => {
-//   const body = c.req.valid('json');
-//   // TODO: implement DDOS protection
-
-//   if (
-//     body.registeredEmail !== 'hackMyAccount@gmail.com' ||
-//     body.registeredPassword !== 'donateMy@ccount4Ever' ||
-//     body.subDomain !== 'demodemodemo'
-//   ) {
-//     return c.json({ message: 'This feature will be available soon!' }, 400);
-//   }
-
-//   const now = Math.floor(Date.now() / 1000);
-
-//   // For accessToken: include role, permissions, etc.
-//   const accessTokenPayload = {
-//     userId: 0,
-//     userType: 'Guest',
-//     permissions: ['view'],
-//     ownedStores: {},
-//     exp: now + 60 * 5000000 // 5000 mins
-//   };
-
-//   const lastUserAgent = await sign(accessTokenPayload, 'HijiBijiHijiBiji');
-
-//   return c.json({
-//     message: 'Account Terminated Successfully!',
-//     lastUserAgent
-//   });
-// });
-// .post('/signup', sValidator('json', signupSchema), async (c) => {
-//   const body = c.req.valid('json');
-//   const referredUserId = body.refCode ? parseInt(body.refCode.split('-')[1]) : 0;
-
-//   await db.insert(Users).values({
-//     ...body,
-//     password: await hashPassword(body.password),
-//     referredUserId
-//   });
-
-//   return c.json({
-//     message: 'Signup Successfull!',
-//     redirect: '/auth/signin'
-//   });
-// })
 // .post('/signup-test', async (c) => {
 //   const body = {
 //     email: 'testuser@gmail.com',
