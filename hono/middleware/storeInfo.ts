@@ -6,25 +6,17 @@ import type { StoreInfo } from '../utils/node-types';
 import { Context } from 'hono';
 
 const storesMap: Record<string, StoreInfo> = {
-  'khudroshop.com': {
+  'apporixapparel.com': {
     storeId: 0,
     serverId: 0,
     packageExpiry: '',
-    name: 'Khudroshop',
+    name: 'Apporix Apparel',
     subDomain: '',
     customDomain: null,
     metaTitle:
-      'Khudroshop, Empowering small businesses with simple, powerful tools to manage their online presence.',
-    metaDescription: 'KhudroShop is a platform for artisans to sell their products online.',
-    metaKeywords: [
-      'website',
-      'app',
-      'store builder',
-      'shop',
-      'shop builder',
-      'bangla',
-      'bangladesh'
-    ],
+      'Apporix Apparel, Empowering small businesses with simple, powerful tools to manage their online presence.',
+    metaDescription: 'Apporix Apparel is a platform to sell products online.',
+    metaKeywords: ['website', 'app', 'shop', 'bangla', 'bangladesh'],
     logoUrl: '/img/logo.png',
     brandColor: '#00ae64',
     faviconUrl: '/favicon.png',
