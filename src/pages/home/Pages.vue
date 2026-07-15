@@ -26,7 +26,7 @@ watch(
   <div class="container min-h-[80vh] pt-10">
     <NSkeleton v-if="pageDetailsMachine.loading?.value" text :repeat="4" />
 
-    <div v-else>
+    <div v-else class="mb-10">
       <h1>{{ pageDetailsMachine.response.value?.title }}</h1>
       <div class="mt-4 rich-text" v-html="pageDetailsMachine.response.value?.description"></div>
     </div>
