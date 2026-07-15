@@ -9,16 +9,7 @@ export const renderCategoryPage = async (c: Context) => {
 
   // fetch categoryDetails from DB...
   const categoryDetails = await db.query.Categories.findFirst({
-    with: {
-      store: {
-        columns: {
-          id: true,
-          name: true,
-          brandColor: true
-        }
-      }
-    },
-    where: (fields, { eq, and }) => and(eq(fields.id, Number(categoryId)))
+    where: (fields, { eq }) => eq(fields.id, Number(categoryId))
   });
 
   if (!categoryDetails) {
