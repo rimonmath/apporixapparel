@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useHomeHeader } from '@/composables/useHomeHeader';
-import { useHost } from '@/composables/useHost';
 import { useStoreInfo } from '@/composables/useStoreInfo';
 import { getUploadedUrl, replaceSpaces } from '@/utils/functions';
 import {
@@ -27,8 +26,6 @@ import { onMounted, shallowRef, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import HomeNav from './HomeNav.vue';
 const { categoriesMachine, categories, pagesMachine, storeDetailsMachine } = useHomeHeader();
-
-const { isKhudroshopHost } = useHost();
 
 const accessToken = localStorage.getItem('accessToken');
 const userType = localStorage.getItem('userType');

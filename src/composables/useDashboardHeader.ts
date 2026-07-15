@@ -11,12 +11,7 @@ import { useRead } from './useRead';
 //   Archived: number;
 // };
 
-const { isKhudroshopHost } = useHost();
-
-const getProileMacine = useRead<{ name: string }>(
-  isKhudroshopHost ? '/user/profile/summary' : '/customer/profile/summary',
-  true
-);
+const getProileMacine = useRead<{ name: string }>('/customer/profile/summary', true);
 
 export function useDashboardHeader() {
   return {

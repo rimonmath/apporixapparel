@@ -2,7 +2,6 @@
 import AForm from '@/components/form/AForm.vue';
 import AFormInput from '@/components/form/AFormInput.vue';
 import { useCreate } from '@/composables/useCreate';
-import { useHost } from '@/composables/useHost';
 import { useSsoSignin } from '@/composables/useSsoSignin';
 import { beautifyError } from '@/utils/functions.js';
 import { signinSchema } from '@/utils/schemas.js';
@@ -10,8 +9,6 @@ import type { SigninResponse } from '@/utils/types';
 import { NInput, NButton, NFormItem, NModal, useMessage } from 'naive-ui';
 import { shallowReactive, shallowRef } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-
-const { isKhudroshopHost } = useHost();
 
 const message = useMessage();
 

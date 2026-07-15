@@ -2,15 +2,12 @@
 import AForm from '@/components/form/AForm.vue';
 import AFormInput from '@/components/form/AFormInput.vue';
 import { useCreate } from '@/composables/useCreate';
-import { useHost } from '@/composables/useHost';
 import { beautifyError } from '@/utils/functions.js';
 import { signupSchema } from '@/utils/schemas.js';
 import type { SuccessResponse } from '@/utils/types';
 import { NInput, NButton, NFormItem, NModal, useMessage } from 'naive-ui';
 import { onMounted, shallowReactive, shallowRef } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-
-const { isKhudroshopHost } = useHost();
 
 const message = useMessage();
 
@@ -59,14 +56,12 @@ async function handleSubmit() {
 }
 
 onMounted(() => {
-  if (!isKhudroshopHost) {
-    router.push('/auth/signin');
-  }
+  router.push('/auth/signin');
 });
 </script>
 
 <template>
-  <div class="login-container" v-if="isKhudroshopHost">
+  <div class="login-container">
     <div class="login-box">
       <div class="text-center mb-2">
         <img src="/img/logo.png" class="inline-block max-h-[50px]" alt="" />

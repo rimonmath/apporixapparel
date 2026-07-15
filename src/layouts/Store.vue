@@ -19,10 +19,7 @@ import { error } from 'naive-ui/es/_utils/naive/warn';
 import { useRouter } from 'vue-router';
 import { useStoreInfo } from '@/composables/useStoreInfo';
 import StoreSidebar from '@/components/segments/StoreSidebar.vue';
-import { useHost } from '@/composables/useHost';
 import DomainSettings from '@/components/segments/DomainSettings.vue';
-
-// const { isKhudroshopHost } = useHost();
 
 const router = useRouter();
 

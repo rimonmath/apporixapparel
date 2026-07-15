@@ -1,6 +1,5 @@
 <script setup>
 import { useHomeHeader } from '@/composables/useHomeHeader';
-import { useHost } from '@/composables/useHost';
 import { getUploadedUrl, replaceSpaces } from '@/utils/functions';
 import {
   LocationOutline,
@@ -15,8 +14,6 @@ import { NIcon } from 'naive-ui';
 import { onMounted } from 'vue';
 
 const { categoriesMachine, categories, pagesMachine, storeDetailsMachine } = useHomeHeader();
-
-const { isKhudroshopHost } = useHost();
 
 onMounted(() => {
   categoriesMachine.start();

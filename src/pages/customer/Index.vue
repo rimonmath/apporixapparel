@@ -1,5 +1,4 @@
 <script setup>
-import { useHost } from '@/composables/useHost';
 import CustomerLayout from '@/layouts/Customer.vue';
 </script>
 
