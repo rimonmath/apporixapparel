@@ -1,6 +1,5 @@
 // composables/useCounter.ts
 // import { onMounted, ref, shallowReactive } from 'vue';
-import { useHost } from './useHost';
 import { useRead } from './useRead';
 
 // type SidebarData = {
