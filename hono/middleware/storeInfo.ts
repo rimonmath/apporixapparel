@@ -117,7 +117,8 @@ function getBaseHost(c: Context): string {
 }
 
 export const getStoreInfo = (host: string): StoreInfo | null => {
-  return storesMap[host];
+  // return storesMap[host];
+  return storesMap['apporixapparel.com'];
 };
 
 export const storeInfoMiddleware = createMiddleware<{
