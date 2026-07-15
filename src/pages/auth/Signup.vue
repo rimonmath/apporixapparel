@@ -55,9 +55,7 @@ async function handleSubmit() {
   }
 }
 
-onMounted(() => {
-  router.push('/auth/signin');
-});
+onMounted(() => {});
 </script>
 
 <template>
