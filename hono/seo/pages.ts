@@ -9,14 +9,7 @@ export const renderPagePage = async (c: Context) => {
 
   // fetch pageDetails from DB...
   const pageDetails = await db.query.Pages.findFirst({
-    with: {
-      store: {
-        columns: {
-          brandColor: true
-        }
-      }
-    },
-    where: (fields, { eq, and }) => and(eq(fields.id, Number(pageId)))
+    where: (fields, { eq }) => eq(fields.id, Number(pageId))
   });
 
   if (!pageDetails) {
