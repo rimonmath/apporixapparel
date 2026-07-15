@@ -16,12 +16,7 @@ export const renderPagePage = async (c: Context) => {
         }
       }
     },
-    where: (fields, { eq, and }) =>
-      and(
-        eq(fields.id, Number(pageId)),
-        eq(fields.storeId, c.get('storeInfo').storeId),
-        eq(fields.serverId, c.get('storeInfo').serverId)
-      )
+    where: (fields, { eq, and }) => and(eq(fields.id, Number(pageId)))
   });
 
   if (!pageDetails) {
@@ -43,7 +38,7 @@ export const renderPagePage = async (c: Context) => {
     url: `${process.env.VITE_API_DOMAIN}/pages/${pageId}/${replaceSpaces(pageDetails.name)}`,
     type: 'product',
     bodyContent: `<h1>${pageDetails.title}</h1><p>${pageDetails.description}</p>`,
-    brandColor: String(pageDetails.store.brandColor),
+    brandColor: `#db6300`,
     c: c
   });
 

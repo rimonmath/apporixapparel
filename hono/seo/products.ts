@@ -9,21 +9,9 @@ export const renderProductPage = async (c: Context) => {
   // fetch productDetails from DB...
   const productDetails = await db.query.Products.findFirst({
     with: {
-      images: true,
-      store: {
-        columns: {
-          id: true,
-          name: true,
-          brandColor: true
-        }
-      }
+      images: true
     },
-    where: (fields, { eq, and }) =>
-      and(
-        eq(fields.id, Number(productId)),
-        eq(fields.storeId, c.get('storeInfo').storeId),
-        eq(fields.serverId, c.get('storeInfo').serverId)
-      )
+    where: (fields, { eq }) => eq(fields.id, Number(productId))
   });
 
   if (!productDetails) {
@@ -39,7 +27,7 @@ export const renderProductPage = async (c: Context) => {
   }
 
   const htmlCode = await renderSSRPage({
-    title: `${productDetails.title} | ${productDetails.store.name}`,
+    title: `${productDetails.title} | Apporix Apparel`,
     description: productDetails.description || 'No description',
     keywords: productDetails.tags?.join(',') || 'product, shop',
     image: productDetails.images?.[0]?.url
@@ -48,7 +36,7 @@ export const renderProductPage = async (c: Context) => {
     url: `${process.env.VITE_API_DOMAIN}/product/${productId}/${replaceSpaces(productDetails.title)}`,
     type: 'product',
     bodyContent: `<h1>${productDetails.title}</h1><p>${productDetails.description}</p>`,
-    brandColor: String(productDetails.store.brandColor),
+    brandColor: `#db6300`,
     c: c
   });
 

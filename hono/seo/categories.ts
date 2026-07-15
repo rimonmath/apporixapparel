@@ -18,12 +18,7 @@ export const renderCategoryPage = async (c: Context) => {
         }
       }
     },
-    where: (fields, { eq, and }) =>
-      and(
-        eq(fields.id, Number(categoryId)),
-        eq(fields.storeId, c.get('storeInfo').storeId),
-        eq(fields.serverId, c.get('storeInfo').serverId)
-      )
+    where: (fields, { eq, and }) => and(eq(fields.id, Number(categoryId)))
   });
 
   if (!categoryDetails) {
@@ -46,7 +41,7 @@ export const renderCategoryPage = async (c: Context) => {
     url: `${process.env.VITE_API_DOMAIN}/categories/${categoryId}/${replaceSpaces(categoryDetails.name)}`,
     type: 'product',
     bodyContent: `<h1>${categoryDetails.name}</h1><p>${categoryDetails.metaDescription}</p>`,
-    brandColor: String(categoryDetails.store.brandColor),
+    brandColor: `#db6300`,
     c: c
   });
 

@@ -12,7 +12,7 @@ const storesMap: Record<string, StoreInfo> = {
     packageExpiry: '',
     name: 'Apporix Apparel',
     subDomain: '',
-    customDomain: null,
+    customDomain: 'https://apporixapparel.com',
     metaTitle:
       'Apporix Apparel, Empowering small businesses with simple, powerful tools to manage their online presence.',
     metaDescription: 'Apporix Apparel is a platform to sell products online.',

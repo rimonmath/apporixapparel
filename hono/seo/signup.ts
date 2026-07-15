@@ -9,7 +9,25 @@ import { db } from '../db/index.js';
 export const renderSignupPage = async (c: Context) => {
   // const productId = c.req.param('productId');
 
-  const websiteDetails = c.get('storeInfo');
+  const websiteDetails = {
+    storeId: 0,
+    serverId: 0,
+    packageExpiry: '',
+    name: 'Apporix Apparel',
+    subDomain: '',
+    customDomain: 'https://apporixapparel.com',
+    metaTitle:
+      'Apporix Apparel, Empowering small businesses with simple, powerful tools to manage their online presence.',
+    metaDescription: 'Apporix Apparel is a platform to sell products online.',
+    metaKeywords: ['website', 'app', 'shop', 'bangla', 'bangladesh'],
+    logoUrl: '/img/logo.png',
+    brandColor: '#db6300',
+    faviconUrl: '/favicon.png',
+    currency: '',
+    timezone: '',
+    status: ''
+  };
+  //c.get('storeInfo');
 
   const html = await renderSSRPage({
     c: c,

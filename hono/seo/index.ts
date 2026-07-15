@@ -10,17 +10,17 @@ export const renderIndexPage = async (c: Context) => {
   // const productId = c.req.param('productId');
 
   const websiteDetails = c.get('storeInfo');
-  console.log(websiteDetails);
+  // console.log(websiteDetails);
 
   if (!websiteDetails) {
     // console.log('====================== > storeInfo', c.get('storeInfo'));
     return c.html(
       await renderSSRPage({
         c: c,
-        title: c.req.header('host') || 'Khudroshop',
-        description: c.req.header('host') || 'Khudroshop',
-        url: `https://khudroshop.com`,
-        bodyContent: `<h1>Khudroshop</h1>`
+        title: c.req.header('host') || 'Apporix Apparel',
+        description: c.req.header('host') || 'Apporix Apparel',
+        url: `https://apporixapparel.com`,
+        bodyContent: `<h1>Apporix Apparel</h1>`
       })
     );
   }
