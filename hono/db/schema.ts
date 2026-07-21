@@ -27,10 +27,15 @@ export const incomeOrExpenseTypeEnum = pgEnum('income_or_expense_type', ['Income
 export const dealerStatementTypeEnum = pgEnum('dealer_statement_type', ['Debit', 'Credit']);
 
 export const paymentStatusEnum = pgEnum('payment_status', [
+  'Unpaid',
   'Pending',
+  'Partially Paid',
   'Paid',
   'Failed',
-  'Refunded'
+  'Refund Requested',
+  'Partially Refunded',
+  'Refunded',
+  'Refund Cancelled'
 ]);
 
 export const orderStatusEnum = pgEnum('order_status', [
@@ -271,7 +276,8 @@ export const Orders = pgTable('orders', {
   deliveryOption: varchar('delivery_option', { length: 50 }).notNull(), // Inside Dhaka, Outside Dhaka, Pick Up. ///
   deliveryCharge: decimal('delivery_charge', { precision: 12, scale: 2 }).default('0'),
   total: decimal('total', { precision: 12, scale: 2 }).notNull(),
-  paymentStatus: paymentStatusEnum('payment_status').default('Pending').notNull(),
+  paymentStatus: paymentStatusEnum('payment_status').default('Unpaid').notNull(),
+  paymentHistory: jsonb('payment_history').default('[]').notNull(),
   orderStatus: orderStatusEnum('order_status').default('Placed').notNull(),
   ...commonFields
 });

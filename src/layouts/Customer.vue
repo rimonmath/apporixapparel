@@ -127,7 +127,16 @@ watch(
           </div>
         </SmartLink>
       </div>
-      <div class="customer__search"></div>
+      <div class="customer__search">
+        <SmartLink
+          to="/store"
+          class="text-primary-500 hover:underline"
+          v-if="getProileMacine.response.value?.userType === 'Admin'"
+        >
+          Store Dashboard
+        </SmartLink>
+        <!-- {{ getProileMacine.response.value?.name }} -->
+      </div>
       <div class="px-2">
         <div class="flex items-center space-x-2">
           <div class="ml-2 flex items-center">

@@ -79,7 +79,7 @@ const statusIcons = {
 onMounted(() => {
   // storeInfoMachine.start();
   // getPackagesMacine.start();
-  // RecentOrdersMachine.start();
+  RecentOrdersMachine.start();
 });
 </script>
 
@@ -113,7 +113,10 @@ onMounted(() => {
 
     <!-- Card 3: Compact stat with progress bar -->
 
-    <h4 class="mt-10">Recent Orders</h4>
+    <div class="flex justify-between align-center mt-10">
+      <h4>Recent Orders</h4>
+      <SmartLink to="/store/all-orders">View All &gt;</SmartLink>
+    </div>
     <div class="table-container">
       <!-- {{ RecentOrdersMachine.response.value }} -->
       <NTable
@@ -135,7 +138,7 @@ onMounted(() => {
         </thead>
         <tbody>
           <tr v-for="item in RecentOrdersMachine.response.value" :key="item.id">
-            <td>{{ item.orderNumber }}</td>
+            <td>#{{ item.id }}</td>
             <td>{{ formatDateWithTime(item.createdAt) }}</td>
             <td>{{ item.user.name }}</td>
             <td>

@@ -10,7 +10,10 @@ import { useRead } from './useRead';
 //   Archived: number;
 // };
 
-const getProileMacine = useRead<{ name: string }>('/customer/profile/summary', true);
+const getProileMacine = useRead<{ name: string; userType: string }>(
+  '/customer/profile/summary',
+  true
+);
 
 export function useDashboardHeader() {
   return {
