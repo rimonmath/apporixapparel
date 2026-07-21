@@ -26,7 +26,7 @@ export const couponTypeEnum = pgEnum('coupon_type', ['Percentage', 'Flat']);
 export const incomeOrExpenseTypeEnum = pgEnum('income_or_expense_type', ['Income', 'Expense']);
 export const dealerStatementTypeEnum = pgEnum('dealer_statement_type', ['Debit', 'Credit']);
 
-export const paymentStatusEnum = pgEnum('payment_status', [
+export const paymentStatusEnum = pgEnum('payment_status_enum', [
   'Unpaid',
   'Pending',
   'Partially Paid',
