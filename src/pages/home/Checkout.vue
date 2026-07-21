@@ -7,6 +7,7 @@ import { useDelete } from '@/composables/useDelete';
 import { useRead } from '@/composables/useRead';
 import { useSsoSignin } from '@/composables/useSsoSignin';
 import { useUpdate } from '@/composables/useUpdate';
+import { availablePaymentMethods } from '@/utils/data';
 import { beautifyError } from '@/utils/functions';
 import { addEditAddressSchema } from '@/utils/schemas';
 import type { Address, Coupon, DeliveryOption, SuccessResponse } from '@/utils/types';
@@ -61,14 +62,7 @@ const grandTotal = computed(() => {
   return totalCartPrice.value + Number(selectedDeliveryOption.value.charge) - couponDiscount.value;
 });
 
-const paymentMethods = shallowRef([
-  { label: 'Cash On Delivery', value: 'Cash On Delivery' },
-  { label: 'Bkash', value: 'Bkash' },
-  { label: 'Nagad', value: 'Nagad', disabled: true },
-  { label: 'Rocket', value: 'Rocket', disabled: true },
-  { label: 'Upay', value: 'Upay', disabled: true },
-  { label: 'Visa Card', value: 'Visa Card', disabled: true }
-]);
+const paymentMethods = shallowRef(availablePaymentMethods);
 
 const selectedPaymentMethod = shallowRef<string | null>(null);
 

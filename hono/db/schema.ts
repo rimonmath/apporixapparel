@@ -277,7 +277,19 @@ export const Orders = pgTable('orders', {
   deliveryCharge: decimal('delivery_charge', { precision: 12, scale: 2 }).default('0'),
   total: decimal('total', { precision: 12, scale: 2 }).notNull(),
   paymentStatus: paymentStatusEnum('payment_status').default('Unpaid').notNull(),
-  paymentHistory: jsonb('payment_history').default('[]').notNull(),
+  paymentHistory: jsonb('payment_history')
+    .$type<
+      {
+        transactionId: string;
+        amount: number;
+        status: string;
+        paymentMethod: string;
+        paymentMeta: string;
+        createdAt: string;
+      }[]
+    >()
+    .notNull()
+    .default([]),
   orderStatus: orderStatusEnum('order_status').default('Placed').notNull(),
   ...commonFields
 });

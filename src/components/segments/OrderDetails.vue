@@ -27,6 +27,7 @@ import AFormSelect from '../form/AFormSelect.vue';
 import AFormInput from '../form/AFormInput.vue';
 import AForm from '../form/AForm.vue';
 import { useCreate } from '@/composables/useCreate';
+import { availablePaymentMethods } from '@/utils/data.ts';
 
 interface Props {
   orderId: number;
@@ -77,6 +78,16 @@ const nextStepForm = shallowReactive({
   note: ''
 });
 
+const paymentMethods = shallowRef(availablePaymentMethods);
+
+const paymentHistoryForm = shallowReactive({
+  paymentStatus: null,
+  transactionId: '',
+  amount: 0,
+  paymentMethod: paymentMethods.value[0],
+  paymentMeta: ''
+});
+
 const detailsURL = props.editMode
   ? `/store/orders/${props.orderId}`
   : `/customer/orders/${props.orderId}`;
@@ -90,7 +101,9 @@ const getOrderDetails = () => {
 const remainingSteps = computed(() => {
   if (!readMachine.response.value) return 0;
 
-  return 6 - readMachine.response.value?.orderStatusHistory.length;
+  const rSteps = 6 - (readMachine.response.value.orderStatusHistory?.length || 0);
+
+  return rSteps > 0 ? rSteps : 0;
 });
 
 const showNextStep = shallowRef(false);
@@ -111,6 +124,31 @@ const addNextStep = async () => {
     message.success('Order updated successfully!');
     showNextStep.value = false;
   }
+};
+
+const addPaymentHistoryMachine = useCreate<SuccessResponse>(
+  '/store/orders/' + props.orderId + '/add-payment-history',
+  true
+);
+
+const addPaymentHistory = async () => {
+  await addPaymentHistoryMachine.start(paymentHistoryForm);
+
+  if (addPaymentHistoryMachine.error.value) {
+    message.error(beautifyError(addPaymentHistoryMachine.error.value));
+  } else {
+    getOrderDetails();
+    message.success('Payment added successfully!');
+    resetPaymentHistoryForm();
+  }
+};
+
+const resetPaymentHistoryForm = () => {
+  paymentHistoryForm.paymentStatus = null;
+  paymentHistoryForm.transactionId = '';
+  paymentHistoryForm.amount = 0;
+  paymentHistoryForm.paymentMethod = paymentMethods.value[0];
+  paymentHistoryForm.paymentMeta = '';
 };
 
 onMounted(() => {
@@ -192,7 +230,7 @@ onMounted(() => {
 
           <h4 class="mt-8">Payment Information</h4>
           <NCard class="mt-2">
-            <div class="grid grid-cols-1 md:grid-cols-3">
+            <div class="grid grid-cols-1 md:grid-cols-[1fr_1fr_2fr]">
               <div>
                 <p class="font-bold">Payment Method</p>
                 <p>{{ readMachine.response.value?.paymentMethod }}</p>
@@ -202,8 +240,33 @@ onMounted(() => {
                 <p>{{ readMachine.response.value?.paymentStatus }}</p>
               </div>
               <div>
-                <p class="font-bold">Transaction ID</p>
-                <p>{{ readMachine.response.value?.transactionId || 'N/A' }}</p>
+                <div class="flex items-center justify-between">
+                  <p class="font-bold">Payment History</p>
+                  <NButton size="small" v-if="editMode"> Add Payment </NButton>
+                </div>
+                <div>
+                  <table class="w-full">
+                    <thead>
+                      <tr>
+                        <th>Date</th>
+                        <th>Method</th>
+                        <th>Trx ID</th>
+                        <th>Status</th>
+                        <th>Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="payment in readMachine.response.value?.paymentHistory">
+                        <td>{{ payment.transactionId }}</td>
+                        <td>{{ payment.amount }}</td>
+                        <td>{{ payment.status }}</td>
+                        <td>{{ payment.paymentMethod }}</td>
+                        <td>{{ payment.paymentMeta }}</td>
+                        <td>{{ payment.createdAt }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </NCard>

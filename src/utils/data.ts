@@ -30,3 +30,14 @@ export const userTypes = [
     value: 'Customer'
   }
 ];
+
+export const availablePaymentMethods = [
+  { label: 'Cash On Delivery', value: 'Cash On Delivery' },
+  { label: 'Bkash', value: 'Bkash' },
+  { label: 'Nagad', value: 'Nagad', disabled: true },
+  { label: 'Rocket', value: 'Rocket', disabled: true },
+  { label: 'Upay', value: 'Upay', disabled: true },
+  { label: 'Visa Card', value: 'Visa Card', disabled: true },
+  { label: 'Master Card', value: 'Master Card', disabled: true },
+  { label: 'Others', value: 'Others' }
+];

@@ -266,6 +266,14 @@ export type Order = {
   billingAddressId: number;
   paymentMethod: string;
   transactionId: string;
+  paymentHistory: {
+    transactionId: string;
+    amount: number;
+    status: string;
+    paymentMethod: string;
+    paymentMeta: string;
+    createdAt: string;
+  }[];
   paymentMeta: string;
   customerNote: string;
   adminNote: string;
