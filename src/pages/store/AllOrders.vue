@@ -13,7 +13,7 @@ import {
   NPagination,
   NTable,
   useMessage,
-  NInput,
+  NInputNumber,
   NEmpty,
   NDropdown,
   NModal,
@@ -176,13 +176,13 @@ watch(detailsDialog, (newValue, oldValue) => {
     <div class="block md:flex justify-between items-center">
       <h2 class="my-4">{{ orderStatus || 'All' }} Orders</h2>
       <div class="mb-2 md:mb-0">
-        <n-input
+        <n-input-number
           clearable
           placeholder="Search by order number..."
           v-model:value="ordersMachine.s.value"
         >
           <!-- <template #suffix> Search </template> -->
-        </n-input>
+        </n-input-number>
       </div>
     </div>
 

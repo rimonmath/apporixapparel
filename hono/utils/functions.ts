@@ -19,7 +19,7 @@ export const DashboardApp = () => new Hono<{ Variables: JWTUser }>();
 type FilterOperators = 'eq' | 'like' | 'startsWith' | 'endsWith' | 'gte' | 'lte';
 
 export function generateFilterConditions<T>(
-  filters: Record<string, string | boolean>,
+  filters: Record<string, string | boolean | number>,
   table: T
 ): any[] {
   const conditions: any[] = [];
