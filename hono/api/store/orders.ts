@@ -203,7 +203,7 @@ export default DashboardApp()
     const result = await db
       .update(Orders)
       .set({
-        paymentHistory: sql`${Orders.paymentHistory} || ${JSON.stringify([body])}::jsonb`
+        paymentHistory: sql`${Orders.paymentHistory} || ${JSON.stringify([{ ...body, createdAt: new Date().toISOString(), createdBy: c.var.jwtPayload.userId }])}::jsonb`
       })
       .where(eq(Orders.id, Number(c.req.param('id'))));
     // console.log(result);

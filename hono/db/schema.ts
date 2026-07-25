@@ -286,6 +286,7 @@ export const Orders = pgTable('orders', {
         paymentMethod: string;
         paymentNote: string;
         createdAt: string;
+        createdBy: number;
       }[]
     >()
     .notNull()

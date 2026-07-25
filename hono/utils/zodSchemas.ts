@@ -354,11 +354,10 @@ export const addDSArchiveSchema = z.object({
   entryDate: z.string().min(3).optional().default(new Date().toISOString())
 });
 
-
 export const addPaymentHistorySchema = z.object({
   paymentStatus: z.enum(['Paid', 'Unpaid', 'Partial']),
   transactionId: z.string().optional().default(''),
   amount: z.number().optional().default(0),
   paymentMethod: z.string(),
-  paymentMeta: z.string().optional().default('')
+  paymentNote: z.string().optional().default('')
 });

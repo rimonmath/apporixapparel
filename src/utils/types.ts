@@ -269,10 +269,11 @@ export type Order = {
   paymentHistory: {
     transactionId: string;
     amount: number;
-    status: string;
+    paymentStatus: string;
     paymentMethod: string;
-    paymentMeta: string;
+    paymentNote: string;
     createdAt: string;
+    createdBy: string;
   }[];
   paymentMeta: string;
   customerNote: string;

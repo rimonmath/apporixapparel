@@ -233,72 +233,73 @@ onMounted(() => {
 
           <h4 class="mt-8">Payment Information</h4>
           <NCard class="mt-2">
-            <div class="grid grid-cols-1 md:grid-cols-[1fr_1fr_2fr]">
+            <div class="grid grid-cols-1 md:grid-cols-[1fr_3fr]">
               <div>
                 <p class="font-bold">Payment Method</p>
                 <p>{{ readMachine.response.value?.paymentMethod }}</p>
-              </div>
-              <div>
+                <br />
                 <p class="font-bold">Payment Status</p>
                 <p>{{ readMachine.response.value?.paymentStatus }}</p>
+                <br />
+
+                <NPopover
+                  trigger="click"
+                  raw
+                  :show-arrow="false"
+                  v-if="editMode"
+                  v-model:show="showPaymentHistoryForm"
+                >
+                  <template #trigger>
+                    <NButton type="primary">Add Payment</NButton>
+                  </template>
+                  <AForm
+                    @successSubmit="addPaymentHistory"
+                    :formData="paymentHistoryForm"
+                    :schema="addPaymentHistorySchema"
+                  >
+                    <div
+                      class="bg-white p-5 space-y-2 w-full md:w-[550px]"
+                      style="transform-origin: inherit"
+                    >
+                      <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        <div>
+                          <AFormSelect
+                            label="Payment Status"
+                            name="paymentStatus"
+                            :options="availablePaymentStatus"
+                            placeholder="Select Status"
+                          />
+                          <AFormSelect
+                            label="Payment Method"
+                            name="paymentMethod"
+                            :options="availablePaymentMethods"
+                            placeholder="Select Method"
+                          />
+                        </div>
+                        <div>
+                          <AFormInputNumber label="Amount" name="amount" placeholder="Amount" />
+                          <AFormInput
+                            label="Transaction ID"
+                            name="transactionId"
+                            placeholder="Transaction ID"
+                          />
+                        </div>
+                      </div>
+                      <AFormInput label="Note" name="paymentNote" placeholder="Note" />
+                      <NButton type="primary" block attr-type="submit">
+                        Add Payment History
+                      </NButton>
+                    </div>
+                  </AForm>
+                </NPopover>
               </div>
+
               <div>
                 <div class="flex items-center justify-between">
                   <p class="font-bold">Payment History</p>
-                  <!--  -->
-                  <NPopover
-                    trigger="click"
-                    raw
-                    :show-arrow="false"
-                    v-if="editMode"
-                    v-model:show="showPaymentHistoryForm"
-                  >
-                    <template #trigger>
-                      <NButton type="primary">Add Payment</NButton>
-                    </template>
-                    <AForm
-                      @successSubmit="addPaymentHistory"
-                      :formData="paymentHistoryForm"
-                      :schema="addPaymentHistorySchema"
-                    >
-                      <div
-                        class="bg-white p-5 space-y-2 w-full md:w-[550px]"
-                        style="transform-origin: inherit"
-                      >
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                          <div>
-                            <AFormSelect
-                              label="Payment Status"
-                              name="paymentStatus"
-                              :options="availablePaymentStatus"
-                              placeholder="Select Status"
-                            />
-                            <AFormSelect
-                              label="Payment Method"
-                              name="paymentMethod"
-                              :options="availablePaymentMethods"
-                              placeholder="Select Method"
-                            />
-                          </div>
-                          <div>
-                            <AFormInputNumber label="Amount" name="amount" placeholder="Amount" />
-                            <AFormInput
-                              label="Transaction ID"
-                              name="transactionId"
-                              placeholder="Transaction ID"
-                            />
-                          </div>
-                        </div>
-                        <AFormInput label="Note" name="paymentNote" placeholder="Note" />
-                        <NButton type="primary" block attr-type="submit">
-                          Add Payment History
-                        </NButton>
-                      </div>
-                    </AForm>
-                  </NPopover>
                 </div>
                 <div>
-                  <table class="w-full">
+                  <NTable class="w-full">
                     <thead>
                       <tr>
                         <th>Date</th>
@@ -310,15 +311,14 @@ onMounted(() => {
                     </thead>
                     <tbody>
                       <tr v-for="payment in readMachine.response.value?.paymentHistory">
-                        <td>{{ payment.transactionId }}</td>
-                        <td>{{ payment.amount }}</td>
-                        <td>{{ payment.status }}</td>
+                        <td>{{ formatDateWithTime(payment.createdAt) }}</td>
                         <td>{{ payment.paymentMethod }}</td>
-                        <td>{{ payment.paymentMeta }}</td>
-                        <td>{{ payment.createdAt }}</td>
+                        <td>{{ payment.transactionId }}</td>
+                        <td>{{ payment.paymentStatus }}</td>
+                        <td>৳ {{ payment.amount }}</td>
                       </tr>
                     </tbody>
-                  </table>
+                  </NTable>
                 </div>
               </div>
             </div>
