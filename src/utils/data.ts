@@ -41,3 +41,12 @@ export const availablePaymentMethods = [
   { label: 'Master Card', value: 'Master Card', disabled: true },
   { label: 'Others', value: 'Others' }
 ];
+
+
+export const availablePaymentStatus = [
+  { label: 'Pending', value: 'Pending' },
+  { label: 'Paid', value: 'Paid' },
+  { label: 'Unpaid', value: 'Unpaid' },
+  { label: 'Partial', value: 'Partial' }
+];
+

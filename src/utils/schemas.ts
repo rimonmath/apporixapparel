@@ -319,3 +319,13 @@ export const addDealerSchema = z.object({
   name: z.string().min(1).max(100),
   description: z.string().max(255).default('')
 });
+
+
+
+export const addPaymentHistorySchema = z.object({
+  paymentStatus: z.enum(['Paid', 'Unpaid', 'Partial']),
+  transactionId: z.string().optional().default(''),
+  amount: z.number().optional().default(0),
+  paymentMethod: z.string(),
+  paymentMeta: z.string().optional().default('')
+});

@@ -22,12 +22,13 @@ import {
 import { computed, onMounted, shallowReactive, shallowRef } from 'vue';
 import CheckIcon from '../icons/CheckIcon.vue';
 import { useStoreInfo } from '@/composables/useStoreInfo';
-import { addNextStepSchema } from '@/utils/schemas';
+import { addNextStepSchema, addPaymentHistorySchema } from '@/utils/schemas';
 import AFormSelect from '../form/AFormSelect.vue';
 import AFormInput from '../form/AFormInput.vue';
 import AForm from '../form/AForm.vue';
 import { useCreate } from '@/composables/useCreate';
-import { availablePaymentMethods } from '@/utils/data.ts';
+import { availablePaymentMethods, availablePaymentStatus } from '@/utils/data.ts';
+import AFormInputNumber from '../form/AFormInputNumber.vue';
 
 interface Props {
   orderId: number;
@@ -81,10 +82,10 @@ const nextStepForm = shallowReactive({
 const paymentMethods = shallowRef(availablePaymentMethods);
 
 const paymentHistoryForm = shallowReactive({
-  paymentStatus: null,
+  paymentStatus: availablePaymentStatus[1].value,
   transactionId: '',
   amount: 0,
-  paymentMethod: paymentMethods.value[0],
+  paymentMethod: availablePaymentMethods[0].value,
   paymentMeta: ''
 });
 
@@ -107,6 +108,7 @@ const remainingSteps = computed(() => {
 });
 
 const showNextStep = shallowRef(false);
+const showPaymentHistoryForm = shallowRef(false);
 
 const addNextStepMachine = useCreate<SuccessResponse>(
   '/store/orders/' + props.orderId + '/add-next-step',
@@ -139,15 +141,16 @@ const addPaymentHistory = async () => {
   } else {
     getOrderDetails();
     message.success('Payment added successfully!');
+    showPaymentHistoryForm.value = false;
     resetPaymentHistoryForm();
   }
 };
 
 const resetPaymentHistoryForm = () => {
-  paymentHistoryForm.paymentStatus = null;
+  paymentHistoryForm.paymentStatus = availablePaymentStatus[1].value;
   paymentHistoryForm.transactionId = '';
   paymentHistoryForm.amount = 0;
-  paymentHistoryForm.paymentMethod = paymentMethods.value[0];
+  paymentHistoryForm.paymentMethod = availablePaymentMethods[0].value;
   paymentHistoryForm.paymentMeta = '';
 };
 
@@ -242,7 +245,55 @@ onMounted(() => {
               <div>
                 <div class="flex items-center justify-between">
                   <p class="font-bold">Payment History</p>
-                  <NButton size="small" v-if="editMode"> Add Payment </NButton>
+                  <!--  -->
+                  <NPopover
+                    trigger="click"
+                    raw
+                    :show-arrow="false"
+                    v-if="editMode"
+                    v-model:show="showPaymentHistoryForm"
+                  >
+                    <template #trigger>
+                      <NButton type="primary">Add Payment</NButton>
+                    </template>
+                    <AForm
+                      @successSubmit="addPaymentHistory"
+                      :formData="paymentHistoryForm"
+                      :schema="addPaymentHistorySchema"
+                    >
+                      <div
+                        class="bg-white p-5 space-y-2 w-full md:w-[550px]"
+                        style="transform-origin: inherit"
+                      >
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                          <div>
+                            <AFormSelect
+                              label="Payment Status"
+                              name="paymentStatus"
+                              :options="availablePaymentStatus"
+                              placeholder="Select Status"
+                            />
+                            <AFormSelect
+                              label="Payment Method"
+                              name="paymentMethod"
+                              :options="availablePaymentMethods"
+                              placeholder="Select Method"
+                            />
+                          </div>
+                          <div>
+                            <AFormInputNumber label="Amount" name="amount" placeholder="Amount" />
+                            <AFormInput
+                              label="Transaction ID"
+                              name="transactionId"
+                              placeholder="Transaction ID"
+                            />
+                          </div>
+                        </div>
+                        <AFormInput label="Note" name="note" placeholder="Note" />
+                        <NButton type="primary" block attr-type="submit">Add Step</NButton>
+                      </div>
+                    </AForm>
+                  </NPopover>
                 </div>
                 <div>
                   <table class="w-full">
