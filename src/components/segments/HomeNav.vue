@@ -24,6 +24,8 @@ function hideCategoryDropdown() {
     categoryDropdown.value = true;
   }, 1);
 }
+
+const vw = window.innerWidth;
 </script>
 
 <template>
@@ -38,7 +40,7 @@ function hideCategoryDropdown() {
       <NPopover
         v-if="category.childs?.length && categoryDropdown"
         :overlap="false"
-        placement="bottom-start"
+        :placement="vw < 800 ? 'bottom' : 'bottom-start'"
         class="cat-pop"
       >
         <template #trigger>

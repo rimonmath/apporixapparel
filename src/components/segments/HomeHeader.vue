@@ -142,7 +142,7 @@ const vw = innerWidth;
           </NIcon>
         </div>
         <NDrawer v-model:show="rightDrawer" :width="300" placement="right" class="md:hidden">
-          <NDrawerContent title="Menu" class="bg-primary-600">
+          <NDrawerContent title="Menu" class="bg-primary-600" dark>
             <div v-if="vw < 600" class="text-white">
               <HomeNav class="hn__nav--sm" @needToHide="rightDrawer = false" />
 
@@ -155,7 +155,7 @@ const vw = innerWidth;
                 </div>
               </SmartLink>
 
-              <SmartLink v-if="!customerToken" to="/auth/signin">
+              <SmartLink v-if="!customerToken" to="/auth/signin" class="px-6">
                 <div class="flex items-center gap-1">
                   <NIcon>
                     <LogInOutline />
@@ -163,7 +163,18 @@ const vw = innerWidth;
                   <span>Signin</span>
                 </div>
               </SmartLink>
-              <SmartLink v-if="!customerToken" to="/auth/signup"> Signup </SmartLink>
+
+              <SmartLink v-if="!customerToken" to="/auth/signup" class="px-6">
+                <div class="flex items-center gap-1">
+                  <NIcon>
+                    <LogInOutline />
+                  </NIcon>
+                  <span>Signup</span>
+                </div>
+              </SmartLink>
+              <!-- <SmartLink v-if="!customerToken" to="/auth/signup" class="px-4 py-2">
+                Signup
+              </SmartLink> -->
             </div>
           </NDrawerContent>
         </NDrawer>
