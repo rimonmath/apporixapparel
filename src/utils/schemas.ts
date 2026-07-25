@@ -327,5 +327,5 @@ export const addPaymentHistorySchema = z.object({
   transactionId: z.string().optional().default(''),
   amount: z.number().optional().default(0),
   paymentMethod: z.string(),
-  paymentMeta: z.string().optional().default('')
+  paymentNote: z.string().optional().default('')
 });

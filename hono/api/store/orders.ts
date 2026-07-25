@@ -8,6 +8,7 @@ import z from 'zod';
 import {
   addCategorySchema,
   addNextStepSchema,
+  addPaymentHistorySchema,
   addUserSchema,
   changePasswordSchema,
   editCategorySchema,
@@ -193,6 +194,19 @@ export default DashboardApp()
         })
         .where(eq(Orders.id, Number(c.req.param('id'))));
     });
+
+    return c.json({ message: 'Order updated successfully!' });
+  })
+  .post('/:id/add-payment-history', sValidator('json', addPaymentHistorySchema), async (c) => {
+    const body = c.req.valid('json');
+
+    const result = await db
+      .update(Orders)
+      .set({
+        paymentHistory: sql`${Orders.paymentHistory} || ${JSON.stringify([body])}::jsonb`
+      })
+      .where(eq(Orders.id, Number(c.req.param('id'))));
+    // console.log(result);
 
     return c.json({ message: 'Order updated successfully!' });
   });

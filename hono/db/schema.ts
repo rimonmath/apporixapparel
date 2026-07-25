@@ -284,7 +284,7 @@ export const Orders = pgTable('orders', {
         amount: number;
         status: string;
         paymentMethod: string;
-        paymentMeta: string;
+        paymentNote: string;
         createdAt: string;
       }[]
     >()

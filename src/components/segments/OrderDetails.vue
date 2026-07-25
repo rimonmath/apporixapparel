@@ -289,8 +289,10 @@ onMounted(() => {
                             />
                           </div>
                         </div>
-                        <AFormInput label="Note" name="note" placeholder="Note" />
-                        <NButton type="primary" block attr-type="submit">Add Step</NButton>
+                        <AFormInput label="Note" name="paymentNote" placeholder="Note" />
+                        <NButton type="primary" block attr-type="submit">
+                          Add Payment History
+                        </NButton>
                       </div>
                     </AForm>
                   </NPopover>
