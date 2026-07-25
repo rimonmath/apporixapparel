@@ -24,7 +24,7 @@ export default DashboardApp()
       'query',
       paginationSchema.extend({
         orderStatus_eq: z.string().max(50).optional(),
-        orderNumber_startsWith: z.string().max(50).optional(),
+        id_eq: z.string().max(50).optional(),
         sortDirection: z.enum(['asc', 'desc']).default('desc'),
         sortBy: z.enum(['id']).default('id')
       })

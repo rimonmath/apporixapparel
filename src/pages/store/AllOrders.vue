@@ -73,7 +73,7 @@ const extra = computed(() => {
 
   if (ordersMachine.s.value) {
     ext += props.orderStatus ? '&' : '';
-    ext += 'orderNumber_startsWith=' + ordersMachine.s.value;
+    ext += 'id_eq=' + ordersMachine.s.value;
   }
 
   return ext;
