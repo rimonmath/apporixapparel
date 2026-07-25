@@ -42,11 +42,9 @@ export const availablePaymentMethods = [
   { label: 'Others', value: 'Others' }
 ];
 
-
 export const availablePaymentStatus = [
-  { label: 'Pending', value: 'Pending' },
+  // { label: 'Pending', value: 'Pending' },
   { label: 'Paid', value: 'Paid' },
-  { label: 'Unpaid', value: 'Unpaid' },
-  { label: 'Partial', value: 'Partial' }
+  // { label: 'Unpaid', value: 'Unpaid' },
+  { label: 'Partiallly Paid', value: 'Partially Paid' }
 ];
-

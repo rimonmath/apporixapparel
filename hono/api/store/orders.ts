@@ -12,6 +12,7 @@ import {
   addUserSchema,
   changePasswordSchema,
   editCategorySchema,
+  editPaymentHistorySchema,
   editUserSchema,
   paginationSchema
 } from '../../utils/zodSchemas.js';
@@ -203,10 +204,29 @@ export default DashboardApp()
     const result = await db
       .update(Orders)
       .set({
+        paymentStatus: body.paymentStatus,
         paymentHistory: sql`${Orders.paymentHistory} || ${JSON.stringify([{ ...body, createdAt: new Date().toISOString(), createdBy: c.var.jwtPayload.userId }])}::jsonb`
       })
       .where(eq(Orders.id, Number(c.req.param('id'))));
     // console.log(result);
 
-    return c.json({ message: 'Order updated successfully!' });
+    return c.json({ message: 'Payment history added successfully!' });
+  })
+  .put('/:id/save-payment-history', sValidator('json', editPaymentHistorySchema), async (c) => {
+    const body = c.req.valid('json');
+    const formattedBody = body.map((item) => ({
+      ...item,
+      createdBy: c.var.jwtPayload.userId,
+      createdAt: new Date().toISOString()
+    }));
+
+    await db
+      .update(Orders)
+      .set({
+        paymentHistory: formattedBody
+      })
+      .where(eq(Orders.id, Number(c.req.param('id'))));
+    // console.log(result);
+
+    return c.json({ message: 'Payment history updated successfully!' });
   });

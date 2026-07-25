@@ -29,6 +29,8 @@ import AForm from '../form/AForm.vue';
 import { useCreate } from '@/composables/useCreate';
 import { availablePaymentMethods, availablePaymentStatus } from '@/utils/data.ts';
 import AFormInputNumber from '../form/AFormInputNumber.vue';
+import { TrashOutline } from '@vicons/ionicons5';
+import { useUpdate } from '@/composables/useUpdate.ts';
 
 interface Props {
   orderId: number;
@@ -82,7 +84,7 @@ const nextStepForm = shallowReactive({
 const paymentMethods = shallowRef(availablePaymentMethods);
 
 const paymentHistoryForm = shallowReactive({
-  paymentStatus: availablePaymentStatus[1].value,
+  paymentStatus: availablePaymentStatus[0].value,
   transactionId: '',
   amount: 0,
   paymentMethod: availablePaymentMethods[0].value,
@@ -147,11 +149,30 @@ const addPaymentHistory = async () => {
 };
 
 const resetPaymentHistoryForm = () => {
-  paymentHistoryForm.paymentStatus = availablePaymentStatus[1].value;
+  paymentHistoryForm.paymentStatus = availablePaymentStatus[0].value;
   paymentHistoryForm.transactionId = '';
   paymentHistoryForm.amount = 0;
   paymentHistoryForm.paymentMethod = availablePaymentMethods[0].value;
   paymentHistoryForm.paymentMeta = '';
+};
+
+const needToSavePaymentHistory = shallowRef(false);
+
+const savePaymentHistoryMachine = useUpdate<SuccessResponse>(true);
+
+const savePaymentHistory = async () => {
+  await savePaymentHistoryMachine.start(
+    '/store/orders/' + props.orderId + '/save-payment-history',
+    readMachine.response.value?.paymentHistory!
+  );
+  if (savePaymentHistoryMachine.error.value) {
+    message.error(beautifyError(savePaymentHistoryMachine.error.value));
+  } else {
+    getOrderDetails();
+    message.success('Payment history added successfully!');
+    needToSavePaymentHistory.value = false;
+    resetPaymentHistoryForm();
+  }
 };
 
 onMounted(() => {
@@ -233,24 +254,85 @@ onMounted(() => {
 
           <h4 class="mt-8">Payment Information</h4>
           <NCard class="mt-2">
-            <div class="grid grid-cols-1 md:grid-cols-[1fr_3fr]">
+            <div class="grid grid-cols-1 md:grid-cols-2">
               <div>
                 <p class="font-bold">Payment Method</p>
                 <p>{{ readMachine.response.value?.paymentMethod }}</p>
-                <br />
+              </div>
+              <div>
                 <p class="font-bold">Payment Status</p>
                 <p>{{ readMachine.response.value?.paymentStatus }}</p>
-                <br />
+              </div>
+            </div>
 
-                <NPopover
-                  trigger="click"
-                  raw
-                  :show-arrow="false"
-                  v-if="editMode"
-                  v-model:show="showPaymentHistoryForm"
-                >
+            <hr class="my-2" />
+            <div class="flex items-center justify-between">
+              <p class="font-bold">Payment History</p>
+              <NButton
+                type="primary"
+                size="small"
+                v-if="needToSavePaymentHistory"
+                @click="savePaymentHistory"
+                >Save</NButton
+              >
+            </div>
+            <div>
+              <NTable class="w-full my-4">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Method</th>
+                    <th>Trx ID</th>
+                    <th>Status</th>
+                    <th>Amount</th>
+                    <th v-if="editMode">
+                      <NButton quaternary size="small">
+                        <NIcon>
+                          <TrashOutline></TrashOutline>
+                        </NIcon>
+                      </NButton>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(payment, index) in readMachine.response.value?.paymentHistory">
+                    <td>{{ formatDateWithTime(payment.createdAt) }}</td>
+                    <td>{{ payment.paymentMethod }}</td>
+                    <td>{{ payment.transactionId }}</td>
+                    <td>{{ payment.paymentStatus }}</td>
+                    <td>৳ {{ payment.amount }}</td>
+                    <td v-if="editMode">
+                      <NButton
+                        quaternary
+                        size="small"
+                        @click="
+                          readMachine.response.value?.paymentHistory.splice(index, 1);
+                          needToSavePaymentHistory = true;
+                        "
+                      >
+                        <NIcon>
+                          <TrashOutline></TrashOutline>
+                        </NIcon>
+                      </NButton>
+                    </td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <th colspan="4" class="text-right">Total Paid</th>
+                    <th>
+                      ৳{{
+                        readMachine.response.value?.paymentHistory.reduce((a, b) => a + b.amount, 0)
+                      }}
+                    </th>
+                  </tr>
+                </tfoot>
+              </NTable>
+
+              <div class="flex justify-end mt-4">
+                <NPopover trigger="click" raw v-if="editMode" v-model:show="showPaymentHistoryForm">
                   <template #trigger>
-                    <NButton type="primary">Add Payment</NButton>
+                    <NButton type="primary" size="small">Add Payment History</NButton>
                   </template>
                   <AForm
                     @successSubmit="addPaymentHistory"
@@ -286,40 +368,10 @@ onMounted(() => {
                         </div>
                       </div>
                       <AFormInput label="Note" name="paymentNote" placeholder="Note" />
-                      <NButton type="primary" block attr-type="submit">
-                        Add Payment History
-                      </NButton>
+                      <NButton type="primary" block attr-type="submit"> Add </NButton>
                     </div>
                   </AForm>
                 </NPopover>
-              </div>
-
-              <div>
-                <div class="flex items-center justify-between">
-                  <p class="font-bold">Payment History</p>
-                </div>
-                <div>
-                  <NTable class="w-full">
-                    <thead>
-                      <tr>
-                        <th>Date</th>
-                        <th>Method</th>
-                        <th>Trx ID</th>
-                        <th>Status</th>
-                        <th>Amount</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="payment in readMachine.response.value?.paymentHistory">
-                        <td>{{ formatDateWithTime(payment.createdAt) }}</td>
-                        <td>{{ payment.paymentMethod }}</td>
-                        <td>{{ payment.transactionId }}</td>
-                        <td>{{ payment.paymentStatus }}</td>
-                        <td>৳ {{ payment.amount }}</td>
-                      </tr>
-                    </tbody>
-                  </NTable>
-                </div>
               </div>
             </div>
           </NCard>
