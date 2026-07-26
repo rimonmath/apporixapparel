@@ -20,24 +20,20 @@ export type BillingCycle = 'Monthly' | 'Yearly';
 export type StoreStatus = 'Draft' | 'Active' | 'Suspended';
 
 export type User = {
-  id: string;
-  name: string;
+  id: number;
   email: string;
+  password: string;
   permissions: string[];
-  gender: 'Male' | 'Female' | 'Other' | 'Not Specified';
-  userType: 'User' | 'Admin';
-  isEmailVerified: boolean;
+  name: string;
+  gender: string;
   emailVerificationCode: string;
+  isEmailVerified: boolean;
+  userType: string;
   isActive: boolean;
+  referredUserId: number;
+  referralReward: number;
   createdAt: string;
   updatedAt: string;
-  addresses: Address[];
-  referralReward: number;
-  referredUserId: number;
-  referredUsers: User[];
-  storesCount: number;
-  referredStoresCount: number;
-  referredStores: Store[];
 };
 
 export interface Package {

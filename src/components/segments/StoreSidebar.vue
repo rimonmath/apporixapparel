@@ -165,9 +165,9 @@ const navItems = computed(() => [
   },
   {
     type: 'item',
-    title: 'Customers',
+    title: 'Users',
     icon: PeopleOutline,
-    to: `/store/customers`
+    to: `/store/users`
   },
   {
     type: 'item',

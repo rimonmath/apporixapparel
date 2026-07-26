@@ -29,8 +29,8 @@ const message = useMessage();
 const router = useRouter();
 const route = useRoute();
 
-const createMachine = useCreate<SuccessResponse>('/admin/users', true);
-const readMachine = useRead<User[], true>('/admin/users', true, { route, router });
+const createMachine = useCreate<SuccessResponse>('/store/users', true);
+const readMachine = useRead<User[], true>('/store/users', true, { route, router, extra: '' });
 const updateMachine = useUpdate<SuccessResponse>(true);
 const deleteMachine = useDelete<SuccessResponse>(true);
 
@@ -42,8 +42,7 @@ const addFormData = shallowReactive({
   confirmPassword: '',
   name: '',
   gender: null,
-  userType: null,
-  address: ''
+  userType: null
 });
 
 const resetForm = () => {
@@ -53,7 +52,6 @@ const resetForm = () => {
   addFormData.name = '';
   addFormData.gender = null;
   addFormData.userType = null;
-  addFormData.address = '';
 };
 
 const addItem = async () => {
@@ -87,7 +85,7 @@ const handleActionClick = (key: string, item: any) => {
 
 const saveChanges = async () => {
   // console.log(selectedItem.value);
-  await updateMachine.start('/admin/users/' + selectedItem.value.id, selectedItem.value);
+  await updateMachine.start('/store/users/' + selectedItem.value.id, selectedItem.value);
   if (updateMachine.error.value) {
     message.error(beautifyError(createMachine.error.value));
   } else {
@@ -99,7 +97,7 @@ const saveChanges = async () => {
 
 const changePassword = async () => {
   // console.log(selectedItem.value);
-  await changePasswordMachine.start('/admin/users/' + selectedItem.value.id + '/change-password', {
+  await changePasswordMachine.start('/store/users/' + selectedItem.value.id + '/change-password', {
     id: selectedItem.value.id,
     password: selectedItem.value.password
   });
@@ -114,7 +112,7 @@ const changePassword = async () => {
 
 const deleteItem = async () => {
   // console.log(selectedItem.value);
-  await deleteMachine.start('/admin/users/' + selectedItem.value.id);
+  await deleteMachine.start('/store/users/' + selectedItem.value.id);
   if (deleteMachine.error.value) {
     message.error(beautifyError(deleteMachine.error.value));
   } else {
@@ -278,16 +276,6 @@ onMounted(() => {
                 :formData="addFormData"
               />
 
-              <AFormInput
-                label="Address"
-                name="address"
-                type="textarea"
-                :rows="5"
-                placeholder="Address..."
-                :errors="errors"
-                :formData="addFormData"
-              />
-
               <NButton
                 block
                 type="primary"
@@ -332,16 +320,6 @@ onMounted(() => {
               placeholder="Select Type"
               name="userType"
               :options="userTypes"
-              :errors="errors"
-              :formData="selectedItem"
-            />
-
-            <AFormInput
-              label="Address"
-              name="address"
-              type="textarea"
-              :rows="3"
-              placeholder="Address..."
               :errors="errors"
               :formData="selectedItem"
             />

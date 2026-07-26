@@ -32,7 +32,6 @@ export const addUserSchema = z.object({
   email: z.email().min(5).max(250),
   password: z.string().min(6, 'Passsword must be at least 6 characters long').max(256),
   name: z.string().min(3).max(256),
-  address: z.string().default(''),
   gender: z.enum(['Male', 'Female', 'Other'], selectMessage).default('Male'),
   userType: z.enum(['Admin', 'Customer', 'User'], selectMessage).default('Customer')
 });
@@ -40,8 +39,7 @@ export const addUserSchema = z.object({
 export const editUserSchema = z.object({
   name: z.string().min(3).max(256),
   gender: z.enum(['Male', 'Female', 'Other'], selectMessage).default('Male'),
-  userType: z.enum(['Admin', 'Customer', 'User'], selectMessage).default('Customer'),
-  address: z.string().default('')
+  userType: z.enum(['Admin', 'Customer', 'User'], selectMessage).default('Customer')
 });
 
 export const changePasswordSchema = z.object({

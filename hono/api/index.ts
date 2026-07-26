@@ -4,7 +4,7 @@ import { Hono } from 'hono';
 import publicRoutes from './public/index.js';
 import authRoutes from './auth/index.js';
 import userRoutes from './user/index.js';
-import adminRoutes from './admin/index.js';
+import adminRoutes from './admin-old/index.js';
 import storeRoutes from './store/index.js';
 import guestRoutes from './guest/index.js';
 import customerRoutes from './customer/index.js';

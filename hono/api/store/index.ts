@@ -9,6 +9,7 @@ import ordersApp from './orders.js';
 import carouselsApp from './carousels.js';
 import pagesApp from './pages.js';
 import settingsApp from './settings.js';
+import usersApp from './users.js';
 
 import { storeAuthMiddleware } from '../../middleware/storeAuth.js';
 
@@ -23,4 +24,5 @@ export default DashboardApp()
   .route('/coupons', couponsApp)
   .route('/orders', ordersApp)
   .route('/pages', pagesApp)
-  .route('/settings', settingsApp);
+  .route('/settings', settingsApp)
+  .route('/users', usersApp);
