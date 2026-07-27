@@ -76,8 +76,8 @@ const { openPopup } = useSsoSignin();
             :formData="form"
             :errors="errors"
             name="email"
-            label="Email"
-            placeholder="Enter Email"
+            label="Email / Phone"
+            placeholder="Enter Email / Phone (01xxxxxxxxx)"
           >
           </AFormInput>
           <AFormInput

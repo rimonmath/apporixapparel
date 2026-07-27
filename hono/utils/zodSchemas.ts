@@ -258,7 +258,10 @@ export const addPageSchema = z.object({
 });
 
 export const signupSchema = z.object({
-  email: z.email().max(99),
+  email: z.union([
+    z.email(),
+    z.string().regex(/^01\d{9}$/, 'Must be a valid email or Bangladeshi phone number')
+  ]),
   password: z.string().min(6).max(128),
   name: z.string().min(3).max(256),
   refCode: z.string().optional().default('')
@@ -272,7 +275,10 @@ export const signupTestSchema = z.object({
 });
 
 export const signinSchema = z.object({
-  email: z.email().min(5).max(250),
+  email: z.union([
+    z.email(),
+    z.string().regex(/^01\d{9}$/, 'Must be a valid email or Bangladeshi phone number')
+  ]),
   password: z.string().min(6).max(256)
 });
 

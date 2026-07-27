@@ -68,7 +68,12 @@ onMounted(() => {});
       </div>
       <AForm @successSubmit="handleSubmit" :formData="form" :schema="signupSchema">
         <template #default="{ errors }">
-          <AFormInput name="email" label="Email" placeholder="Enter Email"> </AFormInput>
+          <AFormInput
+            name="email"
+            label="Email / Phone"
+            placeholder="Enter Email / Phone (01xxxxxxxxx)"
+          >
+          </AFormInput>
 
           <AFormInput name="name" label="Full Name" placeholder="Enter Full Name"> </AFormInput>
 

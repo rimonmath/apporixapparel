@@ -25,7 +25,10 @@ const selectMessage = { message: 'Must select an option' };
 
 export const signupSchema = z
   .object({
-    email: z.email().min(5).max(250),
+    email: z.union([
+      z.email(),
+      z.string().regex(/^01\d{9}$/, 'Must be a valid email or Bangladeshi phone number')
+    ]),
     password: z.string().min(6, 'Must be at least 6 characters long').max(256),
     confirmPassword: z.string(),
     name: z.string().min(3).max(256),
@@ -33,11 +36,14 @@ export const signupSchema = z
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: 'Passwords do not match',
-    path: ['confirmPassword'] // show error at the confirmPassword field
+    path: ['confirmPassword']
   });
 
 export const signinSchema = z.object({
-  email: z.email().min(5).max(250),
+  email: z.union([
+    z.email(),
+    z.string().regex(/^01\d{9}$/, 'Must be a valid email or Bangladeshi phone number')
+  ]),
   password: z.string().min(6).max(256)
 });
 
