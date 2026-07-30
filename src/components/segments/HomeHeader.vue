@@ -7,6 +7,7 @@ import {
   CaretForwardOutline,
   CartOutline,
   ChevronDownOutline,
+  DocumentTextOutline,
   LogInOutline,
   MenuOutline,
   RadioButtonOffOutline,
@@ -129,7 +130,14 @@ const vw = innerWidth;
                 <span>Signin</span>
               </div>
             </SmartLink>
-            <!-- <SmartLink v-if="!customerToken" to="/auth/signup">Signup</SmartLink> -->
+            <SmartLink v-if="!customerToken" to="/auth/signup">
+              <div class="flex items-center gap-1">
+                <NIcon>
+                  <DocumentTextOutline />
+                </NIcon>
+                <span>Signup</span>
+              </div>
+            </SmartLink>
           </div>
         </div>
 
