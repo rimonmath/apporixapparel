@@ -43,6 +43,13 @@
       "when": 1784606199922,
       "tag": "0005_third_winter_soldier",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1785381884071,
+      "tag": "0006_spotty_nightshade",
+      "breakpoints": true
     }
   ]
 }
