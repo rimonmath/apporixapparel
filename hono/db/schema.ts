@@ -208,6 +208,7 @@ export const UserAddresses = pgTable('user_addresses', {
     .notNull(),
   name: varchar('name', { length: 150 }).notNull(),
   phone: varchar('phone', { length: 50 }).notNull(),
+  email: varchar('email', { length: 99 }),
   addressLine1: varchar('address_line_1', { length: 255 }).notNull(),
   addressLine2: varchar('address_line_2', { length: 255 }),
   city: varchar('city', { length: 100 }).notNull(),
@@ -257,12 +258,29 @@ export const Orders = pgTable('orders', {
   userId: integer('user_id')
     .references(() => Users.id)
     .notNull(),
-  shippingAddressId: integer('shipping_address_id')
-    .references(() => UserAddresses.id)
+  // shippingAddressId: integer('shipping_address_id')
+  //   .references(() => UserAddresses.id)
+  //   .notNull(),
+  // billingAddressId: integer('billing_address_id')
+  //   .references(() => UserAddresses.id)
+  //   .notNull(),
+  deliveryAddress: jsonb('delivery_address')
+    .$type<{
+      name: string;
+      phone: string;
+      altPhone?: string;
+      email?: string;
+      addressLine1: string;
+      addressLine2?: string;
+      city: string;
+      postalCode?: string;
+      country?: string;
+      latitude?: number;
+      longitude?: number;
+      deliveryNote?: string;
+    }>()
     .notNull(),
-  billingAddressId: integer('billing_address_id')
-    .references(() => UserAddresses.id)
-    .notNull(),
+
   paymentMethod: varchar('payment_method', { length: 50 }).notNull(), // COD, Bkash, Nagad. ///
   transactionId: varchar('transaction_id', { length: 150 }),
   paymentMeta: jsonb('payment_meta').default('{}'),
@@ -551,10 +569,6 @@ export const ordersRelations = relations(Orders, ({ one, many }) => ({
   coupon: one(Coupons, {
     fields: [Orders.couponId],
     references: [Coupons.id]
-  }),
-  shippingAddress: one(UserAddresses, {
-    fields: [Orders.shippingAddressId],
-    references: [UserAddresses.id]
   }),
   orderStatusHistory: many(OrderStatusHistory)
 }));

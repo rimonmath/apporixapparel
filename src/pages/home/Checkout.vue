@@ -88,6 +88,38 @@ const newAddressForm = shallowReactive({
   longitude: ''
 });
 
+const deliveryAddressForm = shallowReactive({
+  name: '',
+  phone: '',
+  altPhone: '',
+  email: '',
+  addressLine1: '',
+  addressLine2: '',
+  city: '',
+  postalCode: '',
+  country: 'Bangladesh',
+  latitude: '0',
+  longitude: '0',
+  deliveryNote: ''
+});
+
+const resetDeliveryAddressForm = () => {
+  Object.assign(deliveryAddressForm, {
+    name: '',
+    phone: '',
+    altPhone: '',
+    email: '',
+    addressLine1: '',
+    addressLine2: '',
+    city: '',
+    postalCode: '',
+    country: 'Bangladesh',
+    latitude: '0',
+    longitude: '0',
+    deliveryNote: ''
+  });
+};
+
 const resetNewAddressForm = () => {
   Object.assign(newAddressForm, {
     name: '',
@@ -186,8 +218,7 @@ const placeOrder = async () => {
   }
 
   const orderData = {
-    shippingAddressId: selectedAddressId.value,
-    billingAddressId: selectedAddressId.value,
+    deliveryAddress: {},
     paymentMethod: selectedPaymentMethod.value,
     customerNote: customerNote.value,
     subtotal: totalCartPrice.value,
@@ -253,43 +284,8 @@ onMounted(async () => {
       </div>
 
       <div v-else class="grid grid-cols-1 md:grid-cols-[3fr_1fr] gap-6">
-        <div class="bg-white p-6 rounded-xl shadow-sm" v-if="!customerToken">
-          <div class="text-center">
-            <h2>Sign in to place an order</h2>
-
-            <p class="my-5 text-lg">
-              This is a khudroshop store. You can sign in with any Khudroshop account
-            </p>
-          </div>
-
-          <!-- <NButton type="default" attr-type="submit" class="login-btn" block @click="openPopup">
-            <div class="flex items-center gap-2">
-              <img src="/img/logo.png" class="max-h-5" alt="" />
-              <span> Sign in with khudroshop</span>
-            </div>
-          </NButton> -->
-
-          <p class="my-3">
-            By clicking on "Sign in with khudroshop" you agree to Khudroshop
-            <a
-              class="text-blue-500 hover:text-blue-600 cursor-pointer hover:underline"
-              href="https://khudroshop.com/terms.html"
-              target="_blank"
-            >
-              Terms of Service
-            </a>
-            and
-            <a
-              class="text-blue-500 hover:text-blue-600 cursor-pointer hover:underline"
-              href="https://khudroshop.com/privacy.html"
-              target="_blank"
-            >
-              Privacy Policy
-            </a>
-          </p>
-        </div>
-        <div class="bg-white p-6 rounded-xl shadow-sm" v-else>
-          <div class="flex justify-between items-center">
+        <div class="bg-white p-6 rounded-xl shadow-sm">
+          <!-- <div class="flex justify-between items-center">
             <h4>Select Delivery Address</h4>
             <NButton @click="newAddressMachine.dialog.value = true"> Add New Address </NButton>
           </div>
@@ -354,7 +350,27 @@ onMounted(async () => {
             type="textarea"
             placeholder="Enter note..."
             v-model:value="customerNote"
-          />
+          /> -->
+
+          <div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <NInput name="name" placeholder="Home1 / Office 2" label="Name" />
+              <NInput name="phone" placeholder="Phone" label="Phone" />
+            </div>
+            <NInput name="addressLine1" placeholder="Address Line 1" label="Address Line 1" />
+            <NInput
+              name="addressLine2"
+              placeholder="Address Line 2 (Optional)"
+              label="Address Line 2 (Optional)"
+            />
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+              <NInput name="city" placeholder="City" label="City" />
+              <NInput name="postalCode" placeholder="Postal Code" label="Postal Code" />
+              <NInput name="country" placeholder="Country" label="Country" />
+            </div>
+
+            <NButton type="primary" block attr-type="submit"> Add Address </NButton>
+          </div>
         </div>
         <div>
           <div class="bg-white p-6 rounded-xl shadow-sm">

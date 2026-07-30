@@ -152,18 +152,6 @@ export default DashboardApp()
             maxDiscount: true
           }
         },
-        shippingAddress: {
-          columns: {
-            id: true,
-            name: true,
-            addressLine1: true,
-            addressLine2: true,
-            city: true,
-            country: true,
-            postalCode: true,
-            phone: true
-          }
-        },
         orderStatusHistory: {
           columns: {
             id: true,
