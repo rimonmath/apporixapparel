@@ -202,6 +202,28 @@ export const addEditAddressSchema = z.object({
   country: z.string().min(1).max(100).default('Bangladesh')
 });
 
+export const deliveryAddressSchema = z.object({
+  name: z.string().min(1).max(150),
+  phone: z.string().regex(/^(01\d{9}|\+8801\d{9})$/, 'Invalid phone'),
+  altPhone: z
+    .string()
+    .regex(/^(01\d{9}|\+8801\d{9})$/, 'Invalid phone')
+    .optional()
+    .or(z.literal('')),
+  email: z.preprocess(
+    (value) => (value === '' || value === null ? undefined : value),
+    z.email().optional()
+  ),
+  addressLine1: z.string().min(1).max(255),
+  addressLine2: z.string().max(255).optional(),
+  city: z.string().min(1).max(100),
+  postalCode: z.string().max(50).optional(),
+  country: z.string().min(1).max(100).default('Bangladesh').optional(),
+  latitude: z.number().optional(),
+  longitude: z.number().optional(),
+  deliveryNote: z.string().optional()
+});
+
 export const placeOrderSchema = z.object({
   deliveryAddress: z.object({
     name: z.string().min(1).max(150),

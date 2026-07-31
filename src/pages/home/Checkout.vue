@@ -9,7 +9,7 @@ import { useSsoSignin } from '@/composables/useSsoSignin';
 import { useUpdate } from '@/composables/useUpdate';
 import { availablePaymentMethods } from '@/utils/data';
 import { beautifyError } from '@/utils/functions';
-import { addEditAddressSchema } from '@/utils/schemas';
+import { addEditAddressSchema, deliveryAddressSchema } from '@/utils/schemas';
 import type { Address, Coupon, DeliveryOption, SuccessResponse } from '@/utils/types';
 import {
   CallOutline,
@@ -21,6 +21,8 @@ import {
 import { NButton, NIcon, NInput, NInputGroup, NModal, NSelect, useMessage } from 'naive-ui';
 import { computed, onMounted, shallowReactive, shallowRef } from 'vue';
 
+const customerToken = localStorage.getItem('customerToken');
+
 const { openPopup } = useSsoSignin('/checkout');
 
 const { totalCartPrice, totalCartItems, cartItems, clearCart } = useCart();
@@ -29,7 +31,10 @@ const message = useMessage();
 const deliveryOptionsMachine = useRead<DeliveryOption[]>('/public/order/delivery-options');
 const addressesMachine = useRead<Address[]>('/customer/profile/addresses', true);
 const newAddressMachine = useCreate<SuccessResponse>('/customer/profile/addresses', true);
-const placeOrderMachine = useCreate<SuccessResponse>('/customer/orders', true);
+const placeOrderMachine = useCreate<SuccessResponse>(
+  customerToken ? '/customer/orders' : '/public/order',
+  true
+);
 
 const applyCouponMachine = useRead<Coupon>('', true);
 
@@ -79,13 +84,16 @@ const AddressesMap = computed(() =>
 const newAddressForm = shallowReactive({
   name: '',
   phone: '',
+  altPhone: '',
+  email: '',
   addressLine1: '',
   addressLine2: '',
   city: '',
   postalCode: '',
   country: 'Bangladesh',
   latitude: '',
-  longitude: ''
+  longitude: '',
+  deliveryNote: ''
 });
 
 const deliveryAddressForm = shallowReactive({
@@ -98,8 +106,8 @@ const deliveryAddressForm = shallowReactive({
   city: '',
   postalCode: '',
   country: 'Bangladesh',
-  latitude: '0',
-  longitude: '0',
+  latitude: 0,
+  longitude: 0,
   deliveryNote: ''
 });
 
@@ -108,14 +116,14 @@ const resetDeliveryAddressForm = () => {
     name: '',
     phone: '',
     altPhone: '',
-    email: '',
+    email: undefined,
     addressLine1: '',
     addressLine2: '',
     city: '',
     postalCode: '',
     country: 'Bangladesh',
-    latitude: '0',
-    longitude: '0',
+    latitude: 0,
+    longitude: 0,
     deliveryNote: ''
   });
 };
@@ -124,13 +132,16 @@ const resetNewAddressForm = () => {
   Object.assign(newAddressForm, {
     name: '',
     phone: '',
+    altPhone: '',
+    email: undefined,
     addressLine1: '',
     addressLine2: '',
     city: '',
     postalCode: '',
     country: 'Bangladesh',
-    latitude: '',
-    longitude: ''
+    latitude: '0',
+    longitude: '0',
+    deliveryNote: ''
   });
 };
 
@@ -183,6 +194,7 @@ const resetCouponInfo = () => {
 };
 
 const applyCoupon = async () => {
+  return;
   await applyCouponMachine.start(`/customer/orders/apply-coupon?code=${couponInfo.code}`);
   if (applyCouponMachine.error.value) {
     message.error(beautifyError(applyCouponMachine.error.value));
@@ -202,15 +214,16 @@ const applyCoupon = async () => {
 };
 
 const placeOrder = async () => {
+  console.log('Placing Order...');
   if (selectedPaymentMethod.value !== 'Cash On Delivery') {
     message.error('Only Cash On Delivery is supported now!');
     return;
   }
 
-  if (!selectedAddressId.value) {
-    message.error('Please select a delivery address');
-    return;
-  }
+  // if (!selectedAddressId.value) {
+  //   message.error('Please select a delivery address');
+  //   return;
+  // }
 
   if (!selectedDeliveryOptionId.value) {
     message.error('Please select a delivery option');
@@ -218,7 +231,7 @@ const placeOrder = async () => {
   }
 
   const orderData = {
-    deliveryAddress: {},
+    deliveryAddress: deliveryAddressForm,
     paymentMethod: selectedPaymentMethod.value,
     customerNote: customerNote.value,
     subtotal: totalCartPrice.value,
@@ -259,8 +272,6 @@ const getAddresses = async () => {
   }
 };
 
-const customerToken = localStorage.getItem('customerToken');
-
 onMounted(async () => {
   await deliveryOptionsMachine.start();
   if (customerToken) {
@@ -283,9 +294,16 @@ onMounted(async () => {
         </SmartLink>
       </div>
 
-      <div v-else class="grid grid-cols-1 md:grid-cols-[3fr_1fr] gap-6">
-        <div class="bg-white p-6 rounded-xl shadow-sm">
-          <!-- <div class="flex justify-between items-center">
+      <AForm
+        v-else
+        @successSubmit="placeOrder"
+        :formData="deliveryAddressForm"
+        :schema="deliveryAddressSchema"
+        debug
+      >
+        <div class="grid grid-cols-1 md:grid-cols-[3fr_1fr] gap-6">
+          <div class="bg-white p-6 rounded-xl shadow-sm">
+            <!-- <div class="flex justify-between items-center">
             <h4>Select Delivery Address</h4>
             <NButton @click="newAddressMachine.dialog.value = true"> Add New Address </NButton>
           </div>
@@ -352,147 +370,148 @@ onMounted(async () => {
             v-model:value="customerNote"
           /> -->
 
+            <div>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <AFormInput name="name" placeholder="Recipient Name" label="Recipient Name *" />
+                <AFormInput name="phone" placeholder="01xxxxxxxxx" label="Recipient Phone *" />
+                <AFormInput name="altPhone" placeholder="01xxxxxxxxx" label="Alternative Phone" />
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-4">
+                <AFormInput name="email" placeholder="Email" label="Email" />
+                <AFormInput name="deliveryNote" placeholder="Delivery Note" label="Delivery Note" />
+              </div>
+              <AFormInput name="addressLine1" placeholder="Address Line" label="Address Line *" />
+
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+                <AFormInput name="city" placeholder="City" label="City *" />
+                <AFormInput name="postalCode" placeholder="Postal Code" label="Postal Code" />
+                <AFormInput name="country" placeholder="Country" label="Country *" disabled />
+              </div>
+
+              <!-- <NButton type="primary" block attr-type="submit"> Add Address </NButton> -->
+            </div>
+          </div>
           <div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <NInput name="name" placeholder="Home1 / Office 2" label="Name" />
-              <NInput name="phone" placeholder="Phone" label="Phone" />
-            </div>
-            <NInput name="addressLine1" placeholder="Address Line 1" label="Address Line 1" />
-            <NInput
-              name="addressLine2"
-              placeholder="Address Line 2 (Optional)"
-              label="Address Line 2 (Optional)"
-            />
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
-              <NInput name="city" placeholder="City" label="City" />
-              <NInput name="postalCode" placeholder="Postal Code" label="Postal Code" />
-              <NInput name="country" placeholder="Country" label="Country" />
-            </div>
+            <div class="bg-white p-6 rounded-xl shadow-sm">
+              <h4>Order Summary</h4>
+              <hr class="my-2" />
+              <table class="w-full order-summary-table">
+                <tbody>
+                  <tr>
+                    <th>Total Items</th>
+                    <td>
+                      {{ totalCartItems }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Sub Total</th>
+                    <td>৳ {{ totalCartPrice }}</td>
+                  </tr>
 
-            <NButton type="primary" block attr-type="submit"> Add Address </NButton>
-          </div>
-        </div>
-        <div>
-          <div class="bg-white p-6 rounded-xl shadow-sm">
-            <h4>Order Summary</h4>
-            <hr class="my-2" />
-            <table class="w-full order-summary-table">
-              <tbody>
-                <tr>
-                  <th>Total Items</th>
-                  <td>
-                    {{ totalCartItems }}
-                  </td>
-                </tr>
-                <tr>
-                  <th>Sub Total</th>
-                  <td>৳ {{ totalCartPrice }}</td>
-                </tr>
+                  <tr>
+                    <td colspan="2">
+                      <hr />
+                    </td>
+                  </tr>
 
-                <tr>
-                  <td colspan="2">
-                    <hr />
-                  </td>
-                </tr>
+                  <tr>
+                    <td colspan="2">
+                      <NInputGroup>
+                        <NInput
+                          :style="{ width: '240px' }"
+                          placeholder="COUPON CODE"
+                          v-model:value="couponInfo.code"
+                        />
+                        <NButton
+                          attr-type="submit"
+                          type="primary"
+                          @click="applyCoupon"
+                          :disabled="couponInfo.type !== ''"
+                          :loading="applyCouponMachine.loading.value"
+                        >
+                          {{ couponInfo.type ? 'Applied' : 'Apply' }}
+                        </NButton>
+                      </NInputGroup>
+                    </td>
+                  </tr>
 
-                <tr>
-                  <td colspan="2">
-                    <NInputGroup>
-                      <NInput
-                        :style="{ width: '240px' }"
-                        placeholder="COUPON CODE"
-                        v-model:value="couponInfo.code"
+                  <tr>
+                    <th>Coupon Discount</th>
+                    <td>
+                      <div class="flex items-center gap-2">
+                        <span>৳ {{ couponDiscount }}</span>
+                        <span
+                          class="cursor-pointer"
+                          v-if="couponInfo.type"
+                          @click="resetCouponInfo"
+                        >
+                          <NIcon>
+                            <CreateOutline />
+                          </NIcon>
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td colspan="2">
+                      <hr />
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td colspan="2">
+                      <div class="mb-1">
+                        <strong>Delivery Option</strong>
+                      </div>
+                      <NSelect
+                        placeholder="Delivery Option"
+                        :options="deliveryOptions"
+                        v-model:value="selectedDeliveryOptionId"
+                        class="w-full"
                       />
-                      <NButton
-                        attr-type="submit"
-                        type="primary"
-                        @click="applyCoupon"
-                        :disabled="couponInfo.type !== ''"
-                        :loading="applyCouponMachine.loading.value"
-                      >
-                        {{ couponInfo.type ? 'Applied' : 'Apply' }}
-                      </NButton>
-                    </NInputGroup>
-                  </td>
-                </tr>
+                    </td>
+                  </tr>
 
-                <tr>
-                  <th>Coupon Discount</th>
-                  <td>
-                    <div class="flex items-center gap-2">
-                      <span>৳ {{ couponDiscount }}</span>
-                      <span class="cursor-pointer" v-if="couponInfo.type" @click="resetCouponInfo">
-                        <NIcon>
-                          <CreateOutline />
-                        </NIcon>
-                      </span>
-                    </div>
-                  </td>
-                </tr>
+                  <tr v-if="selectedDeliveryOption">
+                    <th>Delivery Charge</th>
+                    <td>৳ {{ selectedDeliveryOption?.charge || 0 }}</td>
+                  </tr>
 
-                <tr>
-                  <td colspan="2">
-                    <hr />
-                  </td>
-                </tr>
+                  <tr v-if="selectedDeliveryOption">
+                    <td colspan="2">
+                      <hr />
+                    </td>
+                  </tr>
 
-                <tr>
-                  <td colspan="2">
-                    <div class="mb-1">
-                      <strong>Delivery Option</strong>
-                    </div>
-                    <NSelect
-                      placeholder="Delivery Option"
-                      :options="deliveryOptions"
-                      v-model:value="selectedDeliveryOptionId"
-                      class="w-full"
-                    />
-                  </td>
-                </tr>
-
-                <tr v-if="selectedDeliveryOption">
-                  <th>Delivery Charge</th>
-                  <td>৳ {{ selectedDeliveryOption?.charge || 0 }}</td>
-                </tr>
-
-                <tr v-if="selectedDeliveryOption">
-                  <td colspan="2">
-                    <hr />
-                  </td>
-                </tr>
-
-                <tr v-if="selectedDeliveryOption" class="text-orange-600">
-                  <th>Grand Total</th>
-                  <td>
-                    ৳
-                    {{ grandTotal }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div
-            class="bg-white p-6 rounded-xl shadow-sm mt-4"
-            v-if="selectedDeliveryOption && customerToken"
-          >
-            <div class="mb-1">
-              <strong>Payment Method</strong>
+                  <tr v-if="selectedDeliveryOption" class="text-orange-600">
+                    <th>Grand Total</th>
+                    <td>
+                      ৳
+                      {{ grandTotal }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-            <NSelect
-              placeholder="Delivery Option"
-              :options="paymentMethods"
-              v-model:value="selectedPaymentMethod"
-              class="w-full"
-            />
-            <div class="mt-4" v-if="selectedPaymentMethod">
-              <NButton type="primary" block :disabled="!selectedAddressId" @click="placeOrder">
-                Place Order
-              </NButton>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm mt-4">
+              <div class="mb-1">
+                <strong>Payment Method</strong>
+              </div>
+              <NSelect
+                placeholder="Delivery Option"
+                :options="paymentMethods"
+                v-model:value="selectedPaymentMethod"
+                class="w-full"
+              />
+              <div class="mt-4" v-if="selectedPaymentMethod">
+                <NButton type="primary" block attr-type="submit"> Place Order </NButton>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </AForm>
     </div>
 
     <NModal
