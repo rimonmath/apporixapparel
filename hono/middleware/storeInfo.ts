@@ -18,7 +18,7 @@ const storesMap: Record<string, StoreInfo> = {
     metaDescription: 'Apporix Apparel is a platform to sell products online.',
     metaKeywords: ['website', 'app', 'shop', 'bangla', 'bangladesh'],
     logoUrl: '/img/logo.png',
-    brandColor: '#00ae64',
+    brandColor: '#db6300',
     faviconUrl: '/favicon.png',
     currency: '',
     timezone: '',

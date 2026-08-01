@@ -18,8 +18,10 @@ import { renderSearchPage } from './seo/search.js';
 // import { initStores } from './middleware/storeInfo.js';
 import { renderSigninPage } from './seo/signin.js';
 import { renderSignupPage } from './seo/signup.js';
+import { storeInfoMiddleware } from './middleware/storeInfo.js';
 
 const app = new Hono().use(cors()).route('/api', apiRoutes);
+app.use(storeInfoMiddleware);
 
 app.get('/', renderIndexPage);
 app.get('/r/:refCode', renderSignupPage);

@@ -26,7 +26,7 @@ export const renderCategoryPage = async (c: Context) => {
 
   const htmlCode = await renderSSRPage({
     title: `${categoryDetails.metaTitle || categoryDetails.name || process.env.VITE_WEBSITE_NAME}`,
-    description: categoryDetails.metaDescription || 'No description',
+    description: categoryDetails.metaDescription || categoryDetails.name,
     keywords: 'product, shop',
     image: `${process.env.VITE_API_DOMAIN}/img/logo.png`,
     url: `${process.env.VITE_API_DOMAIN}/categories/${categoryId}/${replaceSpaces(categoryDetails.name)}`,

@@ -8,9 +8,10 @@ import { db } from '../db/index.js';
 
 export const renderIndexPage = async (c: Context) => {
   // const productId = c.req.param('productId');
+  // return c.json({});
 
   const websiteDetails = c.get('storeInfo');
-  // console.log(websiteDetails);
+  console.log(websiteDetails);
 
   if (!websiteDetails) {
     // console.log('====================== > storeInfo', c.get('storeInfo'));
@@ -20,7 +21,8 @@ export const renderIndexPage = async (c: Context) => {
         title: c.req.header('host') || 'Apporix Apparel',
         description: c.req.header('host') || 'Apporix Apparel',
         url: `https://apporixapparel.com`,
-        bodyContent: `<h1>Apporix Apparel</h1>`
+        bodyContent: `<h1>Apporix Apparel</h1>`,
+        favicon: `/favicon.png`
       })
     );
   }
@@ -36,7 +38,8 @@ export const renderIndexPage = async (c: Context) => {
     bodyContent: `<h1>${websiteDetails.metaTitle}</h1>
     <p>${websiteDetails.metaDescription}
     </p>`,
-    brandColor: websiteDetails.brandColor
+    brandColor: websiteDetails.brandColor,
+    favicon: websiteDetails.faviconUrl
   });
 
   return new Response(html, {
