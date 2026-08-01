@@ -18,7 +18,8 @@ import {
   NDropdown,
   NModal,
   NIcon,
-  NTag
+  NTag,
+  NInput
 } from 'naive-ui';
 import {
   computed,
@@ -176,13 +177,13 @@ watch(detailsDialog, (newValue, oldValue) => {
     <div class="block md:flex justify-between items-center">
       <h2 class="my-4">{{ orderStatus || 'All' }} Orders</h2>
       <div class="mb-2 md:mb-0">
-        <n-input-number
+        <NInput
           clearable
           placeholder="Search by order number..."
           v-model:value="ordersMachine.s.value"
         >
           <!-- <template #suffix> Search </template> -->
-        </n-input-number>
+        </NInput>
       </div>
     </div>
 
@@ -215,7 +216,7 @@ watch(detailsDialog, (newValue, oldValue) => {
           <tr v-for="item in ordersMachine.response.value" :key="item.id">
             <td># {{ item.id }}</td>
             <td>{{ formatDateWithTime(item.createdAt) }}</td>
-            <td>{{ item.user.name }}</td>
+            <td>{{ item.user.id === 1 ? 'Guest' : item.user.name }}</td>
             <td>
               <!-- {{ item.orderItems.map((item) => item.product.title).join(', ') }} -->
 

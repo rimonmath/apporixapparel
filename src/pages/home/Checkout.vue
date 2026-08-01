@@ -371,18 +371,21 @@ onMounted(async () => {
           /> -->
 
             <div>
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <h4>Delivery Contact</h4>
+              <hr class="mt-2 mb-4" />
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 gap-y-1">
                 <AFormInput name="name" placeholder="Recipient Name" label="Recipient Name *" />
                 <AFormInput name="phone" placeholder="01xxxxxxxxx" label="Recipient Phone *" />
+                <AFormInput name="email" placeholder="Email" label="Email" />
                 <AFormInput name="altPhone" placeholder="01xxxxxxxxx" label="Alternative Phone" />
               </div>
-              <div class="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-4">
-                <AFormInput name="email" placeholder="Email" label="Email" />
-                <AFormInput name="deliveryNote" placeholder="Delivery Note" label="Delivery Note" />
-              </div>
-              <AFormInput name="addressLine1" placeholder="Address Line" label="Address Line *" />
+              <div class="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-4"></div>
 
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-2">
+              <h4 class="mt-6">Delivery Address</h4>
+              <hr class="mt-2 mb-6" />
+              <AFormInput name="addressLine1" placeholder="Address Line" label="Address Line *" />
+              <AFormInput name="deliveryNote" placeholder="Delivery Note" label="Delivery Note" />
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 gap-y-1 my-2">
                 <AFormInput name="city" placeholder="City" label="City *" />
                 <AFormInput name="postalCode" placeholder="Postal Code" label="Postal Code" />
                 <AFormInput name="country" placeholder="Country" label="Country *" disabled />

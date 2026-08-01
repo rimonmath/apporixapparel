@@ -286,7 +286,21 @@ export type Order = {
   createdAt: string;
   updatedAt: string;
   orderItems: OrderItem[];
-  shippingAddress: Address;
+  deliveryAddress: {
+    name: string;
+    phone: string;
+    altPhone?: string;
+    email?: string;
+    addressLine1: string;
+    addressLine2?: string;
+    city: string;
+    postalCode?: string;
+    country?: string;
+    latitude?: number;
+    longitude?: number;
+    deliveryNote?: string;
+  };
+
   orderStatusHistory: OrderStatusHistory[];
 };
 

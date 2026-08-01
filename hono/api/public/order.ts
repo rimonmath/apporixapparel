@@ -134,7 +134,7 @@ export default DashboardApp()
       await tx.insert(OrderStatusHistory).values({
         orderId: insertedOrder[0].id,
         status: 'Placed',
-        updatedBy: c.get('jwtPayload').userId
+        updatedBy: 1 // harcoded for guest user
       });
 
       // TODO: Update Stock

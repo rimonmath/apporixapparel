@@ -325,6 +325,7 @@ onMounted(() => {
                         readMachine.response.value?.paymentHistory.reduce((a, b) => a + b.amount, 0)
                       }}
                     </th>
+                    <th v-if="editMode"></th>
                   </tr>
                 </tfoot>
               </NTable>
@@ -376,28 +377,58 @@ onMounted(() => {
             </div>
           </NCard>
 
-          <h4 class="mt-4">Delivery Address</h4>
+          <h4 class="mt-4">Delivery Information</h4>
           <NCard class="mt-2 mb-10">
             <div>
-              <div class="grid grid-cols-1 md:grid-cols-2">
+              <h5>Delivery Contact</h5>
+              <hr class="mt-2 mb-4" />
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <p class="font-bold">Phone</p>
-                  <p>{{ readMachine.response.value?.shippingAddress.phone }}</p>
+                  <p class="font-bold block">Recipient Name</p>
+                  <p>{{ readMachine.response.value?.deliveryAddress.name }}</p>
                 </div>
                 <div>
-                  <p class="font-bold">Order Note</p>
-                  <p>{{ readMachine.response.value?.customerNote || 'N/A' }}</p>
+                  <p class="font-bold">Recipient Phone</p>
+                  <p>{{ readMachine.response.value?.deliveryAddress.phone }}</p>
+                </div>
+                <div>
+                  <p class="font-bold">Recipient Email</p>
+                  <p>{{ readMachine.response.value?.deliveryAddress.email }}</p>
+                </div>
+                <div>
+                  <p class="font-bold">Alternative Phone</p>
+                  <p>{{ readMachine.response.value?.deliveryAddress.altPhone || 'NA' }}</p>
                 </div>
               </div>
 
-              <p class="font-bold mt-2">Address</p>
-              <p>
-                {{ readMachine.response.value?.shippingAddress.name }} ,
-                {{ readMachine.response.value?.shippingAddress.addressLine1 }},
-                {{ readMachine.response.value?.shippingAddress.city }} -
-                {{ readMachine.response.value?.shippingAddress.postalCode }},
-                {{ readMachine.response.value?.shippingAddress.country }}
-              </p>
+              <h5 class="mt-6">Delivery Address</h5>
+              <hr class="mt-2 mb-6" />
+              <div class="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-4">
+                <div>
+                  <p class="font-bold block">Address Line</p>
+                  <p>{{ readMachine.response.value?.deliveryAddress.addressLine1 }}</p>
+                </div>
+                <div>
+                  <p class="font-bold block">Delivery Note</p>
+                  <p>{{ readMachine.response.value?.deliveryAddress.deliveryNote || 'NA' }}</p>
+                </div>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 gap-y-1 my-2">
+                <div>
+                  <p class="font-bold block">City</p>
+                  <p>{{ readMachine.response.value?.deliveryAddress.city }}</p>
+                </div>
+                <div>
+                  <p class="font-bold block">Postal Code</p>
+                  <p>{{ readMachine.response.value?.deliveryAddress.postalCode || 'NA' }}</p>
+                </div>
+                <div>
+                  <p class="font-bold block">Country</p>
+                  <p>{{ readMachine.response.value?.deliveryAddress.country }}</p>
+                </div>
+              </div>
+
+              <!-- <NButton type="primary" block attr-type="submit"> Add Address </NButton> -->
             </div>
           </NCard>
         </div>
