@@ -34,6 +34,7 @@ export type User = {
   referralReward: number;
   createdAt: string;
   updatedAt: string;
+  addresses: Address[];
 };
 
 export interface Package {
@@ -372,4 +373,12 @@ export type Archives = {
     amount: string;
     note: string;
   }[];
+};
+
+export type Profile = {
+  id: number;
+  name: string;
+  email: string;
+  userType: string;
+  permissions: string[];
 };

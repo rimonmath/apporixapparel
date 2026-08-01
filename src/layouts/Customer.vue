@@ -35,7 +35,7 @@ const { getProileMacine } = useDashboardHeader();
 
 const checkAuth = () => {
   const customerToken = localStorage.getItem('customerToken');
-  console.log('customerToken: ', customerToken);
+  // console.log('customerToken: ', customerToken);
   if (!customerToken || customerToken === 'undefined') {
     console.log('.... loging out...');
     window.location.href = '/auth/signin';

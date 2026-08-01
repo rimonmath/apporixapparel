@@ -10,7 +10,7 @@ import { useUpdate } from '@/composables/useUpdate';
 import { availablePaymentMethods } from '@/utils/data';
 import { beautifyError } from '@/utils/functions';
 import { addEditAddressSchema, deliveryAddressSchema } from '@/utils/schemas';
-import type { Address, Coupon, DeliveryOption, SuccessResponse } from '@/utils/types';
+import type { Address, Coupon, DeliveryOption, Profile, SuccessResponse } from '@/utils/types';
 import {
   CallOutline,
   CreateOutline,
@@ -272,10 +272,25 @@ const getAddresses = async () => {
   }
 };
 
+const profileMachine = useRead<Profile>('/customer/profile/summary', true);
+
+const getProfile = async () => {
+  await profileMachine.start();
+  if (profileMachine.response.value?.email) {
+    deliveryAddressForm.name = profileMachine.response.value!.name;
+    if (profileMachine.response.value?.email.startsWith('0')) {
+      deliveryAddressForm.phone = profileMachine.response.value!.email;
+    } else {
+      deliveryAddressForm.email = profileMachine.response.value!.email;
+    }
+  }
+};
+
 onMounted(async () => {
   await deliveryOptionsMachine.start();
   if (customerToken) {
     await getAddresses();
+    await getProfile();
   }
 });
 </script>
