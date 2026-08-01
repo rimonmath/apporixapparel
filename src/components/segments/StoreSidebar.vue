@@ -113,7 +113,7 @@ const navItems = computed(() => [
         type: 'item',
         title: `Confirmed Orders (${ordersCountMachine.response?.value?.Confirmed || 0})`,
         icon: EllipseOutline,
-        to: `/store/confirmed-orders `
+        to: `/store/confirmed-orders`
       },
 
       {

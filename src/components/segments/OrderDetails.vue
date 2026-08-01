@@ -103,6 +103,13 @@ const getOrderDetails = () => {
 
 const remainingSteps = computed(() => {
   if (!readMachine.response.value) return 0;
+  if (
+    readMachine.response.value?.orderStatusHistory[
+      readMachine.response.value?.orderStatusHistory.length - 1
+    ].status === 'Delivered'
+  ) {
+    return 0;
+  }
 
   const rSteps = 6 - (readMachine.response.value.orderStatusHistory?.length || 0);
 
