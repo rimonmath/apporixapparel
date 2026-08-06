@@ -33,7 +33,7 @@ export const renderProductPage = async (c: Context) => {
     image: productDetails.images?.[0]?.url
       ? `${process.env.VITE_API_DOMAIN}${productDetails.images?.[0]?.url}`
       : `${process.env.VITE_API_DOMAIN}default-product.jpg`,
-    url: `${process.env.VITE_API_DOMAIN}/product/${productId}/${replaceSpaces(productDetails.title)}`,
+    url: `${process.env.VITE_API_DOMAIN}/products/${productId}/${replaceSpaces(productDetails.title)}`,
     type: 'product',
     bodyContent: `<h1>${productDetails.title}</h1><p>${productDetails.description}</p>`,
     brandColor: `#db6300`,
