@@ -103,7 +103,7 @@
         <p class="text-gray-700">
           If you have any questions or concerns about this Privacy Policy, please contact us at:
         </p>
-        <p class="mt-2 font-medium text-gray-900">📧 apporixApparel@gmail.com</p>
+        <p class="mt-2 font-medium text-gray-900">📧 infoapporixapparel@gmail.com</p>
       </div>
     </div>
   </section>
