@@ -73,6 +73,13 @@ export type Store = {
   user: User;
   brandColor: string;
   layout: string;
+  address: string;
+  facebook: string;
+  instagram: string;
+  youtube: string;
+  whatsapp: string;
+  supportEmail: string;
+  supportPhone: string;
 };
 
 export type SigninResponse = SuccessResponse & {

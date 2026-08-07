@@ -109,7 +109,9 @@ onMounted(() => {
             </a>
           </div>
 
-          <div
+          <a
+            :href="`https://wa.me/${storeDetailsMachine.response.value?.whatsapp}`"
+            target="_blank"
             class="mt-2 inline-flex items-center gap-2 bg-gray-800/50 backdrop-blur-sm px-3 py-1.5 rounded-full"
           >
             <span class="relative flex h-2 w-2">
@@ -124,7 +126,7 @@ onMounted(() => {
             </NIcon>
 
             <span class="text-gray-300 text-xs">Support 24/7</span>
-          </div>
+          </a>
         </div>
       </div>
     </div>
@@ -147,7 +149,7 @@ onMounted(() => {
         <div class="flex items-center gap-2">
           <span class="text-gray-500 text-[11px]">
             Powered by
-            <a href="https://apporixworld.com" target="_blank" class="text-white">Apporixworld</a>
+            <a href="https://apporixworld.com" target="_blank" class="text-white">ApporixWorld</a>
           </span>
         </div>
       </div>

@@ -340,6 +340,13 @@ export const editStoreInfoSchema = z.object({
   metaTitle: z.string().min(3).max(256),
   metaDescription: z.string().min(3),
   metaKeywords: z.array(z.string()).optional().default([]),
+  address: z.string().min(10).max(256),
+  supportPhone: z.string().min(11).max(50),
+  supportEmail: z.string().email(),
+  facebook: z.string().url().optional(),
+  instagram: z.string().url().optional(),
+  youtube: z.string().url().optional(),
+  whatsapp: z.string().min(11).max(50),
   showNextToLogo: z.boolean().optional().default(true)
 });
 

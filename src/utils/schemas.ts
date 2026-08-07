@@ -352,7 +352,13 @@ export const editStoreInfoSchema = z.object({
   metaTitle: z.string().max(255).default(''),
   metaDescription: z.string().max(255).default(''),
   metaKeywords: z.array(z.string()).default([]),
-  showNextToLogo: z.boolean().default(true)
+  showNextToLogo: z.boolean().default(true),
+  address: z.string().optional(),
+  facebook: z.string().optional(),
+  instagram: z.string().optional(),
+  youtube: z.string().optional(),
+  supportEmail: z.string().optional(),
+  supportPhone: z.string().optional()
 });
 
 export const addDealerSchema = z.object({

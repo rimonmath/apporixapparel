@@ -46,7 +46,14 @@ const saveStoreInfo = async () => {
     metaTitle: storeInfoMachine.response.value?.metaTitle,
     metaDescription: storeInfoMachine.response.value?.metaDescription,
     metaKeywords: storeInfoMachine.response.value?.metaKeywords,
-    showNextToLogo: storeInfoMachine.response.value?.showNextToLogo
+    showNextToLogo: storeInfoMachine.response.value?.showNextToLogo,
+    supportPhone: storeInfoMachine.response.value?.supportPhone,
+    supportEmail: storeInfoMachine.response.value?.supportEmail,
+    facebook: storeInfoMachine.response.value?.facebook,
+    instagram: storeInfoMachine.response.value?.instagram,
+    youtube: storeInfoMachine.response.value?.youtube,
+    whatsapp: storeInfoMachine.response.value?.whatsapp,
+    address: storeInfoMachine.response.value?.address
   });
   console.log(updateStoreInfoMachine.error.value);
   if (updateStoreInfoMachine.error.value) {
@@ -162,31 +169,43 @@ onMounted(() => {
         :schema="editStoreInfoSchema"
         debug
       >
-        <div class="space-y-4">
-          <div class="flex items-center gap-2">
-            <AFormInput name="name" label="Store Name" />
-            <NCheckbox
-              v-model:checked="storeInfoMachine.response.value.showNextToLogo"
-              label="Show Next To Logo"
-            />
-          </div>
-          <AFormInput name="metaTitle" label="Meta Title" />
-          <AFormInput name="metaDescription" label="Meta Description" />
-          <div>
-            <strong class="text-gray-600">Meta Keywords</strong>
-          </div>
-          <NSelect
-            placeholder="Start typing"
-            v-model:value="storeInfoMachine.response.value.metaKeywords"
-            filterable
-            multiple
-            tag
-            :options="[]"
-          >
-            <template #empty> Type and press Enter to select </template>
-          </NSelect>
-        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="space-y-4">
+            <div class="flex items-center gap-2">
+              <AFormInput name="name" label="Store Name" />
+              <NCheckbox
+                v-model:checked="storeInfoMachine.response.value.showNextToLogo"
+                label="Show Next To Logo"
+              />
+            </div>
+            <AFormInput name="metaTitle" label="Meta Title" />
+            <AFormInput name="metaDescription" label="Meta Description" />
+            <div>
+              <strong class="text-gray-600">Meta Keywords</strong>
+            </div>
+            <NSelect
+              placeholder="Start typing"
+              v-model:value="storeInfoMachine.response.value.metaKeywords"
+              filterable
+              multiple
+              tag
+              :options="[]"
+            >
+              <template #empty> Type and press Enter to select </template>
+            </NSelect>
 
+            <AFormInput type="textarea" :rows="6" name="address" label="Store Address" />
+          </div>
+
+          <div class="space-y-4">
+            <AFormInput name="supportPhone" label="Support Phone Number" />
+            <AFormInput name="supportEmail" label="Support Email Address" />
+            <AFormInput name="facebook" label="Facebook Page Link" />
+            <AFormInput name="instagram" label="Instagram Profile Link" />
+            <AFormInput name="whatsapp" label="Whatsapp Number" />
+            <AFormInput name="youtube" label="Youtube Channel Link" />
+          </div>
+        </div>
         <div class="mt-5 text-center">
           <NButton type="primary" attr-type="submit">Save Changes</NButton>
         </div>

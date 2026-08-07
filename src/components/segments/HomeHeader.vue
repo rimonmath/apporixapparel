@@ -127,7 +127,7 @@ const vw = innerWidth;
                 <NIcon>
                   <LogInOutline />
                 </NIcon>
-                <span>Signin</span>
+                <span>Sign In</span>
               </div>
             </SmartLink>
             <SmartLink v-if="!customerToken" to="/auth/signup">
@@ -135,7 +135,7 @@ const vw = innerWidth;
                 <NIcon>
                   <DocumentTextOutline />
                 </NIcon>
-                <span>Signup</span>
+                <span>Sign Up</span>
               </div>
             </SmartLink>
           </div>
@@ -168,7 +168,7 @@ const vw = innerWidth;
                   <NIcon>
                     <LogInOutline />
                   </NIcon>
-                  <span>Signin</span>
+                  <span>Sign In</span>
                 </div>
               </SmartLink>
 
@@ -177,7 +177,7 @@ const vw = innerWidth;
                   <NIcon>
                     <LogInOutline />
                   </NIcon>
-                  <span>Signup</span>
+                  <span>Sign Up</span>
                 </div>
               </SmartLink>
               <!-- <SmartLink v-if="!customerToken" to="/auth/signup" class="px-4 py-2">
