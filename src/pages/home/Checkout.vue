@@ -391,20 +391,34 @@ onMounted(async () => {
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4 gap-y-1">
                 <AFormInput name="name" placeholder="Recipient Name" label="Recipient Name *" />
                 <AFormInput name="phone" placeholder="01xxxxxxxxx" label="Recipient Phone *" />
-                <AFormInput name="email" placeholder="Email" label="Email" />
-                <AFormInput name="altPhone" placeholder="01xxxxxxxxx" label="Alternative Phone" />
+                <AFormInput name="email" placeholder="Email (Optional)" label="Email (Optional)" />
+                <AFormInput
+                  name="altPhone"
+                  placeholder="01xxxxxxxxx"
+                  label="Alternative Phone (Optional)"
+                />
               </div>
               <div class="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-4"></div>
 
               <h4 class="mt-6">Delivery Address</h4>
               <hr class="mt-2 mb-6" />
               <AFormInput name="addressLine1" placeholder="Address Line" label="Address Line *" />
-              <AFormInput name="deliveryNote" placeholder="Delivery Note" label="Delivery Note" />
+
               <div class="grid grid-cols-1 md:grid-cols-3 gap-4 gap-y-1 my-2">
                 <AFormInput name="city" placeholder="City" label="City *" />
-                <AFormInput name="postalCode" placeholder="Postal Code" label="Postal Code" />
+                <AFormInput
+                  name="postalCode"
+                  placeholder="Postal Code"
+                  label="Postal Code (Optional)"
+                />
                 <AFormInput name="country" placeholder="Country" label="Country *" disabled />
               </div>
+
+              <AFormInput
+                name="deliveryNote"
+                placeholder="Delivery Note"
+                label="Delivery Note (Optional)"
+              />
 
               <!-- <NButton type="primary" block attr-type="submit"> Add Address </NButton> -->
             </div>
