@@ -95,14 +95,14 @@ const deleteItem = async () => {
 
 const categories = computed(() => getChilds(readMachine.response.value!, 0));
 
-function getChilds(categories: Category[], parentId: number): Category[] {
-  if (!categories) {
+function getChilds(cats: Category[], parentId: number): Category[] {
+  if (!cats) {
     return [];
   }
-  return categories
+  return cats
     .filter((category) => category.parentId === parentId)
-    .map((item) => ({ ...item, childs: getChilds(categories, item.id) }))
-    .sort((a, b) => a.id - b.id);
+    .map((item) => ({ ...item, childs: getChilds(cats, item.id) }))
+    .sort((a, b) => a.order - b.order);
 }
 
 const categoryOptions = [
